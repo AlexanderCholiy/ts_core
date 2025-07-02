@@ -1,11 +1,12 @@
 from django.contrib import admin
 
-from .models import Status, Pole, Operator, Modem
+from .models import Status, Pole, Operator, Modem, Counter
 from .constants import (
     MAX_STATUS_PER_PAGE,
     MAX_OPERATOR_PER_PAGE,
     MAX_POLE_PER_PAGE,
     MAX_MODEM_PER_PAGE,
+    MAX_COUNTER_PER_PAGE,
 )
 
 
@@ -43,6 +44,13 @@ class PoleAdmin(admin.ModelAdmin):
     )
 
 
+class CounterInline(admin.TabularInline):
+    model = Counter
+    extra = 0
+    show_change_link = True
+    autocomplete_fields = ('status', 'operator')
+
+
 @admin.register(Modem)
 class ModemAdmin(admin.ModelAdmin):
     list_display = (
@@ -63,8 +71,22 @@ class ModemAdmin(admin.ModelAdmin):
     list_editable = ('status',)
     search_fields = ('id', 'mac', 'pole_1', 'pole_2', 'pole_3',)
     list_per_page = MAX_MODEM_PER_PAGE
-    ordering = ('pole_1',)
+    ordering = ('pole_1', 'id',)
     list_filter = ('level', 'status',)
     autocomplete_fields = (
         'status', 'pole_1', 'pole_2', 'pole_3',
     )
+    inlines = (CounterInline,)
+
+
+@admin.register(Counter)
+class CounterAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'modem', 'status',
+    )
+    list_editable = ('modem', 'status',)
+    search_fields = ('id', 'modem',)
+    list_per_page = MAX_COUNTER_PER_PAGE
+    ordering = ('id', 'number',)
+    list_filter = ('status',)
+    autocomplete_fields = ('modem', 'status', 'operator',)

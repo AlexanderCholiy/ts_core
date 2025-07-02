@@ -16,6 +16,8 @@ from .constants import (
     MAX_MODEM_LONGTITUDE_LEN,
     MAX_MODEM_FIRMWARE_LEN,
     MAX_MODEM_CABINET_LEN,
+    MAX_MODEM_COUNTER_LEN,
+    DEFAULT_POLE_ID,
 )
 
 
@@ -67,7 +69,7 @@ class Pole(models.Model):
     )
     operator_1 = models.ForeignKey(
         'Operator',
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
         db_column='PoleOp1',
@@ -76,7 +78,7 @@ class Pole(models.Model):
     )
     operator_2 = models.ForeignKey(
         'Operator',
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
         db_column='PoleOp2',
@@ -85,7 +87,7 @@ class Pole(models.Model):
     )
     operator_3 = models.ForeignKey(
         'Operator',
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
         db_column='PoleOp3',
@@ -94,7 +96,7 @@ class Pole(models.Model):
     )
     contractor = models.ForeignKey(
         'Operator',
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
         db_column='PoleContr',
@@ -182,24 +184,29 @@ class Modem(models.Model):
     )
     pole_1 = models.ForeignKey(
         Pole,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET(
+            lambda: Pole.objects.get(id=DEFAULT_POLE_ID)),
         db_column='ModemPole',
         verbose_name='Первая опора',
-        related_name='modem_pole_1',
+        related_name='modem_poles_1',
     )
     pole_2 = models.ForeignKey(
         Pole,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         db_column='ModemPole2',
         verbose_name='Вторая опора',
-        related_name='modem_pole_2',
+        related_name='modem_poles_2',
     )
     pole_3 = models.ForeignKey(
         Pole,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         db_column='ModemPole3',
         verbose_name='Третья опора',
-        related_name='modem_pole_3',
+        related_name='modem_poles_3',
     )
     phone = models.CharField(
         'Телефон',
@@ -290,13 +297,10 @@ class Modem(models.Model):
 
 class Counter(models.Model):
     id = models.CharField(
-        'ID счетчика',
+        'Номер счетчика',
         primary_key=True,
         max_length=MAX_MODEM_COUNTER_LEN,
         db_column='CounterID',
-    )
-    modem = models.ForeignKey(
-        ''
     )
     modem = models.ForeignKey(
         Modem,
@@ -305,3 +309,35 @@ class Counter(models.Model):
         verbose_name='Модем',
         related_name='counter_modems',
     )
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.DO_NOTHING,
+        db_column='CounterStatus',
+        verbose_name='Статус',
+        related_name='counter_statuses',
+    )
+    number = models.PositiveIntegerField(
+        'Порядковый номер',
+        null=True,
+        blank=True,
+        db_column='CounterNumber'
+    )
+    operator = models.ForeignKey(
+        Operator,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        db_column='CounterOp',
+        verbose_name='Оператор',
+        related_name='counter_operators'
+    )
+
+    class Meta:
+        app_label = 'monitoring'
+        db_table = 'MSys_Counters'
+        managed = False
+        verbose_name = 'счётчик'
+        verbose_name_plural = 'Счётчики'
+
+    def __str__(self):
+        return self.id
