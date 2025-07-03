@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/registration/registration.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1>Аккаунт успешно активирован</h1>
+  <p>
+    Ваш аккаунт был успешно активирован. 
+    Теперь вы можете <a href="{% url 'login' %}">войти</a>.
+  </p>
+{% endblock %}

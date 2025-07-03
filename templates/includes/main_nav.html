@@ -1,0 +1,15 @@
+<nav class="main-nav">
+<ul>
+    {% with request.resolver_match.view_name as view_name %}
+      <li>
+      <a 
+        href="{% url 'users:index' %}"
+        class="nav-link 
+        {% if view_name  == 'user:index' %}active{% endif %}"
+        >
+        Главная
+      </a>
+      </li>
+    {% endwith %}
+</ul>
+</nav>
