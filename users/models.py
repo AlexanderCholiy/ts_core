@@ -29,10 +29,10 @@ from .validators import (
 
 username_format_validators = [
     RegexValidator(
-        regex=r'^[\w.-]+$',
+        regex=r'^[a-zA-Z._-]+$',
         message=(
             'Недопустимые символы в имени пользователя. '
-            'Разрешены только: буквы, цифры и .-_'
+            'Разрешены только: английские буквы, цифры и . - _'
         )
     ),
     MinLengthValidator(

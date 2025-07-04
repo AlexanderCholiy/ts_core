@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
-    'monitoring.apps.MonitoringConfig',
+    'open5gs.apps.Open5gsConfig',
 ]
 
 MIDDLEWARE = [
@@ -72,20 +72,13 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
-    'readonly_db': {
-        'ENGINE': 'mssql',
-        'NAME': os.getenv('MONITORING_DB_NAME'),
-        'USER': os.getenv('MONITORING_DB_USER'),
-        'PASSWORD': os.getenv('MONITORING_DB_PASSWORD'),
-        'HOST': os.getenv('MONITORING_DB_HOST'),
-        'PORT': os.getenv('MONITORING_DB_PORT', 1433),
-        'OPTIONS': {
-            'driver': (
-                f'ODBC Driver {os.getenv("ODBC_VERSION", 18)} for SQL Server'
-            ),
-            'extra_params': 'Encrypt=yes;TrustServerCertificate=yes',
-        },
-    }
+    'open5gs_db': {
+        'ENGINE': 'djongo',
+        'NAME': 'open5gs',
+        'HOST': 'localhost',
+        'PORT': 27017,
+        'ENFORCE_SCHEMA': False,
+    },
 }
 
 DATABASE_ROUTERS = ['core.routers.DatabaseRouter']
