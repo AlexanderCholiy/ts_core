@@ -1,38 +1,14 @@
-from functools import wraps
-from typing import Callable
-
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 from django.utils.encoding import force_str
+from django.contrib import messages
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
-from django.contrib import messages
-from django.conf import settings
 
-from .utils import send_activation_email, send_confirm_email
+from .utils import send_activation_email, send_confirm_email, role_required
 from .forms import UserRegisterForm, ChangeEmailForm
 from .models import User, PendingUser
-
-
-def role_required(*allowed_roles: tuple[str]):
-    def decorator(view_func: Callable):
-        @wraps(view_func)
-        def wrapped_view(request: HttpRequest, *args, **kwargs):
-            user: User = request.user
-            if user.role not in allowed_roles and not user.is_superuser:
-                messages.warning(
-                    request,
-                    (
-                        'Вы успешно прошли регистрацию, теперь дождитесь пока '
-                        'вашу учетную запись подтвердит модератор'
-                    )
-                )
-                return redirect(reverse(settings.LOGIN_URL))
-            return view_func(request, *args, **kwargs)
-        return wrapped_view
-    return decorator
 
 
 @login_required
@@ -61,7 +37,7 @@ def activate(request: HttpRequest, uidb64: str, token: str) -> HttpResponse:
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         pending_user = PendingUser.objects.get(pk=uid)
-    except Exception:
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         pass
 
     if (
@@ -89,7 +65,37 @@ def change_email(request: HttpRequest) -> HttpResponse:
             send_confirm_email(user, request)
             return render(request, 'registration/email_confirmation_sent.html')
     else:
-        form = ChangeEmailForm()
+        form = ChangeEmailForm(instance=request.user)
 
     context = {'form': form}
     return render(request, 'registration/email_change_form.html', context)
+
+
+@login_required
+@role_required()
+def confirm_email_change(
+    request: HttpRequest, uidb64: str, token: str
+) -> HttpResponse:
+    user = None
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        pass
+
+    if (
+        user
+        and default_token_generator.check_token(user, token)
+    ):
+        user.save()
+        messages.success(
+            request,
+            'Ваш email был успешно изменен и подтвержден.'
+        )
+        return redirect('users:change_email')
+    messages.error(
+        request,
+        'Ссылка для подтверждения недействительна или устарела. '
+        'Пожалуйста, запросите смену email еще раз.'
+    )
+    return redirect('users:change_email')

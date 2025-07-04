@@ -1,4 +1,6 @@
 from datetime import timedelta
+from typing import Callable
+from functools import wraps
 
 from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator
@@ -7,8 +9,33 @@ from django.http import HttpRequest
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from django.contrib import messages
+from django.shortcuts import redirect
 
 from .models import PendingUser, User
+
+
+def role_required(*allowed_roles: tuple[str]):
+    """
+    Декоратор который предоставляет доступ админу или у кого есть опрееленная
+    роль
+    """
+    def decorator(view_func: Callable):
+        @wraps(view_func)
+        def wrapped_view(request: HttpRequest, *args, **kwargs):
+            user: User = request.user
+            if user.role not in allowed_roles and not user.is_superuser:
+                messages.warning(
+                    request,
+                    (
+                        'Вы успешно прошли регистрацию, теперь дождитесь пока '
+                        'вашу учетную запись подтвердит модератор'
+                    )
+                )
+                return redirect(reverse(settings.LOGIN_URL))
+            return view_func(request, *args, **kwargs)
+        return wrapped_view
+    return decorator
 
 
 def timedelta_to_human_time(time_delta: timedelta) -> str:
@@ -101,5 +128,36 @@ def send_activation_email(
         subject, message, settings.DEFAULT_FROM_EMAIL, [pending_user.email])
 
 
-def send_confirm_email(user: User, request: HttpRequest):
-    pass
+def send_confirm_email(user: User, request: HttpRequest) -> None:
+    token = default_token_generator.make_token(user)
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+
+    confirmation_path = reverse(
+        'users:confirm_email_change',
+        kwargs={'uidb64': uid, 'token': token}
+    )
+    confirmation_link = request.build_absolute_uri(confirmation_path)
+
+    host = request.get_host()
+    valid_period = timedelta_to_human_time(
+        settings.EMAIL_CHANGE_CONFIRMATION_TIMEOUT
+    )
+
+    subject = f'Подтверждение смены email на {host}'
+    message = (
+        f'Здравствуйте, {user.username}!\n\n'
+        f'Вы запросили изменение email адреса на {host}.\n'
+        f'Новый email: {user.email}\n\n'
+        f'Для подтверждения изменения перейдите по ссылке: \n'
+        f'{confirmation_link}\n\n'
+        f'Срок действия ссылки — {valid_period}.\n\n'
+        f'Если вы не запрашивали смену email — проигнорируйте это письмо.'
+    )
+
+    send_mail(
+        subject=subject,
+        message=message,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
+        fail_silently=False
+    )

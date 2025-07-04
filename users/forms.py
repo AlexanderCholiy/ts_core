@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate
 
 from .models import PendingUser, User
 from .constants import MIN_USER_PASSWORD_LEN
@@ -141,3 +142,13 @@ class ChangeEmailForm(forms.ModelForm):
         widgets = {
             'email': forms.EmailInput(attrs={'autocomplete': 'email'}),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        user: User = self.instance
+
+        if not authenticate(username=user.username, password=password):
+            raise ValidationError('Неверный пароль')
+
+        return cleaned_data

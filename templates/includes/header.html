@@ -33,6 +33,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link{% if view_name == 'change_email' %} active{% endif %}"
+              href="{% url 'users:change_email' %}">
+              Изменить email
+            </a>
+          </li>          
+          <li class="nav-item">
             <form method="post" action="{% url 'logout' %}">
               {% csrf_token %}
               <button type="submit" class="nav-link btn-logout" title="{{ user.username }}">
