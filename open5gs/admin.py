@@ -10,12 +10,13 @@ class SubscriberAdmin(admin.ModelAdmin):
     form = SubscriberForm
     list_display = ('imsi',)
     list_per_page = MAX_SUBSCRIBER_PER_PAGE
+    # readonly_fields = ('msisdn',)
 
     fieldsets = (
         (None, {
-            'fields': ('imsi',)
+            'fields': ('imsi', 'msisdn_input',)
         }),
-        ('Параметры безопасности', {
+        ('Security', {
             'fields': (
                 'security_k',
                 'security_amf',
@@ -23,5 +24,13 @@ class SubscriberAdmin(admin.ModelAdmin):
                 'security_opc',
                 'security_sqn',
             ),
+        }),
+        ('Aggregate Maximum Bit Rate', {
+            'fields': (
+                'ambr_downlink_value',
+                'ambr_downlink_unit',
+                'ambr_uplink_value',
+                'ambr_uplink_unit',
+            )
         }),
     )

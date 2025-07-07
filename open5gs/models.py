@@ -1,8 +1,7 @@
 from djongo import models
 
-from core.models import Security
+from core.models import Security, Ambr, Msisdn
 from core.validators import digits_validator
-from core.forms import SecurityForm
 from .constants import MAX_SUBSCRIBER_IMSI_LEN
 
 
@@ -15,13 +14,16 @@ class Subscriber(models.Model):
         help_text='Разрешены только цифры',
         validators=[digits_validator]
     )
-    security = models.EmbeddedField(
-        model_container=Security, model_form_class=SecurityForm
+    msisdn = models.ArrayField(
+        Msisdn,
+        default=list,
+        blank=True,
+        help_text='Список номеров MSISDN'
     )
+    security = models.EmbeddedField(Security)
+    ambr = models.EmbeddedField(Ambr)
 
-    # ambr = models.JSONField(default=dict)
     # schema_version = models.IntegerField(default=1)
-    # msisdn = models.JSONField(default=list)
     # imeisv = models.JSONField(default=list)
     # mme_host = models.JSONField(default=list)
     # mme_realm = models.JSONField(default=list)

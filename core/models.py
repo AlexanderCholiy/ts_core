@@ -1,8 +1,8 @@
 from djongo import models
 from django.core.exceptions import ValidationError
 
-from .constants import MAX_SUBSCRIBER_HEX_LEN
-from .validators import hexadecimal_validator
+from .constants import MAX_SUBSCRIBER_HEX_LEN, MAX_SUBSCRIBER_MSISDN_LEN
+from .validators import hexadecimal_validator, digits_validator
 
 
 class Security(models.Model):
@@ -30,7 +30,7 @@ class Security(models.Model):
         max_length=MAX_SUBSCRIBER_HEX_LEN,
         validators=[hexadecimal_validator]
     )
-    sqn = models.BigIntegerField(
+    sqn = models.PositiveBigIntegerField(
         'Sequence Number',
         null=True,
         blank=True,
@@ -45,3 +45,32 @@ class Security(models.Model):
             raise ValidationError('Выберите либо OP, либо OPC.')
         if self.op is None and self.opc is None:
             raise ValidationError('Необходимо указать либо OP, либо OPc.')
+
+
+class AmbrLink(models.Model):
+    value = models.PositiveIntegerField('Скорость передачи данных')
+    unit = models.PositiveIntegerField('Единица измерения скорости')
+
+    class Meta:
+        abstract = True
+
+
+class Ambr(models.Model):
+    downlink = models.EmbeddedField(AmbrLink)
+    uplink = models.EmbeddedField(AmbrLink)
+
+    class Meta:
+        abstract = True
+
+
+class Msisdn(models.Model):
+    number = models.CharField(
+        'ID мобильного абонента',
+        max_length=MAX_SUBSCRIBER_MSISDN_LEN,
+        validators=[digits_validator],
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        abstract = True
