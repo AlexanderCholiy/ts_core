@@ -10,6 +10,8 @@
 {% endblock %}
 
 {% block content %}
+  <h2>Смена email</h2>
+
   <form method="post" action="{% url 'users:change_email' %}">
     {% csrf_token %}
 

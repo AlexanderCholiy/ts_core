@@ -12,7 +12,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from .models import PendingUser, User
+from .models import PendingUser, User, Roles
 
 
 def role_required(*allowed_roles: tuple[str]):
@@ -111,16 +111,17 @@ def send_activation_email(
     uid = urlsafe_base64_encode(force_bytes(pending_user.pk))
     activation_path = reverse(
         'users:activate', kwargs={'uidb64': uid, 'token': token})
-    activation_link = request.build_absolute_uri(activation_path)
+    link = request.build_absolute_uri(activation_path)
     host = request.get_host()
-    valid_period: int = timedelta_to_human_time(
-        settings.REGISTRATION_ACCESS_TOKEN_LIFETIME)
+    valid_period = timedelta_to_human_time(
+        settings.REGISTRATION_ACCESS_TOKEN_LIFETIME
+    )
 
     subject = f'Подтверждение почты на {host}'
     message = (
         f'Здравствуйте, {pending_user.username}!\n\n'
         f'Вы указали этот адрес при регистрации на {host}.\n'
-        f'Для подтверждения перейдите по ссылке: \n{activation_link}\n\n'
+        f'Для подтверждения перейдите по ссылке: \n{link}\n\n'
         f'Срок действия ссылки — {valid_period}.\n\n'
         f'Если вы не регистрировались — просто проигнорируйте это письмо.'
     )
@@ -128,16 +129,14 @@ def send_activation_email(
         subject, message, settings.DEFAULT_FROM_EMAIL, [pending_user.email])
 
 
-def send_confirm_email(user: User, request: HttpRequest) -> None:
+def send_confirm_email(user: PendingUser, request: HttpRequest) -> None:
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
-
     confirmation_path = reverse(
         'users:confirm_email_change',
         kwargs={'uidb64': uid, 'token': token}
     )
-    confirmation_link = request.build_absolute_uri(confirmation_path)
-
+    link = request.build_absolute_uri(confirmation_path)
     host = request.get_host()
     valid_period = timedelta_to_human_time(
         settings.EMAIL_CHANGE_CONFIRMATION_TIMEOUT
@@ -149,15 +148,12 @@ def send_confirm_email(user: User, request: HttpRequest) -> None:
         f'Вы запросили изменение email адреса на {host}.\n'
         f'Новый email: {user.email}\n\n'
         f'Для подтверждения изменения перейдите по ссылке: \n'
-        f'{confirmation_link}\n\n'
+        f'{link}\n\n'
         f'Срок действия ссылки — {valid_period}.\n\n'
         f'Если вы не запрашивали смену email — проигнорируйте это письмо.'
     )
 
     send_mail(
-        subject=subject,
-        message=message,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[user.email],
-        fail_silently=False
+        subject, message, settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email]
     )

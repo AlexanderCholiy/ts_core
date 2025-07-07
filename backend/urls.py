@@ -13,6 +13,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
 from users.forms import AuthForm
+from users.views import CustomPasswordResetView
 
 
 schema_view = get_schema_view(
@@ -68,7 +69,7 @@ auth_urlpatterns = [
     ),
     path(
         'password_reset/',
-        auth_views.PasswordResetView.as_view(),
+        CustomPasswordResetView.as_view(),
         name='password_reset',
     ),
     path(

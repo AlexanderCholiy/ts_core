@@ -1,14 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.core.validators import RegexValidator, MinLengthValidator
 from django.core.files.storage import default_storage
 from django.utils import timezone
-from django.contrib.auth.password_validation import (
-    MinimumLengthValidator,
-    CommonPasswordValidator,
-    NumericPasswordValidator,
-    UserAttributeSimilarityValidator
-)
 from django.conf import settings
 
 from .constants import (
@@ -18,38 +11,17 @@ from .constants import (
     MAX_USER_PASSWORD_LEN,
     MIN_USER_PASSWORD_LEN,
     MAX_USER_ROLE_LEN,
+    USERNAME_HELP_TEXT,
+    PASSWORD_HELP_TEXT,
 )
 from .validators import (
+    username_format_validators,
+    password_validators,
     validate_user_username,
     validate_user_email,
     validate_pending_username,
-    validate_pending_email
+    validate_pending_email,
 )
-
-
-username_format_validators = [
-    RegexValidator(
-        regex=r'^[a-zA-Z._-]+$',
-        message=(
-            'Недопустимые символы в имени пользователя. '
-            'Разрешены только: английские буквы, цифры и . - _'
-        )
-    ),
-    MinLengthValidator(
-        limit_value=MIN_USER_USERNAME_LEN,
-        message=(
-            'Имя пользователя должно содержать минимум '
-            f'{MIN_USER_USERNAME_LEN} символов.'
-        )
-    )
-]
-
-password_validators = [
-    MinimumLengthValidator(min_length=MIN_USER_PASSWORD_LEN),
-    UserAttributeSimilarityValidator(user_attributes=('username', 'email')),
-    CommonPasswordValidator(),
-    NumericPasswordValidator(),
-]
 
 
 class Roles(models.TextChoices):
@@ -70,21 +42,12 @@ class User(AbstractUser):
         max_length=MAX_USER_USERNAME_LEN,
         unique=True,
         validators=username_format_validators + [validate_user_username],
-        help_text=(
-            'Имя пользователя должно содержать минимум '
-            f'{MIN_USER_USERNAME_LEN} символов. '
-            'Допустимые символы: буквы, цифры и .-_'
-        ),
+        help_text=USERNAME_HELP_TEXT,
     )
     password = models.CharField(
         max_length=MAX_USER_PASSWORD_LEN,
         validators=[v.validate for v in password_validators],
-        help_text=(
-            f'Пароль должен содержать минимум {MIN_USER_PASSWORD_LEN} '
-            'символов, не может быть полностью числовым, '
-            'не должен быть похож на имя пользователя и '
-            'не должен быть слишком простым.'
-        ),
+        help_text=PASSWORD_HELP_TEXT,
     )
     avatar = models.ImageField(
         'Аватар',
@@ -146,11 +109,7 @@ class PendingUser(models.Model):
         max_length=MAX_USER_USERNAME_LEN,
         unique=True,
         validators=username_format_validators + [validate_pending_username],
-        help_text=(
-            'Имя пользователя должно содержать минимум '
-            f'{MIN_USER_USERNAME_LEN} символов. '
-            'Допустимые символы: буквы, цифры и .-_'
-        ),
+        help_text=USERNAME_HELP_TEXT,
     )
     email = models.EmailField(
         'Почта',
@@ -162,12 +121,7 @@ class PendingUser(models.Model):
     password = models.CharField(
         max_length=MAX_USER_PASSWORD_LEN,
         validators=[v.validate for v in password_validators],
-        help_text=(
-            f'Пароль должен содержать минимум {MIN_USER_PASSWORD_LEN} '
-            'символов, не может быть полностью числовым, '
-            'не должен быть похож на имя пользователя и '
-            'не должен быть слишком простым.'
-        ),
+        help_text=PASSWORD_HELP_TEXT,
     )
 
     last_login = models.DateTimeField('Дата регистрации', default=timezone.now)

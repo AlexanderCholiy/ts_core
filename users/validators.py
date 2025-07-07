@@ -1,4 +1,41 @@
 from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator, MinLengthValidator
+from django.contrib.auth.password_validation import (
+    MinimumLengthValidator,
+    CommonPasswordValidator,
+    NumericPasswordValidator,
+    UserAttributeSimilarityValidator
+)
+
+from .constants import (
+    MIN_USER_USERNAME_LEN,
+    MIN_USER_PASSWORD_LEN,
+)
+
+
+username_format_validators = [
+    RegexValidator(
+        regex=r'^[a-zA-Z._-]+$',
+        message=(
+            'Недопустимые символы в имени пользователя. '
+            'Разрешены только: английские буквы, цифры и . - _'
+        )
+    ),
+    MinLengthValidator(
+        limit_value=MIN_USER_USERNAME_LEN,
+        message=(
+            'Имя пользователя должно содержать минимум '
+            f'{MIN_USER_USERNAME_LEN} символов.'
+        )
+    )
+]
+
+password_validators = [
+    MinimumLengthValidator(min_length=MIN_USER_PASSWORD_LEN),
+    UserAttributeSimilarityValidator(user_attributes=('username', 'email')),
+    CommonPasswordValidator(),
+    NumericPasswordValidator(),
+]
 
 
 def validate_user_username(username: str, instance=None):
