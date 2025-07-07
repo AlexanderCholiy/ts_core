@@ -1,19 +1,27 @@
 from django import forms
 
 from .models import Subscriber
-from core.models import Msisdn
-from core.constants import MAX_SUBSCRIBER_MSISDN_LEN
+from .constants import MAX_SUBSCRIBER_MSISDN_LEN
+
+
+class MSISDNWidget(forms.widgets.TextInput):
+    def render(self, name, value, attrs=None, renderer=None):
+        if isinstance(value, list):
+            value = ', '.join(value)
+        return super().render(name, value, attrs, renderer)
 
 
 class SubscriberForm(forms.ModelForm):
     # msisdn
-    msisdn_input = forms.CharField(
+    msisdn = forms.CharField(
         label='MSISDN',
         required=False,
-        widget=forms.TextInput(attrs={
-            'placeholder': 'Введите номера через запятую'
-        }),
-        help_text='Номера MSISDN через запятую'
+        widget=MSISDNWidget(attrs={'class': 'vTextField'}),
+        help_text=(
+            'Введите номера через запятую. '
+            f'Каждый номер — только цифры, до {MAX_SUBSCRIBER_MSISDN_LEN} '
+            'символов.'
+        )
     )
 
     # security
@@ -83,14 +91,13 @@ class SubscriberForm(forms.ModelForm):
 
     class Meta:
         model = Subscriber
-        fields = ('imsi', 'security', 'ambr')
+        fields = ('imsi', 'msisdn', 'security', 'ambr')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         if self.instance and self.instance.msisdn:
-            msisdn_list = [item.number for item in self.instance.msisdn]
-            self.fields['msisdn_input'].initial = ', '.join(msisdn_list)
+            self.fields['msisdn'].initial = ', '.join(self.instance.msisdn)
 
         if self.instance and self.instance.security:
             self.fields['security_k'].initial = self.instance.security.get(
@@ -114,25 +121,6 @@ class SubscriberForm(forms.ModelForm):
             self.fields['ambr_uplink_unit'].initial = (
                 self.instance.ambr.get('uplink', {}).get('unit'))
 
-    def clean_msisdn_input(self):
-        data: str | None = self.cleaned_data.get('msisdn_input')
-        if not data:
-            return []
-
-        numbers = [num.strip() for num in data.split(',') if num.strip()]
-
-        for number in numbers:
-            if not number.isdigit():
-                raise forms.ValidationError(
-                    f'MSISDN должен содержать только цифры: {number}')
-            if len(number) > MAX_SUBSCRIBER_MSISDN_LEN:
-                raise forms.ValidationError(
-                    'MSISDN не может быть длиннее '
-                    f'{MAX_SUBSCRIBER_MSISDN_LEN} цифр: {number}'
-                )
-
-        return numbers
-
     def clean(self):
         cleaned_data = super().clean()
 
@@ -148,11 +136,35 @@ class SubscriberForm(forms.ModelForm):
 
         return cleaned_data
 
+    def clean_msisdn(self):
+        msisdn_raw: str = self.cleaned_data.get('msisdn', '')
+        if not msisdn_raw.strip():
+            return []
+
+        numbers = []
+        for part in msisdn_raw.split(','):
+            num = part.strip()
+            if num:
+                if not num.isdigit():
+                    raise forms.ValidationError(
+                        f'Номер "{num}" должен содержать только цифры.')
+                if len(num) > MAX_SUBSCRIBER_MSISDN_LEN:
+                    raise forms.ValidationError(
+                        f'Номер "{num}" не должен быть длиннее '
+                        f'{MAX_SUBSCRIBER_MSISDN_LEN} символов.'
+                    )
+                numbers.append(num)
+
+        if len(numbers) != len(set(numbers)):
+            raise forms.ValidationError(
+                'Номера MSISDN должны быть уникальными.')
+
+        return numbers
+
     def save(self, commit=True):
         instance: Subscriber = super().save(commit=False)
 
-        msisdn_numbers = self.cleaned_data.get('msisdn_input', [])
-        instance.msisdn = [{'number': num} for num in msisdn_numbers]
+        instance.msisdn = self.cleaned_data['msisdn']
 
         security_data = {
             'k': self.cleaned_data['security_k'],
@@ -175,7 +187,6 @@ class SubscriberForm(forms.ModelForm):
         }
         instance.ambr = ambr_data
 
-        instance.full_clean()
         if commit:
             instance.save()
         return instance

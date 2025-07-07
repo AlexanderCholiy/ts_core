@@ -1,8 +1,8 @@
 from djongo import models
 from django.core.exceptions import ValidationError
 
-from .constants import MAX_SUBSCRIBER_HEX_LEN, MAX_SUBSCRIBER_MSISDN_LEN
-from .validators import hexadecimal_validator, digits_validator
+from .constants import MAX_SUBSCRIBER_HEX_LEN
+from .validators import hexadecimal_validator
 
 
 class Security(models.Model):
@@ -58,19 +58,6 @@ class AmbrLink(models.Model):
 class Ambr(models.Model):
     downlink = models.EmbeddedField(AmbrLink)
     uplink = models.EmbeddedField(AmbrLink)
-
-    class Meta:
-        abstract = True
-
-
-class Msisdn(models.Model):
-    number = models.CharField(
-        'ID мобильного абонента',
-        max_length=MAX_SUBSCRIBER_MSISDN_LEN,
-        validators=[digits_validator],
-        blank=True,
-        null=True
-    )
 
     class Meta:
         abstract = True

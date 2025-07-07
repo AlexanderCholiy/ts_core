@@ -14,7 +14,7 @@ class SubscriberAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('imsi', 'msisdn_input',)
+            'fields': ('imsi', 'msisdn',)
         }),
         ('Security', {
             'fields': (
@@ -34,3 +34,9 @@ class SubscriberAdmin(admin.ModelAdmin):
             )
         }),
     )
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        if obj and obj.msisdn:
+            form.base_fields['msisdn'].initial = ', '.join(obj.msisdn)
+        return form
