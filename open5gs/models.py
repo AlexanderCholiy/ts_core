@@ -19,7 +19,6 @@ class Subscriber(models.Model):
         model_container=Security, model_form_class=SecurityForm
     )
 
-
     # ambr = models.JSONField(default=dict)
     # schema_version = models.IntegerField(default=1)
     # msisdn = models.JSONField(default=list)
