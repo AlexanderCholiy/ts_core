@@ -27,6 +27,12 @@
       <ul class="nav-list">
         {% if user.is_authenticated and user.is_active %}
           <li class="nav-item">
+            <a class="nav-link{% if view_name == 'profile' %} active{% endif %}"
+              href="{% url 'users:profile' %}">
+              Профиль
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link{% if view_name == 'password_change' %} active{% endif %}"
               href="{% url 'password_change' %}">
               Изменить пароль

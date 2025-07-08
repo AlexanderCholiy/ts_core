@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordResetView
 
 from .utils import send_activation_email, send_confirm_email, role_required
-from .forms import UserRegisterForm, ChangeEmailForm
+from .forms import UserRegisterForm, ChangeEmailForm, UserForm
 from .models import User, PendingUser
 
 
@@ -79,7 +79,7 @@ def change_email(request: HttpRequest) -> HttpResponse:
                 password=user.password,
             )
             send_confirm_email(pending_user, request)
-            return render(request, 'registration/email_confirmation_sent.html')
+            return render(request, 'users/email_confirmation_sent.html')
         else:
             for name, errors in form.errors.items():
                 if name == '__all__':
@@ -88,7 +88,7 @@ def change_email(request: HttpRequest) -> HttpResponse:
         form = ChangeEmailForm(instance=request.user)
 
     context = {'form': form}
-    return render(request, 'registration/email_change_form.html', context)
+    return render(request, 'users/email_change_form.html', context)
 
 
 @login_required
@@ -122,3 +122,19 @@ def confirm_email_change(
         'Пожалуйста, запросите смену email еще раз.'
     )
     return redirect('users:change_email')
+
+
+@login_required
+@role_required()
+def profile(request: HttpRequest) -> HttpResponse:
+    if request.method == 'POST':
+        form = UserForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Профиль успешно обновлён')
+            return redirect('users:profile')
+    else:
+        form = UserForm(instance=request.user)
+
+    context = {'form': form}
+    return render(request, 'users/profile_form.html', context)

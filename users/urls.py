@@ -13,5 +13,6 @@ urlpatterns = [
     path(
         'confirm-email-change/<uidb64>/<token>/',
         views.confirm_email_change, name='confirm_email_change'
-    )
+    ),
+    path('profile/', views.profile, name='profile'),
 ]

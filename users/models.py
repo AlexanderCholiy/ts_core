@@ -53,7 +53,7 @@ class User(AbstractUser):
         upload_to='users/',
         blank=True,
         null=True,
-        help_text='Загрузите аватар пользователя',
+        help_text='Загрузите аватар пользователя в формате JPG или PNG',
     )
     role = models.CharField(
         'Роль',

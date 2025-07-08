@@ -15,9 +15,9 @@ from django.shortcuts import redirect
 from .models import PendingUser, User, Roles
 
 
-def role_required(*allowed_roles: tuple[str]):
+def role_required(allowed_roles: list[str] = []):
     """
-    Декоратор который предоставляет доступ админу или у кого есть опрееленная
+    Декоратор который предоставляет доступ админу или у кого есть определенная
     роль
     """
     def decorator(view_func: Callable):

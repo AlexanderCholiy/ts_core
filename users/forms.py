@@ -1,3 +1,5 @@
+from datetime import date
+
 from django import forms
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
@@ -7,7 +9,12 @@ from django.contrib.auth.hashers import check_password
 
 from .models import PendingUser, User
 from .validators import validate_user_email
-from .constants import MIN_USER_PASSWORD_LEN, MAX_USER_USERNAME_DISPLAY_LEN
+from .constants import (
+    MIN_USER_PASSWORD_LEN,
+    MAX_USER_USERNAME_DISPLAY_LEN,
+    MIN_USER_AGE,
+    MAX_USER_AGE,
+)
 
 
 class UserRegisterForm(forms.ModelForm):
@@ -169,3 +176,56 @@ class ChangeEmailForm(forms.ModelForm):
             validate_user_email(new_email, user)
 
         return cleaned_data
+
+
+class UserForm(forms.ModelForm):
+    role = forms.CharField(
+        label='Роль',
+        disabled=True,
+        required=False,
+        widget=forms.TextInput(attrs={'readonly': 'readonly'})
+    )
+
+    class Meta:
+        model = User
+        fields = ('avatar', 'date_of_birth', 'first_name', 'last_name', 'role')
+        widgets = {
+            'date_of_birth': forms.DateInput(
+                attrs={
+                    'type': 'date',
+                    'max': str(date.today().replace(
+                        year=date.today().year - MIN_USER_AGE)),
+                    'min': str(date.today().replace(
+                        year=date.today().year - MAX_USER_AGE))
+                }
+            )
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.initial['role'] = self.instance.get_role_display()
+
+        if 'email' in self.fields:
+            self.fields['email'].disabled = True
+
+    def clean_date_of_birth(self):
+        value: date = self.cleaned_data.get('date_of_birth')
+        if not value:
+            return value
+
+        today = date.today()
+        age = (
+            today.year - value.year
+            - ((today.month, today.day) < (value.month, value.day))
+        )
+
+        if age < MIN_USER_AGE:
+            raise ValidationError(
+                f'Пользователь должен быть старше {MIN_USER_AGE}'
+            )
+        if age > MAX_USER_AGE:
+            raise ValidationError(
+                f'Пользователь должен быть младше {MAX_USER_AGE}'
+            )
+        return value

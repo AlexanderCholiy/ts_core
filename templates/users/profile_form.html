@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} 
+  Профиль
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/registration/registration.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h2>Профиль</h2>
+
+  <form method="post" action="{% url 'users:profile' %}">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="{{ form.avatar.id_for_label }}">Аватар:</label>
+      {{ form.avatar }}
+      {% if form.avatar.value %}
+        <img src="{{ form.avatar.value.url }}" alt="Аватар">
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.date_of_birth.id_for_label }}">Дата рождения:</label>
+      {{ form.date_of_birth }}
+      {{ form.date_of_birth.errors }}
+    </div>
+    
+    <div class="form-group">
+      <label for="{{ form.first_name.id_for_label }}">Имя:</label>
+      {{ form.first_name }}
+    </div>
+    
+    <div class="form-group">
+      <label for="{{ form.last_name.id_for_label }}">Фамилия:</label>
+      {{ form.last_name }}
+    </div>
+    
+    <div class="form-group">
+      <label for="{{ form.role.id_for_label }}">Роль:</label>
+      {{ form.role }}
+    </div>
+
+    <button type="submit">Сохранить</button>
+  </form>
+{% endblock %} 
