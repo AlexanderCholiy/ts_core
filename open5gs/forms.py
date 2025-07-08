@@ -1,26 +1,29 @@
 from django import forms
+from django_json_widget.widgets import JSONEditorWidget
 
 from .models import Subscriber
 from .constants import MAX_SUBSCRIBER_MSISDN_LEN
 
 
-class MSISDNWidget(forms.widgets.TextInput):
-    def render(self, name, value, attrs=None, renderer=None):
-        if isinstance(value, list):
-            value = ', '.join(value)
-        return super().render(name, value, attrs, renderer)
-
-
 class SubscriberForm(forms.ModelForm):
     # msisdn
-    msisdn = forms.CharField(
+    msisdn = forms.JSONField(
         label='MSISDN',
         required=False,
-        widget=MSISDNWidget(attrs={'class': 'vTextField'}),
+        initial=list,
+        widget=JSONEditorWidget(
+            mode='code',
+            options={
+                'modes': ['code', 'view'],
+                'mode': 'code',
+                'search': True,
+            },
+            width='100%',
+            height='auto'
+        ),
         help_text=(
-            'Введите номера через запятую. '
-            f'Каждый номер — только цифры, до {MAX_SUBSCRIBER_MSISDN_LEN} '
-            'символов.'
+            f'Список номеров (максимум {MAX_SUBSCRIBER_MSISDN_LEN} цифр '
+            'каждый)'
         )
     )
 
@@ -91,13 +94,23 @@ class SubscriberForm(forms.ModelForm):
 
     class Meta:
         model = Subscriber
-        fields = ('imsi', 'msisdn', 'security', 'ambr')
+        fields = (
+            'imsi',
+            'msisdn',
+            'security',
+            'ambr',
+            'subscriber_status',
+            'operator_determined_barring',
+        )
+        widgets = {
+            'msisdn': JSONEditorWidget(),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         if self.instance and self.instance.msisdn:
-            self.fields['msisdn'].initial = ', '.join(self.instance.msisdn)
+            self.initial['msisdn'] = self.instance.msisdn
 
         if self.instance and self.instance.security:
             self.fields['security_k'].initial = self.instance.security.get(
@@ -137,29 +150,27 @@ class SubscriberForm(forms.ModelForm):
         return cleaned_data
 
     def clean_msisdn(self):
-        msisdn_raw: str = self.cleaned_data.get('msisdn', '')
-        if not msisdn_raw.strip():
+        msisdn_data = self.cleaned_data.get('msisdn')
+
+        if not msisdn_data:
             return []
 
-        numbers = []
-        for part in msisdn_raw.split(','):
-            num = part.strip()
-            if num:
-                if not num.isdigit():
-                    raise forms.ValidationError(
-                        f'Номер "{num}" должен содержать только цифры.')
-                if len(num) > MAX_SUBSCRIBER_MSISDN_LEN:
-                    raise forms.ValidationError(
-                        f'Номер "{num}" не должен быть длиннее '
-                        f'{MAX_SUBSCRIBER_MSISDN_LEN} символов.'
-                    )
-                numbers.append(num)
+        if not isinstance(msisdn_data, list):
+            raise forms.ValidationError("MSISDN должен быть массивом номеров")
 
-        if len(numbers) != len(set(numbers)):
-            raise forms.ValidationError(
-                'Номера MSISDN должны быть уникальными.')
+        for num in msisdn_data:
+            if not str(num).isdigit():
+                raise forms.ValidationError(
+                    f'Номер "{num}" должен содержать только цифры')
+            if len(str(num)) > MAX_SUBSCRIBER_MSISDN_LEN:
+                raise forms.ValidationError(
+                    f'Номер "{num}" не должен быть длиннее '
+                    f'{MAX_SUBSCRIBER_MSISDN_LEN} символов')
 
-        return numbers
+        if len(msisdn_data) != len(set(msisdn_data)):
+            raise forms.ValidationError('Номера должны быть уникальными')
+
+        return msisdn_data
 
     def save(self, commit=True):
         instance: Subscriber = super().save(commit=False)

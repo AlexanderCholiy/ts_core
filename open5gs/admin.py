@@ -33,6 +33,9 @@ class SubscriberAdmin(admin.ModelAdmin):
                 'ambr_uplink_unit',
             )
         }),
+        ('Subscriber Status & Operator Determined Barring', {
+            'fields': ('subscriber_status', 'operator_determined_barring')
+        }),
     )
 
     def get_form(self, request, obj=None, **kwargs):
