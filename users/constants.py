@@ -7,6 +7,8 @@ MAX_USER_ROLE_LEN = 16
 
 MAX_USERS_PER_PAGE = 16
 
+MAX_USER_USERNAME_DISPLAY_LEN = MAX_USER_USERNAME_LEN - 20
+
 USERNAME_HELP_TEXT = (
     'Имя пользователя должно содержать минимум '
     f'{MIN_USER_USERNAME_LEN} символов. '

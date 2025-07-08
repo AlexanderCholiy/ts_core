@@ -129,8 +129,7 @@ AUTH_USER_MODEL = 'users.User'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-PASSWORD_RESET_TIMEOUT = 86400
-REGISTRATION_ACCESS_TOKEN_LIFETIME = timedelta(seconds=PASSWORD_RESET_TIMEOUT)
+REGISTRATION_ACCESS_TOKEN_LIFETIME = timedelta(seconds=86400)
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.yandex.ru')

@@ -15,7 +15,7 @@ from .constants import (
 
 username_format_validators = [
     RegexValidator(
-        regex=r'^[a-zA-Z._-]+$',
+        regex=r'^[a-zA-Z0-9._-]+$',
         message=(
             'Недопустимые символы в имени пользователя. '
             'Разрешены только: английские буквы, цифры и . - _'
@@ -72,7 +72,7 @@ def validate_user_email(email: str, instance=None):
             pending.delete()
         else:
             raise ValidationError(
-                'Регистрация с этим email ожидает подтверждения.')
+                'Данный email ожидает подтверждения.')
 
 
 def validate_pending_username(username: str, instance=None):
@@ -107,4 +107,4 @@ def validate_pending_email(email: str, instance=None):
             pending.delete()
         else:
             raise ValidationError(
-                'Регистрация с этим email ожидает подтверждения.')
+                'Дынный email ожидает подтверждения.')

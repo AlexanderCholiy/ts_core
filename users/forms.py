@@ -3,10 +3,11 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import check_password
 
 from .models import PendingUser, User
-from .constants import MIN_USER_PASSWORD_LEN
+from .validators import validate_user_email
+from .constants import MIN_USER_PASSWORD_LEN, MAX_USER_USERNAME_DISPLAY_LEN
 
 
 class UserRegisterForm(forms.ModelForm):
@@ -42,7 +43,16 @@ class UserRegisterForm(forms.ModelForm):
         }
 
     def clean_username(self) -> str:
+        """
+        Данная проверка нужна, т.к. мы используем temporary username при смене
+        email.
+        """
         username: str = self.cleaned_data.get('username', '').strip()
+        if len(username) > MAX_USER_USERNAME_DISPLAY_LEN:
+            raise ValidationError(
+                f'Имя пользователя должно быть не длиннее '
+                f'{MAX_USER_USERNAME_DISPLAY_LEN} символов'
+            )
         return username
 
     def clean_email(self) -> str:
@@ -147,8 +157,15 @@ class ChangeEmailForm(forms.ModelForm):
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
         user: User = self.instance
+        new_email = cleaned_data.get('email')
 
-        if not authenticate(username=user.username, password=password):
+        if not check_password(password, user.password):
             raise ValidationError('Неверный пароль')
+
+        if new_email and new_email == user.email:
+            raise ValidationError('Вы уже используете эту почту.')
+
+        if new_email:
+            validate_user_email(new_email, user)
 
         return cleaned_data

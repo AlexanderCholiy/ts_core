@@ -6,12 +6,10 @@ from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordResetView
-from django.core.exceptions import ValidationError
 
 from .utils import send_activation_email, send_confirm_email, role_required
 from .forms import UserRegisterForm, ChangeEmailForm
 from .models import User, PendingUser
-from .validators import validate_pending_email
 
 
 class CustomPasswordResetView(PasswordResetView):
@@ -71,29 +69,21 @@ def activate(request: HttpRequest, uidb64: str, token: str) -> HttpResponse:
 @role_required()
 def change_email(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
-        form = ChangeEmailForm(request.POST)
+        form = ChangeEmailForm(request.POST, instance=request.user)
         if form.is_valid():
             new_email = form.cleaned_data['email']
-            if request.user.email == new_email:
-                messages.info(
-                    request,
-                    'Вы уже используете эту почту.'
-                )
-                return redirect('users:change_email')
-
-            try:
-                validate_pending_email(new_email, instance=None)
-            except ValidationError as e:
-                messages.error(request, e.message)
-                return redirect('users:change_email')
-
+            user: User = request.user
             pending_user = PendingUser.objects.create(
-                username=request.user.username,
+                username=user.temporary_username,
                 email=new_email,
-                password=request.user.password,
+                password=user.password,
             )
             send_confirm_email(pending_user, request)
             return render(request, 'registration/email_confirmation_sent.html')
+        else:
+            for name, errors in form.errors.items():
+                if name == '__all__':
+                    messages.error(request, errors)
     else:
         form = ChangeEmailForm(instance=request.user)
 
@@ -117,10 +107,10 @@ def confirm_email_change(
         pending_user
         and default_token_generator.check_token(pending_user, token)
     ):
-        user = User.objects.get(username=pending_user.username)
+        user = User.objects.get(username=pending_user.original_username)
+        pending_user.delete()
         user.email = pending_user.email
         user.save()
-        pending_user.delete()
         messages.success(
             request,
             'Ваш email был успешно изменен и подтвержден.'

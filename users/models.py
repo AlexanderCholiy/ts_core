@@ -1,3 +1,4 @@
+import time
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.files.storage import default_storage
@@ -7,9 +8,7 @@ from django.conf import settings
 from .constants import (
     MAX_USER_EMAIL_LEN,
     MAX_USER_USERNAME_LEN,
-    MIN_USER_USERNAME_LEN,
     MAX_USER_PASSWORD_LEN,
-    MIN_USER_PASSWORD_LEN,
     MAX_USER_ROLE_LEN,
     USERNAME_HELP_TEXT,
     PASSWORD_HELP_TEXT,
@@ -79,6 +78,11 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    @property
+    def temporary_username(self):
+        """Генерирует уникальное временное имя с timestamp"""
+        return f'{self.username}__temp_{int(time.time())}_{self.pk}'
+
     def delete(self, *args, **kwargs):
         if self.avatar:
             self.avatar.delete(save=False)
@@ -133,6 +137,12 @@ class PendingUser(models.Model):
 
     def __str__(self) -> str:
         return self.username
+
+    @property
+    def original_username(self):
+        """Извлекает оригинальное имя пользователя"""
+        parts = self.username.rsplit('__temp_', 1)
+        return parts[0] if len(parts) > 1 else self.username
 
     def clean(self):
         super().clean()

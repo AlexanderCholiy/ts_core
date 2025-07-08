@@ -139,12 +139,12 @@ def send_confirm_email(user: PendingUser, request: HttpRequest) -> None:
     link = request.build_absolute_uri(confirmation_path)
     host = request.get_host()
     valid_period = timedelta_to_human_time(
-        settings.EMAIL_CHANGE_CONFIRMATION_TIMEOUT
+        settings.REGISTRATION_ACCESS_TOKEN_LIFETIME
     )
 
     subject = f'Подтверждение смены email на {host}'
     message = (
-        f'Здравствуйте, {user.username}!\n\n'
+        f'Здравствуйте, {user.original_username}!\n\n'
         f'Вы запросили изменение email адреса на {host}.\n'
         f'Новый email: {user.email}\n\n'
         f'Для подтверждения изменения перейдите по ссылке: \n'
