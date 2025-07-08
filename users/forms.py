@@ -179,16 +179,10 @@ class ChangeEmailForm(forms.ModelForm):
 
 
 class UserForm(forms.ModelForm):
-    role = forms.CharField(
-        label='Роль',
-        disabled=True,
-        required=False,
-        widget=forms.TextInput(attrs={'readonly': 'readonly'})
-    )
 
     class Meta:
         model = User
-        fields = ('avatar', 'date_of_birth', 'first_name', 'last_name', 'role')
+        fields = ('avatar', 'date_of_birth', 'first_name', 'last_name',)
         widgets = {
             'date_of_birth': forms.DateInput(
                 attrs={
@@ -200,14 +194,6 @@ class UserForm(forms.ModelForm):
                 }
             )
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if self.instance and self.instance.pk:
-            self.initial['role'] = self.instance.get_role_display()
-
-        if 'email' in self.fields:
-            self.fields['email'].disabled = True
 
     def clean_date_of_birth(self):
         value: date = self.cleaned_data.get('date_of_birth')
@@ -229,3 +215,16 @@ class UserForm(forms.ModelForm):
                 f'Пользователь должен быть младше {MAX_USER_AGE}'
             )
         return value
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+
+        if self.cleaned_data.get('avatar-clear'):
+            if user.avatar:
+                user.avatar.delete(save=False)
+            user.avatar = None
+
+        if commit:
+            user.save()
+
+        return user
