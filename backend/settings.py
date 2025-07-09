@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'django_jsonform',
     'django_json_widget',
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
