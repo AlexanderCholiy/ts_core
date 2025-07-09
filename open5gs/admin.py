@@ -16,49 +16,17 @@ class SubscriberAdmin(admin.ModelAdmin):
     form = SubscriberForm
 
     fieldsets = (
-        ('Основная информация', {
-            'fields': ('imsi', 'msisdn')
+        ('Subscriber Configuration', {
+            'fields': (
+                'imsi',
+                'msisdn',
+                'security',
+                'ambr',
+                'subscriber_status',
+                'operator_determined_barring',
+            )
+        }),
+        ('Session Configurations', {
+            'fields': ('slice',)
         }),
     )
-
-
-# @admin.register(Subscriber)
-# class SubscriberAdmin(admin.ModelAdmin):
-#     form = SubscriberForm
-#     list_display = ('imsi',)
-#     list_per_page = MAX_SUBSCRIBER_PER_PAGE
-
-#     fieldsets = (
-#         (None, {
-#             'fields': ('imsi', 'msisdn',)
-#         }),
-#         ('Security', {
-#             'fields': (
-#                 'security_k',
-#                 'security_amf',
-#                 'security_op',
-#                 'security_opc',
-#                 'security_sqn',
-#             ),
-#         }),
-#         ('Aggregate Maximum Bit Rate', {
-#             'fields': (
-#                 'ambr_downlink_value',
-#                 'ambr_downlink_unit',
-#                 'ambr_uplink_value',
-#                 'ambr_uplink_unit',
-#             )
-#         }),
-#         ('Subscriber Status & Operator Determined Barring', {
-#             'fields': ('subscriber_status', 'operator_determined_barring')
-#         }),
-#         ('Slice Configurations', {
-#             'fields': ('slice',)
-#         }),
-#     )
-
-#     def get_form(self, request, obj=None, **kwargs):
-#         form = super().get_form(request, obj, **kwargs)
-#         if obj and obj.msisdn:
-#             form.base_fields['msisdn'].initial = ', '.join(obj.msisdn)
-#         return form
