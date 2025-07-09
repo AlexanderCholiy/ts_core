@@ -1,8 +1,10 @@
 from djongo import models
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import (
+    MinValueValidator, MaxValueValidator, MinLengthValidator
+)
 
-from .constants import MAX_SUBSCRIBER_HEX_LEN
+from .constants import MAX_SUBSCRIBER_HEX_LEN, MAX_SESSION_NAME
 from .validators import hexadecimal_validator
 
 
@@ -100,7 +102,6 @@ class QosArp(models.Model):
 
 
 class Qos(models.Model):
-    """Относится к Session Configurations"""
     arp = models.EmbeddedField(QosArp)
     mbr = models.EmbeddedField(Ambr)  # Session-AMBR Downlink
     gbr = models.EmbeddedField(Ambr)  # Session-AMBR Uplink
@@ -142,19 +143,32 @@ class Qos(models.Model):
 
 
 class PccRule(models.Model):
-    qos = models.EmbeddedField(Qos)
+    """PCC Rules"""
+    qos = models.ArrayField(
+        Qos,
+        default=list,
+        blank=True
+    )
 
     class Meta:
         abstract = True
 
 
 class Session(models.Model):
+    """Session Configurations"""
     qos = models.EmbeddedField(Qos)
     ambr = models.EmbeddedField(Ambr)
-    name = models.CharField('Session Name', max_length=100)
-    type = models.PositiveSmallIntegerField('Session Type')
+    name = models.CharField('DNN/APN', max_length=MAX_SESSION_NAME)
+    type = models.PositiveSmallIntegerField(
+        'Session Type',
+        choices=[
+            (1, 'IPv4'),
+            (2, 'IPv6'),
+            (3, 'IPv4v6'),
+        ],
+    )
     pcc_rule = models.ArrayField(
-        model_container=PccRule,
+        PccRule,
         default=list,
         blank=True
     )
@@ -164,20 +178,25 @@ class Session(models.Model):
 
 
 class Slice(models.Model):
-    sst = models.PositiveSmallIntegerField('Slice/Service Type')
+    """Slice Configurations"""
+    sst = models.PositiveSmallIntegerField(
+        'Slice/Service Type (SST)',
+        validators=[MinValueValidator(1), MaxValueValidator(4)],
+    )
     default_indicator = models.BooleanField(
-        'Default Slice Indicator',
+        'Default S-NSSAI',
         default=False,
         blank=True
     )
     sd = models.CharField(
-        'Slice Differentiator',
+        'Slice Differentiator (SD)',
         max_length=6,
         null=True,
-        blank=True
+        blank=True,
+        validators=[hexadecimal_validator, MinLengthValidator(6)]
     )
     session = models.ArrayField(
-        model_container=Session,
+        Session,
         default=list,
         blank=True
     )
