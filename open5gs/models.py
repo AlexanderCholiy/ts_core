@@ -9,7 +9,6 @@ from .constants import (
 )
 from core.models import Security, Ambr, Slice
 from core.validators import digits_validator
-from core.forms import SecurityForm, AmbrForm, SliceForm
 
 
 class Subscriber(models.Model):
@@ -27,8 +26,8 @@ class Subscriber(models.Model):
         blank=True,
         help_text='Список номеров MSISDN'
     )
-    security = models.EmbeddedField(Security, SecurityForm)
-    ambr = models.EmbeddedField(Ambr, AmbrForm)
+    security = models.EmbeddedField(Security)
+    ambr = models.EmbeddedField(Ambr)
     subscriber_status = models.PositiveSmallIntegerField(
         'Subscriber Status',
         default=0,
@@ -43,7 +42,6 @@ class Subscriber(models.Model):
     )
     slice = models.ArrayField(
         Slice,
-        SliceForm,
         help_text='Список сетевых срезов (Network Slices)'
     )
 

@@ -1,9 +1,20 @@
+# flake8: noqa: E501
+from bson import ObjectId
+
+from django.core.serializers.json import DjangoJSONEncoder
+
 from .constants import MAX_SUBSCRIBER_MSISDN_LEN
 from core.constants import (
     UNIT_CHOICES, MIN_SST_VALUE, MAX_SST_VALUE,
     SD_LEN, MAX_SESSION_NAME_LEN, SESSION_TYPE_CHOICES, QOS_INDEX_CHOICES,
     MIN_PRIORITY_LEVEL_VALUE, MAX_PRIORITY_LEVEL_VALUE, EMPTION_CHOICES
 )
+
+class MongoJSONEncoder(DjangoJSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return super().default(o)
 
 SLICE_SCHEMA = {
     'type': 'array',
@@ -28,11 +39,11 @@ SLICE_SCHEMA = {
                 'pattern': '^[0-9a-fA-F]+$',
                 'maxLength': SD_LEN,
                 'minLength': SD_LEN,
-                'default': ''
             },
             'session': {
                 'type': 'array',
                 'title': 'Sessions',
+                'minItems': 1,
                 'items': {
                     'type': 'object',
                     'title': 'Session Configuration',
@@ -114,37 +125,6 @@ SLICE_SCHEMA = {
                             },
                             'required': ['index', 'arp', 'mbr', 'gbr']
                         },
-                        'ambr': {
-                            'type': 'object',
-                            'title': 'AMBR',
-                            'properties': {
-                                'downlink': {
-                                    'type': 'object',
-                                    'properties': {
-                                        'value': {'type': 'number', 'minimum': 0},
-                                        'unit': {
-                                            'type': 'number',
-                                            'enum': [choice[0] for choice in UNIT_CHOICES],
-                                            'enumNames': [choice[1] for choice in UNIT_CHOICES]
-                                        }
-                                    },
-                                    'required': ['value', 'unit']
-                                },
-                                'uplink': {
-                                    'type': 'object',
-                                    'properties': {
-                                        'value': {'type': 'number', 'minimum': 0},
-                                        'unit': {
-                                            'type': 'number',
-                                            'enum': [choice[0] for choice in UNIT_CHOICES],
-                                            'enumNames': [choice[1] for choice in UNIT_CHOICES]
-                                        }
-                                    },
-                                    'required': ['value', 'unit']
-                                }
-                            },
-                            'required': ['downlink', 'uplink']
-                        },
                         'pcc_rule': {
                             'type': 'array',
                             'title': 'PCC Rules',
@@ -189,32 +169,72 @@ SLICE_SCHEMA = {
                                             },
                                             'mbr': {
                                                 'type': 'object',
-                                                'title': 'Session-AMBR Downlink',
+                                                'title': 'MBR (Max Bit Rate)',
                                                 'properties': {
-                                                    'value': {'type': 'number', 'minimum': 0},
-                                                    'unit': {
-                                                        'type': 'number',
-                                                        'enum': [choice[0] for choice in UNIT_CHOICES],
-                                                        'enumNames': [choice[1] for choice in UNIT_CHOICES]
+                                                    'downlink': {
+                                                        'type': 'object',
+                                                        'title': 'MBR Downlink',
+                                                        'properties': {
+                                                            'value': {'type': 'number', 'minimum': 0},
+                                                            'unit': {
+                                                                'type': 'number',
+                                                                'enum': [choice[0] for choice in UNIT_CHOICES],
+                                                                'enumNames': [choice[1] for choice in UNIT_CHOICES]
+                                                            }
+                                                        },
+                                                        'required': ['value', 'unit']
+                                                    },
+                                                    'uplink': {
+                                                        'type': 'object',
+                                                        'title': 'MBR Uplink',
+                                                        'properties': {
+                                                            'value': {'type': 'number', 'minimum': 0},
+                                                            'unit': {
+                                                                'type': 'number',
+                                                                'enum': [choice[0] for choice in UNIT_CHOICES],
+                                                                'enumNames': [choice[1] for choice in UNIT_CHOICES]
+                                                            }
+                                                        },
+                                                        'required': ['value', 'unit']
                                                     }
                                                 },
-                                                'required': ['value', 'unit']
+                                                'required': ['downlink', 'uplink'] 
                                             },
                                             'gbr': {
                                                 'type': 'object',
-                                                'title': 'Session-AMBR Uplink',
+                                                'title': 'GBR (Guaranteed Bit Rate)',
                                                 'properties': {
-                                                    'value': {'type': 'number', 'minimum': 0},
-                                                    'unit': {
-                                                        'type': 'number',
-                                                        'enum': [choice[0] for choice in UNIT_CHOICES],
-                                                        'enumNames': [choice[1] for choice in UNIT_CHOICES]
+                                                    'downlink': {
+                                                        'type': 'object',
+                                                        'title': 'GBR Downlink',
+                                                        'properties': {
+                                                            'value': {'type': 'number', 'minimum': 0},
+                                                            'unit': {
+                                                                'type': 'number',
+                                                                'enum': [choice[0] for choice in UNIT_CHOICES],
+                                                                'enumNames': [choice[1] for choice in UNIT_CHOICES]
+                                                            }
+                                                        },
+                                                        'required': ['value', 'unit']
+                                                    },
+                                                    'uplink': {
+                                                        'type': 'object',
+                                                        'title': 'GBR Uplink',
+                                                        'properties': {
+                                                            'value': {'type': 'number', 'minimum': 0},
+                                                            'unit': {
+                                                                'type': 'number',
+                                                                'enum': [choice[0] for choice in UNIT_CHOICES],
+                                                                'enumNames': [choice[1] for choice in UNIT_CHOICES]
+                                                            }
+                                                        },
+                                                        'required': ['value', 'unit']
                                                     }
                                                 },
-                                                'required': ['value', 'unit']
+                                                'required': ['downlink', 'uplink'] 
                                             }
                                         },
-                                        'required': ['index', 'arp', 'mbr', 'gbr']
+                                        'required': ['index', 'arp']
                                     },
                                     'flow': {
                                         'type': 'array',
@@ -230,12 +250,12 @@ SLICE_SCHEMA = {
                             'default': []
                         }
                     },
-                    'required': ['name', 'type', 'qos', 'ambr']
+                    'required': ['name', 'type', 'qos']
                 },
                 'default': []
             }
         },
-        'required': ['sst']
+        'required': ['sst', 'session']
     },
     'default': []
 }

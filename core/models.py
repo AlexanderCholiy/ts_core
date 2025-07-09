@@ -1,5 +1,4 @@
 from djongo import models
-from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import (
     MinValueValidator, MaxValueValidator, MinLengthValidator
@@ -19,9 +18,7 @@ from .constants import (
     SD_LEN,
 )
 from .validators import hexadecimal_validator
-from .forms import (
-    AmbrLinkForm, AmbrForm, QosArpForm, QosForm, PccRuleForm, SessionForm,
-)
+from .forms import SessionForm
 
 
 class Security(models.Model):
@@ -78,8 +75,8 @@ class AmbrLink(models.Model):
 
 
 class Ambr(models.Model):
-    downlink = models.EmbeddedField(AmbrLink, AmbrLinkForm)
-    uplink = models.EmbeddedField(AmbrLink, AmbrLinkForm)
+    downlink = models.EmbeddedField(AmbrLink)
+    uplink = models.EmbeddedField(AmbrLink)
 
     class Meta:
         abstract = True
@@ -107,9 +104,9 @@ class QosArp(models.Model):
 
 
 class Qos(models.Model):
-    arp = models.EmbeddedField(QosArp, QosArpForm)
-    mbr = models.EmbeddedField(Ambr, AmbrForm)  # Session-AMBR Downlink
-    gbr = models.EmbeddedField(Ambr, AmbrForm)  # Session-AMBR Uplink
+    arp = models.EmbeddedField(QosArp)
+    mbr = models.EmbeddedField(Ambr)  # Session-AMBR Downlink
+    gbr = models.EmbeddedField(Ambr)  # Session-AMBR Uplink
     index = models.PositiveSmallIntegerField(
         '5QI/QCI',
         choices=QOS_INDEX_CHOICES,
@@ -124,7 +121,6 @@ class PccRule(models.Model):
     _id = models.ObjectIdField()
     qos = models.EmbeddedField(
         Qos,
-        QosForm,
         null=True,
         blank=True
     )
@@ -137,8 +133,8 @@ class PccRule(models.Model):
 class Session(models.Model):
     """Session Configurations"""
     _id = models.ObjectIdField()
-    qos = models.EmbeddedField(Qos, QosForm)
-    ambr = models.EmbeddedField(Ambr, AmbrForm)
+    qos = models.EmbeddedField(Qos)
+    ambr = models.EmbeddedField(Ambr)
     name = models.CharField('DNN/APN', max_length=MAX_SESSION_NAME_LEN)
     type = models.PositiveSmallIntegerField(
         'Session Type',
@@ -146,7 +142,6 @@ class Session(models.Model):
     )
     pcc_rule = models.ArrayField(
         PccRule,
-        PccRuleForm,
         default=list,
         blank=True
     )
@@ -180,7 +175,6 @@ class Slice(models.Model):
         Session,
         SessionForm,
         default=list,
-        blank=True
     )
 
     class Meta:

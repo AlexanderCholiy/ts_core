@@ -13,6 +13,7 @@ from core.constants import (
 )
 from core.validators import hexadecimal_validator
 from .utils import MSISDN_SCHEMA, SECURITY_SCHEMA, AMBR_SCHEMA, SLICE_SCHEMA
+from .utils import MongoJSONEncoder
 
 
 class SubscriberForm(forms.ModelForm):
@@ -20,19 +21,23 @@ class SubscriberForm(forms.ModelForm):
         required=False,
         widget=JSONFormWidget(schema=MSISDN_SCHEMA),
         help_text='Список номеров MSISDN',
+        encoder=MongoJSONEncoder,
     )
     security = forms.JSONField(
         widget=JSONFormWidget(schema=SECURITY_SCHEMA),
         help_text='Настройка безопасности',
+        encoder=MongoJSONEncoder,
     )
     ambr = forms.JSONField(
         widget=JSONFormWidget(schema=AMBR_SCHEMA),
-        help_text='Настройки максимальной скорости передачи данных'
+        help_text='Настройки максимальной скорости передачи данных',
+        encoder=MongoJSONEncoder,
     )
     slice = forms.JSONField(
         widget=JSONFormWidget(schema=SLICE_SCHEMA),
         help_text='Список конфигураций сетевых срезов',
-        initial=[]
+        initial=[],
+        encoder=MongoJSONEncoder,
     )
 
     class Meta:

@@ -72,14 +72,6 @@ class AmbrLinkForm(forms.Form):
 
 
 class AmbrForm(forms.Form):
-    # downlink = forms.JSONField(
-    #     label='Downlink',
-    #     widget=forms.HiddenInput
-    # )
-    # uplink = forms.JSONField(
-    #     label='Uplink',
-    #     widget=forms.HiddenInput
-    # )
     downlink = AmbrLinkForm()
     uplink = AmbrLinkForm()
 
@@ -101,9 +93,6 @@ class QosArpForm(forms.Form):
 
 
 class QosForm(forms.Form):
-    # arp = forms.JSONField(widget=forms.HiddenInput)
-    # mbr = forms.JSONField(widget=forms.HiddenInput)
-    # gbr = forms.JSONField(widget=forms.HiddenInput)
     arp = QosArpForm()
     mbr = AmbrForm()
     gbr = AmbrForm()
@@ -114,13 +103,10 @@ class QosForm(forms.Form):
 
 
 class PccRuleForm(forms.Form):
-    # qos = forms.JSONField(required=False, widget=forms.HiddenInput)
     qos = QosForm()
 
 
 class SessionForm(forms.Form):
-    # qos = forms.JSONField(widget=forms.HiddenInput)
-    # ambr = forms.JSONField(widget=forms.HiddenInput)
     qos = QosForm()
     ambr = AmbrForm()
     name = forms.CharField(
@@ -151,8 +137,3 @@ class SliceForm(forms.Form):
         label='Slice Differentiator (SD)'
     )
     session = forms.JSONField(required=False, widget=forms.HiddenInput)
-    # session = forms.MultipleChoiceField(
-    #     choices=SessionForm(),
-    #     required=False,
-    #     widget=forms.SelectMultiple
-    # )
