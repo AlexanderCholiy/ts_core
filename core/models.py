@@ -4,8 +4,23 @@ from django.core.validators import (
     MinValueValidator, MaxValueValidator, MinLengthValidator
 )
 
-from .constants import MAX_SUBSCRIBER_HEX_LEN, MAX_SESSION_NAME
+from .constants import (
+    MAX_SUBSCRIBER_HEX_LEN,
+    MAX_SESSION_NAME_LEN,
+    UNIT_CHOICES,
+    EMPTION_CHOICES,
+    QOS_INDEX_CHOICES,
+    SESSION_TYPE_CHOICES,
+    MIN_PRIORITY_LEVEL_VALUE,
+    MAX_PRIORITY_LEVEL_VALUE,
+    MIN_SST_VALUE,
+    MAX_SST_VALUE,
+    SD_LEN,
+)
 from .validators import hexadecimal_validator
+from .forms import (
+    AmbrLinkForm, AmbrForm, QosArpForm, QosForm, PccRuleForm, SessionForm,
+)
 
 
 class Security(models.Model):
@@ -54,13 +69,7 @@ class AmbrLink(models.Model):
     value = models.PositiveIntegerField('Скорость передачи данных')
     unit = models.PositiveIntegerField(
         'Единица измерения скорости',
-        choices=[
-            (0, 'bps'),
-            (1, 'Kbps'),
-            (2, 'Mbps'),
-            (3, 'Gbps'),
-            (4, 'Tbps'),
-        ],
+        choices=UNIT_CHOICES,
     )
 
     class Meta:
@@ -68,8 +77,8 @@ class AmbrLink(models.Model):
 
 
 class Ambr(models.Model):
-    downlink = models.EmbeddedField(AmbrLink)
-    uplink = models.EmbeddedField(AmbrLink)
+    downlink = models.EmbeddedField(AmbrLink, AmbrLinkForm)
+    uplink = models.EmbeddedField(AmbrLink, AmbrLinkForm)
 
     class Meta:
         abstract = True
@@ -77,24 +86,19 @@ class Ambr(models.Model):
 
 class QosArp(models.Model):
     priority_level = models.PositiveSmallIntegerField(
-        'ARP Priority Level (1-15)',
-        validators=[MinValueValidator(1), MaxValueValidator(15)],
+        'ARP Priority Level',
+        validators=[
+            MinValueValidator(MIN_PRIORITY_LEVEL_VALUE),
+            MaxValueValidator(MAX_PRIORITY_LEVEL_VALUE)
+        ],
     )
     pre_emption_capability = models.PositiveSmallIntegerField(
         'Capability',
-        validators=[MinValueValidator(0), MaxValueValidator(1)],
-        choices=[
-            (0, 'Disabled'),
-            (1, 'Enabled'),
-        ],
+        choices=EMPTION_CHOICES,
     )
     pre_emption_vulnerability = models.PositiveSmallIntegerField(
         'Vulnerability',
-        validators=[MinValueValidator(0), MaxValueValidator(1)],
-        choices=[
-            (0, 'Disabled'),
-            (1, 'Enabled'),
-        ],
+        choices=EMPTION_CHOICES,
     )
 
     class Meta:
@@ -102,40 +106,12 @@ class QosArp(models.Model):
 
 
 class Qos(models.Model):
-    arp = models.EmbeddedField(QosArp)
-    mbr = models.EmbeddedField(Ambr)  # Session-AMBR Downlink
-    gbr = models.EmbeddedField(Ambr)  # Session-AMBR Uplink
+    arp = models.EmbeddedField(QosArp, QosArpForm)
+    mbr = models.EmbeddedField(Ambr, AmbrForm)  # Session-AMBR Downlink
+    gbr = models.EmbeddedField(Ambr, AmbrForm)  # Session-AMBR Uplink
     index = models.PositiveSmallIntegerField(
         '5QI/QCI',
-        choices=[
-            (1, 0),
-            (2, 1),
-            (3, 1),
-            (4, 1),
-            (65, 1),
-            (66, 1),
-            (67, 1),
-            (75, 1),
-            (71, 1),
-            (72, 1),
-            (73, 1),
-            (74, 1),
-            (76, 1),
-            (5, 1),
-            (6, 1),
-            (7, 1),
-            (8, 1),
-            (9, 1),
-            (69, 1),
-            (70, 1),
-            (79, 1),
-            (80, 1),
-            (82, 1),
-            (83, 1),
-            (84, 1),
-            (85, 1),
-            (86, 1),
-        ],
+        choices=QOS_INDEX_CHOICES,
     )
 
     class Meta:
@@ -144,11 +120,14 @@ class Qos(models.Model):
 
 class PccRule(models.Model):
     """PCC Rules"""
-    qos = models.ArrayField(
+    _id = models.ObjectIdField()
+    qos = models.EmbeddedField(
         Qos,
-        default=list,
+        QosForm,
+        null=True,
         blank=True
     )
+    flow = models.JSONField(default=list, blank=True)
 
     class Meta:
         abstract = True
@@ -156,19 +135,17 @@ class PccRule(models.Model):
 
 class Session(models.Model):
     """Session Configurations"""
-    qos = models.EmbeddedField(Qos)
-    ambr = models.EmbeddedField(Ambr)
-    name = models.CharField('DNN/APN', max_length=MAX_SESSION_NAME)
+    _id = models.ObjectIdField()
+    qos = models.EmbeddedField(Qos, QosForm)
+    ambr = models.EmbeddedField(Ambr, AmbrForm)
+    name = models.CharField('DNN/APN', max_length=MAX_SESSION_NAME_LEN)
     type = models.PositiveSmallIntegerField(
         'Session Type',
-        choices=[
-            (1, 'IPv4'),
-            (2, 'IPv6'),
-            (3, 'IPv4v6'),
-        ],
+        choices=SESSION_TYPE_CHOICES,
     )
     pcc_rule = models.ArrayField(
         PccRule,
+        PccRuleForm,
         default=list,
         blank=True
     )
@@ -179,9 +156,12 @@ class Session(models.Model):
 
 class Slice(models.Model):
     """Slice Configurations"""
+    _id = models.ObjectIdField()
     sst = models.PositiveSmallIntegerField(
         'Slice/Service Type (SST)',
-        validators=[MinValueValidator(1), MaxValueValidator(4)],
+        validators=[
+            MinValueValidator(MIN_SST_VALUE), MaxValueValidator(MAX_SST_VALUE)
+        ],
     )
     default_indicator = models.BooleanField(
         'Default S-NSSAI',
@@ -190,13 +170,14 @@ class Slice(models.Model):
     )
     sd = models.CharField(
         'Slice Differentiator (SD)',
-        max_length=6,
+        max_length=SD_LEN,
         null=True,
         blank=True,
-        validators=[hexadecimal_validator, MinLengthValidator(6)]
+        validators=[hexadecimal_validator, MinLengthValidator(SD_LEN)]
     )
     session = models.ArrayField(
         Session,
+        SessionForm,
         default=list,
         blank=True
     )

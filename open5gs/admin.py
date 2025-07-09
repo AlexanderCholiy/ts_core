@@ -10,7 +10,6 @@ class SubscriberAdmin(admin.ModelAdmin):
     form = SubscriberForm
     list_display = ('imsi',)
     list_per_page = MAX_SUBSCRIBER_PER_PAGE
-    # readonly_fields = ('msisdn',)
 
     fieldsets = (
         (None, {
@@ -35,6 +34,9 @@ class SubscriberAdmin(admin.ModelAdmin):
         }),
         ('Subscriber Status & Operator Determined Barring', {
             'fields': ('subscriber_status', 'operator_determined_barring')
+        }),
+        ('Slice Configurations', {
+            'fields': ('slice',)
         }),
     )
 

@@ -101,6 +101,7 @@ class SubscriberForm(forms.ModelForm):
             'ambr',
             'subscriber_status',
             'operator_determined_barring',
+            'slice',
         )
         widgets = {
             'msisdn': JSONEditorWidget(),

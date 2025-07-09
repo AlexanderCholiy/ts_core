@@ -1,10 +1,15 @@
 from djongo import models
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator, MaxValueValidator
 
-from .constants import MAX_SUBSCRIBER_IMSI_LEN, MAX_SUBSCRIBER_MSISDN_LEN
+from .constants import (
+    MAX_SUBSCRIBER_IMSI_LEN,
+    MAX_SUBSCRIBER_MSISDN_LEN,
+    SUBSCRIBER_STATUS_CHOICES,
+    OPERATOR_DETERMINED_BARRING_CHOICES,
+)
 from core.models import Security, Ambr, Slice
 from core.validators import digits_validator
+from core.forms import SecurityForm, AmbrForm, SliceForm
 
 
 class Subscriber(models.Model):
@@ -22,61 +27,23 @@ class Subscriber(models.Model):
         blank=True,
         help_text='Список номеров MSISDN'
     )
-    security = models.EmbeddedField(Security)
-    ambr = models.EmbeddedField(Ambr)
+    security = models.EmbeddedField(Security, SecurityForm)
+    ambr = models.EmbeddedField(Ambr, AmbrForm)
     subscriber_status = models.PositiveSmallIntegerField(
         'Subscriber Status',
         default=0,
-        choices=[  # Ограничиваем возможные значения через choices
-            (0, 'SERVICE GRANTED'),
-            (1, 'OPERATOR DETERMINED BARRING'),
-        ],
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(1),
-        ],
+        choices=SUBSCRIBER_STATUS_CHOICES,
         help_text='Текущий статус абонента в сети',
     )
     operator_determined_barring = models.PositiveSmallIntegerField(
         'Operator Determined Barring',
         default=0,
-        choices=[
-            (0, '(0) All Packet Oriented Services Barred'),
-            (1, '(1) Roamer Access HPLMN-AP Barred'),
-            (2, '(2) Roamer Access to VPLMN-AP Barred'),
-            (3, '(3) Barring of all outgoing calls'),
-            (4, '(4) Barring of all outgoing international calls'),
-            (
-                5,
-                (
-                    '(5) Barring of all outgoing international calls except '
-                    'those directed to the home PLMN country'
-                )
-            ),
-            (6, '(6) Barring of all outgoing inter-zonal calls'),
-            (
-                7, (
-                    '(7) Barring of all outgoing inter-zonal calls except '
-                    'those directed to the home PLMN country'
-                )
-            ),
-            (
-                8,
-                (
-                    '(8) Barring of all outgoing international calls except '
-                    'those directed to the home PLMN country and Barring of '
-                    'all outgoing inter-zonal calls'
-                )
-            ),
-        ],
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(8),
-        ],
+        choices=OPERATOR_DETERMINED_BARRING_CHOICES,
         help_text='Типы блокировок, наложенных оператором',
     )
     slice = models.ArrayField(
-        model_container=Slice,
+        Slice,
+        SliceForm,
         help_text='Список сетевых срезов (Network Slices)'
     )
 
