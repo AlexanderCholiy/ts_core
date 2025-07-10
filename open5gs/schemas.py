@@ -68,38 +68,36 @@ AMBR_SCHEMA = {
     'properties': {
         'downlink': {
             'type': 'object',
-            'title': 'UE-AMBR Downlink',
+            'title': 'Downlink',
             'properties': {
                 'value': {
                     'type': 'integer',
-                    'title': 'Значение',
-                    'default': 1,
+                    'title': 'Value',
                     'minimum': 0
                 },
                 'unit': {
                     'type': 'string',
-                    'title': 'Единица измерения',
+                    'title': 'Unit',
                     'enum': [choice[1] for choice in UNIT_CHOICES],
-                    'default': UNIT_CHOICES[3][1],
+                    'default': UNIT_CHOICES[1][1],
                 }
             },
             'required': ['value', 'unit']
         },
         'uplink': {
             'type': 'object',
-            'title': 'UE-AMBR Uplink',
+            'title': 'Uplink',
             'properties': {
                 'value': {
                     'type': 'integer',
-                    'title': 'Значение',
-                    'default': 1,
+                    'title': 'Value',
                     'minimum': 0
                 },
                 'unit': {
                     'type': 'string',
-                    'title': 'Единица измерения',
+                    'title': 'Unit',
                     'enum': [choice[1] for choice in UNIT_CHOICES],
-                    'default': UNIT_CHOICES[4][1],
+                    'default': UNIT_CHOICES[3][1],
                 }
             },
             'required': ['value', 'unit']

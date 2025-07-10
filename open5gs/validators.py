@@ -68,6 +68,9 @@ def validate_arp(arp_data):
         )
 
     available_capability: list[str] = [name for _, name in UNIT_CHOICES]
+
+    print(arp_data['pre_emption_capability'])
+    print(arp_data['pre_emption_vulnerability'])
     if (
         not isinstance(arp_data['pre_emption_capability'], str)
         or arp_data['pre_emption_capability'] not in available_capability
@@ -86,11 +89,11 @@ def validate_qos(qos_data: dict, is_pcc_rule: bool):
     if not all(field in qos_data for field in required_qos_fields):
         if is_pcc_rule:
             raise ValidationError(
-                'QoS должен содержать "5QI/QCI" и "ARP Parameters"'
+                'QoS должен содержать "5QI/QCI", "ARP Parameters", '
+                '"MBR Parameters" и "GBR Parameters"'
             )
         raise ValidationError(
-            'QoS должен содержать "5QI/QCI", "ARP Parameters", '
-            '"MBR Parameters" и "GBR Parameters"'
+            'QoS должен содержать "5QI/QCI" и "ARP Parameters"'
         )
 
     validate_arp(qos_data['arp'])
@@ -118,7 +121,9 @@ def validate_br(br: dict, br_name: str):
     for field in required_fields:
         required_sub_fields = ['value', 'unit']
         if (
-            not all(sub_field in br[field] for sub_field in required_fields)
+            not all(
+                sub_field in br[field] for sub_field in required_sub_fields
+            )
             or any(
                 br[field][sub_field] is None
                 for sub_field in required_sub_fields
@@ -130,8 +135,9 @@ def validate_br(br: dict, br_name: str):
         if br[field]['value'] < 0:
             raise ValidationError(
                 f'{br_name} ({field}) - value должно быть больше 0')
+
         available_units: list[str] = [name for _, name in UNIT_CHOICES]
-        if br[field]['unit'] not in [name for _, name in available_units]:
+        if br[field]['unit'] not in available_units:
             raise ValidationError(
                 f'{br_name} ({field}) - unit должнен принимать одно из '
                 f'следующих значений: {", ".join(available_units)}'
@@ -147,10 +153,10 @@ def validate_session(session_data: dict):
         )
 
     if not isinstance(session_data['name'], str):
-        raise ValidationError('DNN/APN сессии должно быть строкой')
+        raise ValidationError('DNN/APN сессии должен быть строкой')
 
-    if not isinstance(session_data['type'], int):
-        raise ValidationError('Type сессии должно быть строкой')
+    if not isinstance(session_data['type'], str):
+        raise ValidationError('Type сессии должен быть строкой')
 
     available_types: list[str] = [name for _, name in SESSION_TYPE_CHOICES]
     if session_data['type'] not in available_types:
@@ -163,7 +169,8 @@ def validate_session(session_data: dict):
         raise ValidationError(
             f'Длина имени сессии не должна превышать {MAX_SESSION_NAME_LEN}')
 
-    validate_br(session_data['qos']['ambr'], 'Session-AMBR')
+    print(session_data['ambr'])
+    validate_br(session_data['ambr'], 'Session-AMBR')
     validate_qos(session_data['qos'], is_pcc_rule=False)
 
     for pcc_rule in session_data['pcc_rule']:
