@@ -1,9 +1,10 @@
 # flake8: noqa: E501
-from .constants import MAX_SUBSCRIBER_MSISDN_LEN
+from .constants import MAX_SUBSCRIBER_MSISDN_LEN, MAX_MSISDN_COUNT
 from core.constants import (
     UNIT_CHOICES, MIN_SST_VALUE, MAX_SST_VALUE, MAX_SUBSCRIBER_HEX_LEN,
     SD_LEN, MAX_SESSION_NAME_LEN, SESSION_TYPE_CHOICES, QOS_INDEX_CHOICES,
-    MIN_PRIORITY_LEVEL_VALUE, MAX_PRIORITY_LEVEL_VALUE, EMPTION_CHOICES
+    MIN_PRIORITY_LEVEL_VALUE, MAX_PRIORITY_LEVEL_VALUE, EMPTION_CHOICES,
+    MAX_SLICE_COUNT, MAX_PCC_RULE_COUNT,
 )
 from .utils import generate_hex_key
 
@@ -20,7 +21,7 @@ MSISDN_SCHEMA = {
         }
     },
     'minItems': 0,
-    'maxItems': 2,
+    'maxItems': MAX_MSISDN_COUNT,
     'uniqueItems': True,
     'addButtonText': 'Добавить',
     'deleteButtonText': 'Удалить',
@@ -98,7 +99,7 @@ AMBR_SCHEMA = {
 SLICE_SCHEMA = {
     'type': 'array',
     'minItems': 1,
-    'maxItems': 8,
+    'maxItems': MAX_SLICE_COUNT,
     'items': {
         'type': 'object',
         'title': 'Slice Configuration',
@@ -214,7 +215,7 @@ SLICE_SCHEMA = {
                                 'type': 'object',
                                 'title': 'PCC Rule',
                                 'minItems': 0,
-                                'maxItems': 8,
+                                'maxItems': MAX_PCC_RULE_COUNT,
                                 'properties': {
                                     'qos': {
                                         'type': 'object',
@@ -330,7 +331,7 @@ SLICE_SCHEMA = {
     },
     'allOf': [
         {
-            'description': 'All SST values must be unique',
+            'description': 'Все значения SST должны быть уникальными',
             'uniqueItemsProperties': ['sst']
         },
         {
@@ -352,4 +353,3 @@ SLICE_SCHEMA = {
         }
     ]
 }
-

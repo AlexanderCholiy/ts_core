@@ -6,6 +6,9 @@ MIN_SST_VALUE = 1
 MAX_SST_VALUE = 4
 SD_LEN = 6
 
+MAX_SLICE_COUNT = 8
+MAX_PCC_RULE_COUNT = 8
+
 UNIT_CHOICES = [(0, 'bps'), (1, 'Kbps'), (2, 'Mbps'), (3, 'Gbps'), (4, 'Tbps')]
 EMPTION_CHOICES = [(0, 'Disabled'), (1, 'Enabled')]
 QOS_INDEX_CHOICES = [
