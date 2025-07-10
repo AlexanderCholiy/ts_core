@@ -12,7 +12,7 @@ from core.constants import (
     MIN_PRIORITY_LEVEL_VALUE, MAX_PRIORITY_LEVEL_VALUE, EMPTION_CHOICES
 )
 from core.validators import hexadecimal_validator
-from .utils import MSISDN_SCHEMA, SECURITY_SCHEMA, AMBR_SCHEMA, SLICE_SCHEMA
+from .schemas import MSISDN_SCHEMA, SECURITY_SCHEMA, AMBR_SCHEMA, SLICE_SCHEMA
 from .utils import MongoJSONEncoder
 
 
@@ -43,3 +43,24 @@ class SubscriberForm(forms.ModelForm):
     class Meta:
         model = Subscriber
         fields = ('imsi', 'subscriber_status', 'operator_determined_barring')
+
+    def clean_msisdn(self):
+        msisdn = self.cleaned_data.get('msisdn', [])
+
+        if not isinstance(msisdn, list):
+            raise ValidationError("MSISDN должен быть списком")
+
+        for number in msisdn:
+            if not isinstance(number, str):
+                raise ValidationError("Каждый MSISDN должен быть строкой")
+            if not number.isdigit():
+                raise ValidationError(f"MSISDN {number} должен содержать только цифры")
+            if len(number) > MAX_SUBSCRIBER_MSISDN_LEN:
+                raise ValidationError(
+                    f"MSISDN {number} не должен превышать {MAX_SUBSCRIBER_MSISDN_LEN} символов"
+                )
+
+        if len(msisdn) != len(set(msisdn)):
+            raise ValidationError("MSISDN должны быть уникальными")
+
+        return msisdn
