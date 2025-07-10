@@ -26,7 +26,7 @@ class SubscriberAdmin(admin.ModelAdmin):
                 'operator_determined_barring',
             )
         }),
-        ('Session Configurations', {
+        ('Slice Configurations', {
             'fields': ('slice',)
         }),
     )

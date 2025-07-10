@@ -70,9 +70,15 @@ AMBR_SCHEMA = {
             'type': 'object',
             'title': 'UE-AMBR Downlink',
             'properties': {
-                'value': {'type': 'integer', 'default': 1},
+                'value': {
+                    'type': 'integer',
+                    'title': 'Значение',
+                    'default': 1,
+                    'minimum': 0
+                },
                 'unit': {
                     'type': 'string',
+                    'title': 'Единица измерения',
                     'enum': [choice[1] for choice in UNIT_CHOICES],
                     'default': UNIT_CHOICES[3][1],
                 }
@@ -83,9 +89,15 @@ AMBR_SCHEMA = {
             'type': 'object',
             'title': 'UE-AMBR Uplink',
             'properties': {
-                'value': {'type': 'integer', 'default': 1},
+                'value': {
+                    'type': 'integer',
+                    'title': 'Значение',
+                    'default': 1,
+                    'minimum': 0
+                },
                 'unit': {
                     'type': 'string',
+                    'title': 'Единица измерения',
                     'enum': [choice[1] for choice in UNIT_CHOICES],
                     'default': UNIT_CHOICES[4][1],
                 }
@@ -96,28 +108,134 @@ AMBR_SCHEMA = {
     'required': ['downlink', 'uplink']
 }
 
+
+SESSION_SCHEMA = {
+    'type': 'object',
+    'properties': {
+        'name': {
+            'type': 'string',
+            'title': 'DNN/APN',
+            'maxLength': MAX_SESSION_NAME_LEN,
+            'default': 'internet'
+        },
+        'type': {
+            'type': 'string',
+            'title': 'Type',
+            'enum': [choice[1] for choice in SESSION_TYPE_CHOICES],
+            'default': SESSION_TYPE_CHOICES[2][1]
+        },
+        'qos': {
+            'type': 'object',
+            'title': '5QI/QCI',
+            'properties': {
+                'index': {
+                    'type': 'integer',
+                    'title': '5QI/QCI',
+                    'enum': [choice[0] for choice in QOS_INDEX_CHOICES],
+                    'default': QOS_INDEX_CHOICES[8][0]
+                },
+                'arp': {
+                    'type': 'object',
+                    'properties': {
+                        'priority_level': {
+                            'type': 'integer',
+                            'title': 'ARP Priority Level',
+                            'minimum': MIN_PRIORITY_LEVEL_VALUE,
+                            'maximum': MAX_PRIORITY_LEVEL_VALUE,
+                            'default': 8
+                        },
+                        'pre_emption_capability': {
+                            'type': 'string',
+                            'title': 'Capability',
+                            'enum': [choice[1] for choice in EMPTION_CHOICES],
+                            'default': EMPTION_CHOICES[1][1]
+                        },
+                        'pre_emption_vulnerability': {
+                            'type': 'string',
+                            'title': 'Vulnerability',
+                            'enum': [choice[1] for choice in EMPTION_CHOICES],
+                            'default': EMPTION_CHOICES[1][1]
+                        }
+                    },
+                    'required': ['priority_level', 'pre_emption_capability', 'pre_emption_vulnerability']
+                }
+            },
+            'required': ['index', 'arp']
+        },
+        'ambr': AMBR_SCHEMA,
+        'pcc_rule': {
+            'type': 'array',
+            'title': 'PCC Rules',
+            'items': {
+                'type': 'object',
+                'title': 'PCC Rule',
+                'properties': {
+                    'qos': {
+                        'type': 'object',
+                        'properties': {
+                            'index': {
+                                'type': 'integer',
+                                'title': '5QI/QCI',
+                                'enum': [choice[0] for choice in QOS_INDEX_CHOICES],
+                                'default': QOS_INDEX_CHOICES[0][0]
+                            },
+                            'arp': {
+                                'type': 'object',
+                                'properties': {
+                                    'priority_level': {
+                                        'type': 'integer',
+                                        'title': 'ARP Priority Level',
+                                        'minimum': MIN_PRIORITY_LEVEL_VALUE,
+                                        'maximum': MAX_PRIORITY_LEVEL_VALUE,
+                                        'default': MIN_PRIORITY_LEVEL_VALUE + 1,
+                                    },
+                                    'pre_emption_capability': {
+                                        'type': 'string',
+                                        'title': 'Capability',
+                                        'enum': [choice[1] for choice in EMPTION_CHOICES],
+                                        'default': EMPTION_CHOICES[1][1]
+                                    },
+                                    'pre_emption_vulnerability': {
+                                        'type': 'string',
+                                        'title': 'Vulnerability',
+                                        'enum': [choice[1] for choice in EMPTION_CHOICES],
+                                        'default': EMPTION_CHOICES[1][1]
+                                    }
+                                },
+                                'required': ['priority_level', 'pre_emption_capability', 'pre_emption_vulnerability']
+                            },
+                            'mbr': AMBR_SCHEMA,
+                            'gbr': AMBR_SCHEMA,
+                        },
+                        'required': ['index', 'arp']
+                    }
+                }
+            },
+            'default': [],
+            'maxItems': MAX_PCC_RULE_COUNT
+        }
+    },
+    'required': ['name', 'type', 'qos', 'ambr']
+}
+
 SLICE_SCHEMA = {
     'type': 'array',
-    'minItems': 1,
-    'maxItems': MAX_SLICE_COUNT,
     'items': {
         'type': 'object',
-        'title': 'Slice Configuration',
+        'title': 'Slice Configurations',
         'properties': {
             'sst': {
                 'type': 'integer',
-                'title': 'Slice/Service Type (SST)',
-                'enum': [
-                    choice for choice in range(MIN_SST_VALUE, MAX_SST_VALUE+1)
-                ],
-                'default': MIN_SST_VALUE,
+                'title': 'SST',
+                'enum': list(range(MIN_SST_VALUE, MAX_SST_VALUE + 1)),
+                'default': MIN_SST_VALUE
             },
             'sd': {
                 'type': 'string',
-                'title': 'Slice Differentiator (SD)',
-                'pattern': '^[0-9a-fA-F]+$',
+                'title': 'SD',
+                'pattern': '^[0-9a-fA-F]*$',
                 'maxLength': SD_LEN,
-                'minLength': SD_LEN,
+                'default': None
             },
             'default_indicator': {
                 'type': 'boolean',
@@ -126,230 +244,14 @@ SLICE_SCHEMA = {
             },
             'session': {
                 'type': 'array',
+                'title': 'Session Configurations',
+                'items': SESSION_SCHEMA,
                 'minItems': 1,
-                'maxItems': MAX_SST_VALUE,
-                'items': {
-                    'type': 'object',
-                    'title': 'Session Configurations',
-                    'properties': {
-                        'name': {
-                            'type': 'string',
-                            'title': 'DNN/APN',
-                            'maxLength': MAX_SESSION_NAME_LEN,
-                            'default': 'internet',
-                        },
-                        'type': {
-                            'type': 'string',
-                            'title': 'Session Type',
-                            'enum': [
-                                choice[1] for choice in SESSION_TYPE_CHOICES],
-                            'default': SESSION_TYPE_CHOICES[2][1],
-                        },
-                        'qos': {
-                            'type': 'object',
-                            'properties': {
-                                'index': {
-                                    'type': 'integer',
-                                    'title': '5QI/QCI',
-                                    'enum': [choice[0] for choice in QOS_INDEX_CHOICES],
-                                    'default': QOS_INDEX_CHOICES[8][0],
-                                },
-                                'arp': {
-                                    'type': 'object',
-                                    'properties': {
-                                        'priority_level': {
-                                            'type': 'integer',
-                                            'title': 'ARP Priority Level',
-                                            'minimum': MIN_PRIORITY_LEVEL_VALUE,
-                                            'maximum': MAX_PRIORITY_LEVEL_VALUE,
-                                            'default': 8,
-                                        },
-                                        'pre_emption_capability': {
-                                            'type': 'string',
-                                            'title': 'Capability',
-                                            'enum': [choice[1] for choice in EMPTION_CHOICES],
-                                            'default': EMPTION_CHOICES[1][1],
-                                        },
-                                        'pre_emption_vulnerability': {
-                                            'type': 'string',
-                                            'title': 'Vulnerability',
-                                            'enum': [choice[1] for choice in EMPTION_CHOICES],
-                                            'default': EMPTION_CHOICES[1][1],
-                                        }
-                                    },
-                                    'required': ['priority_level', 'pre_emption_capability', 'pre_emption_vulnerability']
-                                },
-                                'mbr': {
-                                    'type': 'object',
-                                    'title': 'Session-AMBR Downlink',
-                                    'properties': {
-                                        'value': {'type': 'integer', 'default': 1},
-                                        'unit': {
-                                            'type': 'string',
-                                            'enum': [choice[1] for choice in UNIT_CHOICES],
-                                            'default': UNIT_CHOICES[3][1],
-                                        }
-                                    },
-                                    'required': ['value', 'unit']
-                                },
-                                'gbr': {
-                                    'type': 'object',
-                                    'title': 'Session-AMBR Uplink',
-                                    'properties': {
-                                        'value': {'type': 'integer', 'default': 1},
-                                        'unit': {
-                                            'type': 'string',
-                                            'enum': [choice[1] for choice in UNIT_CHOICES],
-                                            'default': UNIT_CHOICES[3][1],
-                                        }
-                                    },
-                                    'required': ['value', 'unit']
-                                }
-                            },
-                            'required': ['index', 'arp', 'mbr', 'gbr']
-                        },
-                        'pcc_rule': {
-                            'type': 'array',
-                            'title': 'PCC Rules',
-                            'items': {
-                                'type': 'object',
-                                'title': 'PCC Rule',
-                                'minItems': 0,
-                                'maxItems': MAX_PCC_RULE_COUNT,
-                                'properties': {
-                                    'qos': {
-                                        'type': 'object',
-                                        'properties': {
-                                            'index': {
-                                                'type': 'integer',
-                                                'title': '5QI/QCI',
-                                                'enum': [choice[0] for choice in QOS_INDEX_CHOICES],
-                                                'default': QOS_INDEX_CHOICES[0][0],
-                                            },
-                                            'arp': {
-                                                'type': 'object',
-                                                'properties': {
-                                                    'priority_level': {
-                                                        'type': 'integer',
-                                                        'title': 'ARP Priority Level',
-                                                        'minimum': MIN_PRIORITY_LEVEL_VALUE,
-                                                        'maximum': MAX_PRIORITY_LEVEL_VALUE,
-                                                        'default': MIN_PRIORITY_LEVEL_VALUE+1,
-                                                    },
-                                                    'pre_emption_capability': {
-                                                        'type': 'string',
-                                                        'title': 'Capability',
-                                                        'enum': [choice[1] for choice in EMPTION_CHOICES],
-                                                        'default': EMPTION_CHOICES[1][1],
-                                                    },
-                                                    'pre_emption_vulnerability': {
-                                                        'type': 'integer',
-                                                        'title': 'Vulnerability',
-                                                        'enum': [choice[1] for choice in EMPTION_CHOICES],
-                                                        'default': EMPTION_CHOICES[1][1],
-                                                    }
-                                                },
-                                                'required': ['priority_level', 'pre_emption_capability', 'pre_emption_vulnerability']
-                                            },
-                                            'mbr': {
-                                                'type': 'object',
-                                                'properties': {
-                                                    'downlink': {
-                                                        'type': 'object',
-                                                        'title': 'MBR Downlink',
-                                                        'properties': {
-                                                            'value': {'type': 'integer'},
-                                                            'unit': {
-                                                                'type': 'string',
-                                                                'enum': [choice[1] for choice in UNIT_CHOICES],
-                                                                'default': UNIT_CHOICES[1][1],
-                                                            }
-                                                        },
-                                                        'required': ['value', 'unit']
-                                                    },
-                                                    'uplink': {
-                                                        'type': 'object',
-                                                        'title': 'MBR Uplink',
-                                                        'properties': {
-                                                            'value': {'type': 'integer'},
-                                                            'unit': {
-                                                                'type': 'string',
-                                                                'enum': [choice[1] for choice in UNIT_CHOICES],
-                                                                'default': UNIT_CHOICES[1][1],
-                                                            },
-                                                        },
-                                                        'required': ['value', 'unit']
-                                                    }
-                                                },
-                                                'required': ['downlink', 'uplink'] 
-                                            },
-                                            'gbr': {
-                                                'type': 'object',
-                                                'properties': {
-                                                    'downlink': {
-                                                        'type': 'object',
-                                                        'title': 'GBR Downlink',
-                                                        'properties': {
-                                                            'value': {'type': 'integer'},
-                                                            'unit': {
-                                                                'type': 'string',
-                                                                'enum': [choice[1] for choice in UNIT_CHOICES],
-                                                                'default': UNIT_CHOICES[1][1],
-                                                            }
-                                                        },
-                                                        'required': ['value', 'unit']
-                                                    },
-                                                    'uplink': {
-                                                        'type': 'object',
-                                                        'title': 'GBR Uplink',
-                                                        'properties': {
-                                                            'value': {'type': 'integer'},
-                                                            'unit': {
-                                                                'type': 'string',
-                                                                'enum': [choice[1] for choice in UNIT_CHOICES],
-                                                                'default': UNIT_CHOICES[1][1],
-                                                            }
-                                                        },
-                                                        'required': ['value', 'unit']
-                                                    }
-                                                },
-                                                'required': ['downlink', 'uplink'] 
-                                            }
-                                        },
-                                        'required': ['index', 'arp']
-                                    },
-                                },
-                                'required': ['qos']
-                            },
-                        }
-                    },
-                    'required': ['name', 'type', 'qos']
-                },
+                'maxItems': MAX_SST_VALUE
             }
         },
-        'required': ['sst', 'sd' ,'default_indicator', 'session']
+        'required': ['sst', 'session']
     },
-    'allOf': [
-        {
-            'description': 'Все значения SST должны быть уникальными',
-            'uniqueItemsProperties': ['sst']
-        },
-        {
-            'if': {
-                'properties': {
-                    'minItems': 1,
-                    'maxItems': 1
-                }
-            },
-            'then': {
-                'items': {
-                    'properties': {
-                        'default_indicator': {
-                            'const': True
-                        }
-                    }
-                }
-            }
-        }
-    ]
+    'minItems': 1,
+    'maxItems': MAX_SLICE_COUNT
 }
