@@ -5,7 +5,7 @@ from .constants import (
     SUBSCRIBER_STATUS_CHOICES,
     OPERATOR_DETERMINED_BARRING_CHOICES,
 )
-from core.validators import digits_validator
+from .validators import digits_validator
 
 
 class Subscriber(models.Model):
