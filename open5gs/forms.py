@@ -165,8 +165,20 @@ class SubscriberForm(forms.ModelForm):
             ambr_data[direction]['unit'] = self._get_choice_value(
                 ambr_data[direction]['unit'], UNIT_CHOICES, 'Unit'
             )
-                
-        return ambr_data
+
+        downlink = AmbrLink(
+            value=ambr_data['downlink']['value'],
+            unit=ambr_data['downlink']['unit']
+        )
+        uplink = AmbrLink(
+            value=ambr_data['uplink']['value'],
+            unit=ambr_data['uplink']['unit']
+        )
+
+        return {
+            'downlink': downlink.__dict__,
+            'uplink': uplink.__dict__
+        }
 
     def clean_slice(self):
         slice_data = self.cleaned_data.get('slice', [])
@@ -188,7 +200,8 @@ class SubscriberForm(forms.ModelForm):
                 
             for session in slice_item['session']:
                 validate_session(session)
-                
+
+        print(slice_data)
         return slice_data
 
     def __init__(self, *args, **kwargs):
@@ -371,6 +384,7 @@ class SubscriberForm(forms.ModelForm):
         }
 
     def save(self, commit=True):
+        print(100 * 'SAVE')
         instance = super().save(commit=False)
         
         # Обработка security
@@ -387,16 +401,17 @@ class SubscriberForm(forms.ModelForm):
         # Обработка ambr
         ambr_data = self.cleaned_data['ambr']
         if isinstance(instance.ambr, dict):
-            instance.ambr = Ambr(
-                downlink=AmbrLink(
-                    value=ambr_data['downlink']['value'],
-                    unit=ambr_data['downlink']['unit']
-                ),
-                uplink=AmbrLink(
-                    value=ambr_data['uplink']['value'],
-                    unit=ambr_data['uplink']['unit']
-                )
+            # Создаем AmbrLink для downlink и uplink
+            downlink = AmbrLink(
+                value=ambr_data['downlink']['value'],
+                unit=ambr_data['downlink']['unit']
             )
+            uplink = AmbrLink(
+                value=ambr_data['uplink']['value'],
+                unit=ambr_data['uplink']['unit']
+            )
+            # Создаем Ambr с этими объектами
+            instance.ambr = Ambr(downlink=downlink, uplink=uplink)
         else:
             instance.ambr.downlink.value = ambr_data['downlink']['value']
             instance.ambr.downlink.unit = ambr_data['downlink']['unit']
