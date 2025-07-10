@@ -48,19 +48,72 @@ class SubscriberForm(forms.ModelForm):
         msisdn = self.cleaned_data.get('msisdn', [])
 
         if not isinstance(msisdn, list):
-            raise ValidationError("MSISDN должен быть списком")
+            raise ValidationError('MSISDN должен быть списком')
 
         for number in msisdn:
             if not isinstance(number, str):
-                raise ValidationError("Каждый MSISDN должен быть строкой")
+                raise ValidationError('Каждый MSISDN должен быть строкой')
             if not number.isdigit():
-                raise ValidationError(f"MSISDN {number} должен содержать только цифры")
+                raise ValidationError(
+                    f'MSISDN {number} должен содержать только цифры'
+                )
             if len(number) > MAX_SUBSCRIBER_MSISDN_LEN:
                 raise ValidationError(
-                    f"MSISDN {number} не должен превышать {MAX_SUBSCRIBER_MSISDN_LEN} символов"
+                    f'MSISDN {number} не должен превышать '
+                    f'{MAX_SUBSCRIBER_MSISDN_LEN} символов'
                 )
 
         if len(msisdn) != len(set(msisdn)):
-            raise ValidationError("MSISDN должны быть уникальными")
+            raise ValidationError('MSISDN должны быть уникальными')
 
         return msisdn
+
+    def clean_security(self):
+        security_data = self.cleaned_data.get('security', {})
+
+        if not all(k in security_data for k in ['k', 'amf']):
+            raise ValidationError(
+                'Поля "Subscriber Key (K)" и '
+                '"Authentication Management Field (AMF)" обязательны для '
+                'заполнения'
+            )
+
+        hex_fields = [
+            ('k', 'Subscriber Key (K)'),
+            ('amf', 'Authentication Management Field (AMF)'),
+            ('op', 'USIM Type: OP'),
+            ('opc', 'USIM Type: OPc'),
+        ]
+        for field, name in hex_fields:
+            if (
+                field in security_data
+                and not hexadecimal_validator(security_data[field])
+            ):
+                raise ValidationError(f'Поле {name} должно быть в hex-формате')
+
+        if 'op' in security_data and 'opc' in security_data:
+            raise ValidationError(
+                'Можно указать только OP или OPc, но не оба'
+            )
+
+        return security_data
+
+    def clean_ambr(self):
+        ambr_data = self.cleaned_data.get('ambr', {})
+
+        if not all(k in ambr_data for k in ['downlink', 'uplink']):
+            raise ValidationError(
+                'Необходимо указать downlink и uplink для AMBR'
+            )
+
+        for direction in ['downlink', 'uplink']:
+            if (
+                'value' not in ambr_data[direction]
+                or 'unit' not in ambr_data[direction]
+            ):
+                raise ValidationError(
+                    f'Для {direction} необходимо указать значение и единицу '
+                    'измерения'
+                )
+
+        return ambr_data

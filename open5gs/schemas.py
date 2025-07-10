@@ -1,10 +1,11 @@
 # flake8: noqa: E501
 from .constants import MAX_SUBSCRIBER_MSISDN_LEN
 from core.constants import (
-    UNIT_CHOICES, MIN_SST_VALUE, MAX_SST_VALUE,
+    UNIT_CHOICES, MIN_SST_VALUE, MAX_SST_VALUE, MAX_SUBSCRIBER_HEX_LEN,
     SD_LEN, MAX_SESSION_NAME_LEN, SESSION_TYPE_CHOICES, QOS_INDEX_CHOICES,
     MIN_PRIORITY_LEVEL_VALUE, MAX_PRIORITY_LEVEL_VALUE, EMPTION_CHOICES
 )
+from .utils import generate_hex_key
 
 
 MSISDN_SCHEMA = {
@@ -23,6 +24,7 @@ MSISDN_SCHEMA = {
     'uniqueItems': True,
     'addButtonText': 'Добавить',
     'deleteButtonText': 'Удалить',
+    'default': [],
 }
 
 SECURITY_SCHEMA = {
@@ -30,19 +32,31 @@ SECURITY_SCHEMA = {
     'properties': {
         'k': {
             'type': 'string',
+            'pattern': '^[0-9a-fA-F]+$',
             'title': 'Subscriber Key (K)',
+            'default': generate_hex_key(MAX_SUBSCRIBER_HEX_LEN),
+            'maxLength': MAX_SUBSCRIBER_HEX_LEN,
         },
         'amf': {
             'type': 'string',
             'title': 'Authentication Management Field (AMF)',
+            'pattern': '^\\d+$',
+            'default': '8000',
+            'maxLength': MAX_SUBSCRIBER_HEX_LEN,
         },
         'op': {
             'type': 'string',
+            'pattern': '^[0-9a-fA-F]+$',
             'title': 'USIM Type: OP',
+            'default': None,
+            'maxLength': MAX_SUBSCRIBER_HEX_LEN,
         },
         'opc': {
             'type': 'string',
+            'pattern': '^[0-9a-fA-F]+$',
             'title': 'USIM Type: OPc',
+            'default': generate_hex_key(MAX_SUBSCRIBER_HEX_LEN),
+            'maxLength': MAX_SUBSCRIBER_HEX_LEN,
         },
     },
     'required': ['k', 'amf']
@@ -55,10 +69,11 @@ AMBR_SCHEMA = {
             'type': 'object',
             'title': 'UE-AMBR Downlink',
             'properties': {
-                'value': {'type': 'string'},
+                'value': {'type': 'integer', 'default': 1},
                 'unit': {
                     'type': 'string',
                     'enum': [choice[1] for choice in UNIT_CHOICES],
+                    'default': UNIT_CHOICES[3][1],
                 }
             },
             'required': ['value', 'unit']
@@ -67,10 +82,11 @@ AMBR_SCHEMA = {
             'type': 'object',
             'title': 'UE-AMBR Uplink',
             'properties': {
-                'value': {'type': 'string'},
+                'value': {'type': 'integer', 'default': 1},
                 'unit': {
                     'type': 'string',
                     'enum': [choice[1] for choice in UNIT_CHOICES],
+                    'default': UNIT_CHOICES[4][1],
                 }
             },
             'required': ['value', 'unit']
@@ -90,8 +106,10 @@ SLICE_SCHEMA = {
             'sst': {
                 'type': 'integer',
                 'title': 'Slice/Service Type (SST)',
-                'minimum': MIN_SST_VALUE,
-                'maximum': MAX_SST_VALUE
+                'enum': [
+                    choice for choice in range(MIN_SST_VALUE, MAX_SST_VALUE+1)
+                ],
+                'default': MIN_SST_VALUE,
             },
             'sd': {
                 'type': 'string',
@@ -108,7 +126,7 @@ SLICE_SCHEMA = {
             'session': {
                 'type': 'array',
                 'minItems': 1,
-                'maxItems': 4,
+                'maxItems': MAX_SST_VALUE,
                 'items': {
                     'type': 'object',
                     'title': 'Session Configurations',
@@ -116,13 +134,15 @@ SLICE_SCHEMA = {
                         'name': {
                             'type': 'string',
                             'title': 'DNN/APN',
-                            'maxLength': MAX_SESSION_NAME_LEN
+                            'maxLength': MAX_SESSION_NAME_LEN,
+                            'default': 'internet',
                         },
                         'type': {
                             'type': 'string',
                             'title': 'Session Type',
                             'enum': [
                                 choice[1] for choice in SESSION_TYPE_CHOICES],
+                            'default': SESSION_TYPE_CHOICES[2][1],
                         },
                         'qos': {
                             'type': 'object',
@@ -131,6 +151,7 @@ SLICE_SCHEMA = {
                                     'type': 'integer',
                                     'title': '5QI/QCI',
                                     'enum': [choice[0] for choice in QOS_INDEX_CHOICES],
+                                    'default': QOS_INDEX_CHOICES[8][0],
                                 },
                                 'arp': {
                                     'type': 'object',
@@ -139,17 +160,20 @@ SLICE_SCHEMA = {
                                             'type': 'integer',
                                             'title': 'ARP Priority Level',
                                             'minimum': MIN_PRIORITY_LEVEL_VALUE,
-                                            'maximum': MAX_PRIORITY_LEVEL_VALUE
+                                            'maximum': MAX_PRIORITY_LEVEL_VALUE,
+                                            'default': 8,
                                         },
                                         'pre_emption_capability': {
                                             'type': 'string',
                                             'title': 'Capability',
                                             'enum': [choice[1] for choice in EMPTION_CHOICES],
+                                            'default': EMPTION_CHOICES[1][1],
                                         },
                                         'pre_emption_vulnerability': {
                                             'type': 'string',
                                             'title': 'Vulnerability',
                                             'enum': [choice[1] for choice in EMPTION_CHOICES],
+                                            'default': EMPTION_CHOICES[1][1],
                                         }
                                     },
                                     'required': ['priority_level', 'pre_emption_capability', 'pre_emption_vulnerability']
@@ -158,10 +182,11 @@ SLICE_SCHEMA = {
                                     'type': 'object',
                                     'title': 'Session-AMBR Downlink',
                                     'properties': {
-                                        'value': {'type': 'string'},
+                                        'value': {'type': 'integer', 'default': 1},
                                         'unit': {
                                             'type': 'string',
                                             'enum': [choice[1] for choice in UNIT_CHOICES],
+                                            'default': UNIT_CHOICES[3][1],
                                         }
                                     },
                                     'required': ['value', 'unit']
@@ -170,10 +195,11 @@ SLICE_SCHEMA = {
                                     'type': 'object',
                                     'title': 'Session-AMBR Uplink',
                                     'properties': {
-                                        'value': {'type': 'string'},
+                                        'value': {'type': 'integer', 'default': 1},
                                         'unit': {
                                             'type': 'string',
                                             'enum': [choice[1] for choice in UNIT_CHOICES],
+                                            'default': UNIT_CHOICES[3][1],
                                         }
                                     },
                                     'required': ['value', 'unit']
@@ -197,6 +223,7 @@ SLICE_SCHEMA = {
                                                 'type': 'integer',
                                                 'title': '5QI/QCI',
                                                 'enum': [choice[0] for choice in QOS_INDEX_CHOICES],
+                                                'default': QOS_INDEX_CHOICES[0][0],
                                             },
                                             'arp': {
                                                 'type': 'object',
@@ -205,17 +232,20 @@ SLICE_SCHEMA = {
                                                         'type': 'integer',
                                                         'title': 'ARP Priority Level',
                                                         'minimum': MIN_PRIORITY_LEVEL_VALUE,
-                                                        'maximum': MAX_PRIORITY_LEVEL_VALUE
+                                                        'maximum': MAX_PRIORITY_LEVEL_VALUE,
+                                                        'default': MIN_PRIORITY_LEVEL_VALUE+1,
                                                     },
                                                     'pre_emption_capability': {
                                                         'type': 'string',
                                                         'title': 'Capability',
                                                         'enum': [choice[1] for choice in EMPTION_CHOICES],
+                                                        'default': EMPTION_CHOICES[1][1],
                                                     },
                                                     'pre_emption_vulnerability': {
                                                         'type': 'integer',
                                                         'title': 'Vulnerability',
                                                         'enum': [choice[1] for choice in EMPTION_CHOICES],
+                                                        'default': EMPTION_CHOICES[1][1],
                                                     }
                                                 },
                                                 'required': ['priority_level', 'pre_emption_capability', 'pre_emption_vulnerability']
@@ -227,10 +257,11 @@ SLICE_SCHEMA = {
                                                         'type': 'object',
                                                         'title': 'MBR Downlink',
                                                         'properties': {
-                                                            'value': {'type': 'string'},
+                                                            'value': {'type': 'integer'},
                                                             'unit': {
                                                                 'type': 'string',
                                                                 'enum': [choice[1] for choice in UNIT_CHOICES],
+                                                                'default': UNIT_CHOICES[1][1],
                                                             }
                                                         },
                                                         'required': ['value', 'unit']
@@ -239,11 +270,12 @@ SLICE_SCHEMA = {
                                                         'type': 'object',
                                                         'title': 'MBR Uplink',
                                                         'properties': {
-                                                            'value': {'type': 'string'},
+                                                            'value': {'type': 'integer'},
                                                             'unit': {
                                                                 'type': 'string',
                                                                 'enum': [choice[1] for choice in UNIT_CHOICES],
-                                                            }
+                                                                'default': UNIT_CHOICES[1][1],
+                                                            },
                                                         },
                                                         'required': ['value', 'unit']
                                                     }
@@ -257,10 +289,11 @@ SLICE_SCHEMA = {
                                                         'type': 'object',
                                                         'title': 'GBR Downlink',
                                                         'properties': {
-                                                            'value': {'type': 'string'},
+                                                            'value': {'type': 'integer'},
                                                             'unit': {
                                                                 'type': 'string',
                                                                 'enum': [choice[1] for choice in UNIT_CHOICES],
+                                                                'default': UNIT_CHOICES[1][1],
                                                             }
                                                         },
                                                         'required': ['value', 'unit']
@@ -269,10 +302,11 @@ SLICE_SCHEMA = {
                                                         'type': 'object',
                                                         'title': 'GBR Uplink',
                                                         'properties': {
-                                                            'value': {'type': 'string'},
+                                                            'value': {'type': 'integer'},
                                                             'unit': {
                                                                 'type': 'string',
                                                                 'enum': [choice[1] for choice in UNIT_CHOICES],
+                                                                'default': UNIT_CHOICES[1][1],
                                                             }
                                                         },
                                                         'required': ['value', 'unit']
@@ -294,5 +328,28 @@ SLICE_SCHEMA = {
         },
         'required': ['sst', 'sd' ,'default_indicator', 'session']
     },
+    'allOf': [
+        {
+            'description': 'All SST values must be unique',
+            'uniqueItemsProperties': ['sst']
+        },
+        {
+            'if': {
+                'properties': {
+                    'minItems': 1,
+                    'maxItems': 1
+                }
+            },
+            'then': {
+                'items': {
+                    'properties': {
+                        'default_indicator': {
+                            'const': True
+                        }
+                    }
+                }
+            }
+        }
+    ]
 }
 
