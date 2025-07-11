@@ -1,4 +1,5 @@
 from typing import Optional, Union
+from random import randint
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
@@ -13,7 +14,8 @@ from .models import Subscriber
 @role_required()
 def index(request: HttpRequest) -> HttpResponse:
     template_name = 'open5gs/index.html'
-    subscribers = Subscriber.objects.values('pk', 'imsi').order_by('-pk')
+    # subscribers = Subscriber.objects.values('pk', 'imsi').order_by('-pk')
+    subscribers = [str(randint(i, 10**5)) for i in range(10)]
     context = {'subscribers': subscribers}
     return render(request, template_name, context)
 

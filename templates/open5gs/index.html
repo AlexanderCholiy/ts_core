@@ -8,10 +8,10 @@
 {% for subscriber in subscribers %}
   <div class="card">
     <div class="card-body">
-      <h5 class="card-title">{{ subscriber.imsi }}</h5>
+      <h5 class="card-title">{{ subscriber }}</h5>
       <div class="btn-group">
-        <a href="{% url 'open5gs:edit' subscriber.imsi %}" class="btn btn-sm btn-warning">Изменить</a>
-        <a href="{% url 'open5gs:delete' subscriber.imsi %}" class="btn btn-sm btn-danger">Удалить</a>
+        <a href="{% url 'open5gs:edit' subscriber %}" class="btn btn-sm btn-warning">Изменить</a>
+        <a href="{% url 'open5gs:delete' subscriber %}" class="btn btn-sm btn-danger">Удалить</a>
       </div>
     </div>
   </div>

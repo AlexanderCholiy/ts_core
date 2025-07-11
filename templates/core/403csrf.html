@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Ошибка CSRF. 403{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/errors/page_error.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="error-body">
+  <div class="error-container">
+    <h1>Ошибка CSRF: 403</h1>
+    <p>Ошибка проверки CSRF, запрос отклонён.</p>
+    {% if reason %}
+    <p><small>Причина: {{ reason }}</small></p>
+    {% endif %}
+    <div class="error-link">
+      <a href="{% url 'open5gs:index' %}">Вернуться на главную</a>
+    </div>
+  </div>
+</div>
+{% endblock %} 

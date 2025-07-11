@@ -1,0 +1,21 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Ошибка доступа: 403{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/errors/page_error.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="error-body">
+  <div class="error-container">
+    <h1>Доступ запрещён: 403</h1>
+    <p>У вас нет прав для просмотра этой страницы.</p>
+    <div class="error-link">
+      <a href="{% url 'open5gs:index' %}">Вернуться на главную</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

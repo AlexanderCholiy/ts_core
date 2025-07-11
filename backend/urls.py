@@ -3,11 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import (
-    include,
-    path,
-    re_path,
-)
+from django.urls import include, path, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
@@ -15,6 +11,11 @@ from rest_framework import permissions
 from users.forms import AuthForm
 from users.views import CustomPasswordResetView
 
+
+handler400 = 'core.views.bad_request'
+handler403 = 'core.views.permission_denied'
+handler404 = 'core.views.page_not_found'
+handler500 = 'core.views.server_error'
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -93,6 +94,7 @@ app_urls = [
     path('', include('open5gs.urls')),
     path('users/', include('users.urls')),
     path('admin/', admin.site.urls),
+    path('pages/', include('pages.urls')),
 ]
 
 urlpatterns = swagger_urls + auth_urlpatterns + app_urls

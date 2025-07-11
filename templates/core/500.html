@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Внутренняя ошибка сервера: 500{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/errors/page_error.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="error-body">
+  <div class="error-container">
+    <h1>Ошибка сервера: 500</h1>
+    <p>Что-то пошло не так на стороне сервера. Мы уже работаем над этим.</p>
+    <div class="error-link">
+      <a href="{% url 'open5gs:index' %}">Вернуться на главную</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

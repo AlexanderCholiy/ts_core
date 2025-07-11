@@ -19,6 +19,8 @@ INTERNAL_IPS = ['127.0.0.1', 'localhost']
 
 CSRF_TRUSTED_ORIGINS = ['https://razor-selfserver.ddns.net']
 
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -32,6 +34,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
     'open5gs.apps.Open5gsConfig',
+    'pages.apps.PagesConfig',
 ]
 
 MIDDLEWARE = [
