@@ -45,8 +45,6 @@ OPERATOR_DETERMINED_BARRING_CHOICES = [
 SUBSCRIBER_STATUS_CHOICES = [
     (0, 'SERVICE GRANTED'), (1, 'OPERATOR DETERMINED BARRING'),
 ]
-UNIT_CHOICES = [(0, 'bps'), (1, 'Kbps'), (2, 'Mbps'), (3, 'Gbps'), (4, 'Tbps')]
-EMPTION_CHOICES = [(0, 'Disabled'), (1, 'Enabled')]
 QOS_INDEX_CHOICES = [
     (1, 1),
     (2, 2),
@@ -76,4 +74,9 @@ QOS_INDEX_CHOICES = [
     (85, 85),
     (86, 86),
 ]
+
+# Данные константы должны также быть в
+# static/js/subscriber_form/unit_mapping.js
+UNIT_CHOICES = [(0, 'bps'), (1, 'Kbps'), (2, 'Mbps'), (3, 'Gbps'), (4, 'Tbps')]
+EMPTION_CHOICES = [(0, 'Disabled'), (1, 'Enabled')]
 SESSION_TYPE_CHOICES = [(1, 'IPv4'), (2, 'IPv6'), (3, 'IPv4v6')]

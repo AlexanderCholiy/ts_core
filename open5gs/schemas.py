@@ -23,8 +23,6 @@ MSISDN_SCHEMA = {
     'minItems': 0,
     'maxItems': MAX_MSISDN_COUNT,
     'uniqueItems': True,
-    'addButtonText': 'Добавить',
-    'deleteButtonText': 'Удалить',
     'default': [],
 }
 
@@ -79,7 +77,7 @@ AMBR_SCHEMA = {
                     'type': 'integer',
                     'title': 'Unit',
                     'enum': [choice[0] for choice in UNIT_CHOICES],
-                    'default': UNIT_CHOICES[1][0],
+                    'default': UNIT_CHOICES[3][0],
                 },
             },
             'required': ['value', 'unit']
@@ -116,10 +114,10 @@ SESSION_SCHEMA = {
             'default': 'internet'
         },
         'type': {
-            'type': 'string',
+            'type': 'integer',
             'title': 'Type',
-            'enum': [choice[1] for choice in SESSION_TYPE_CHOICES],
-            'default': SESSION_TYPE_CHOICES[2][1]
+            'enum': [choice[0] for choice in SESSION_TYPE_CHOICES],
+            'default': SESSION_TYPE_CHOICES[2][0]
         },
         'qos': {
             'type': 'object',
@@ -142,16 +140,16 @@ SESSION_SCHEMA = {
                             'default': 8
                         },
                         'pre_emption_capability': {
-                            'type': 'string',
+                            'type': 'integer',
                             'title': 'Capability',
-                            'enum': [choice[1] for choice in EMPTION_CHOICES],
-                            'default': EMPTION_CHOICES[1][1]
+                            'enum': [choice[0] for choice in EMPTION_CHOICES],
+                            'default': EMPTION_CHOICES[1][0]
                         },
                         'pre_emption_vulnerability': {
-                            'type': 'string',
+                            'type': 'integer',
                             'title': 'Vulnerability',
-                            'enum': [choice[1] for choice in EMPTION_CHOICES],
-                            'default': EMPTION_CHOICES[1][1]
+                            'enum': [choice[0] for choice in EMPTION_CHOICES],
+                            'default': EMPTION_CHOICES[1][0]
                         }
                     },
                     'required': ['priority_level', 'pre_emption_capability', 'pre_emption_vulnerability']
@@ -187,16 +185,16 @@ SESSION_SCHEMA = {
                                         'default': MIN_PRIORITY_LEVEL_VALUE + 1,
                                     },
                                     'pre_emption_capability': {
-                                        'type': 'string',
+                                        'type': 'integer',
                                         'title': 'Capability',
-                                        'enum': [choice[1] for choice in EMPTION_CHOICES],
-                                        'default': EMPTION_CHOICES[1][1]
+                                        'enum': [choice[0] for choice in EMPTION_CHOICES],
+                                        'default': EMPTION_CHOICES[1][0]
                                     },
                                     'pre_emption_vulnerability': {
-                                        'type': 'string',
+                                        'type': 'integer',
                                         'title': 'Vulnerability',
-                                        'enum': [choice[1] for choice in EMPTION_CHOICES],
-                                        'default': EMPTION_CHOICES[1][1]
+                                        'enum': [choice[0] for choice in EMPTION_CHOICES],
+                                        'default': EMPTION_CHOICES[1][0]
                                     }
                                 },
                                 'required': ['priority_level', 'pre_emption_capability', 'pre_emption_vulnerability']
