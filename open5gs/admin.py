@@ -30,3 +30,6 @@ class SubscriberAdmin(admin.ModelAdmin):
             'fields': ('slice',)
         }),
     )
+
+    class Media:
+        js = ('js/subscriber_form/unit_mapping.js',)

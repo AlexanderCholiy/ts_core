@@ -73,14 +73,14 @@ AMBR_SCHEMA = {
                 'value': {
                     'type': 'integer',
                     'title': 'Value',
-                    'minimum': 0,
+                    'minimum': 0
                 },
                 'unit': {
-                    'type': 'string',
+                    'type': 'integer',
                     'title': 'Unit',
-                    'enum': [choice[1] for choice in UNIT_CHOICES],
-                    'default': UNIT_CHOICES[1][1],
-                }
+                    'enum': [choice[0] for choice in UNIT_CHOICES],
+                    'default': UNIT_CHOICES[1][0],
+                },
             },
             'required': ['value', 'unit']
         },
@@ -94,10 +94,10 @@ AMBR_SCHEMA = {
                     'minimum': 0
                 },
                 'unit': {
-                    'type': 'string',
+                    'type': 'integer',
                     'title': 'Unit',
-                    'enum': [choice[1] for choice in UNIT_CHOICES],
-                    'default': UNIT_CHOICES[3][1],
+                    'enum': [choice[0] for choice in UNIT_CHOICES],
+                    'default': UNIT_CHOICES[3][0],
                 }
             },
             'required': ['value', 'unit']

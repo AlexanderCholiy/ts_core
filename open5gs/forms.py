@@ -1,11 +1,6 @@
-import json
-from typing import Union
 from django import forms
 from django.core.exceptions import ValidationError
 from django_jsonform.widgets import JSONFormWidget
-from djongo.models import ObjectIdField
-from django.utils.encoding import force_str
-from django.utils.html import format_html
 
 from .models import Subscriber
 from .constants import (
