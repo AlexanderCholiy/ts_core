@@ -16,7 +16,4 @@ def generate_hex_key(length=32) -> str:
     byte_length = length // 2
     random_bytes = secrets.token_bytes(byte_length)
     hex_key = random_bytes.hex().upper()
-    formatted_key = ' '.join(
-        [hex_key[i:i+8] for i in range(0, len(hex_key), 8)]
-    )
-    return formatted_key
+    return hex_key

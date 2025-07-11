@@ -4,8 +4,12 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
 from .constants import (
-    MAX_SESSION_NAME_LEN, MIN_PRIORITY_LEVEL_VALUE, MAX_PRIORITY_LEVEL_VALUE,
-    SESSION_TYPE_CHOICES, UNIT_CHOICES, EMPTION_CHOICES
+    MAX_SESSION_NAME_LEN,
+    MIN_PRIORITY_LEVEL_VALUE,
+    MAX_PRIORITY_LEVEL_VALUE,
+    SESSION_TYPE_CHOICES,
+    UNIT_CHOICES,
+    EMPTION_CHOICES,
 )
 
 
@@ -32,9 +36,12 @@ def validate_hex_value(
     except ValidationError:
         invalid_chars = set(
             c for c in value.upper() if c not in '0123456789ABCDEF')
-        raise ValidationError(
-            f'{name} содержит недопустимые символы: {", ".join(invalid_chars)}'
-        )
+        if invalid_chars:
+            raise ValidationError(
+                f'{name} содержит недопустимые символы: '
+                f'{", ".join(invalid_chars)}'
+            )
+        raise ValidationError(f'Проверьте {name}')
 
     if max_value_len is not None and len(value) > max_value_len:
         raise ValidationError(
@@ -67,10 +74,10 @@ def validate_arp(arp_data):
             f'{MIN_PRIORITY_LEVEL_VALUE} и {MAX_PRIORITY_LEVEL_VALUE}'
         )
 
-    available_capability: list[str] = [name for _, name in EMPTION_CHOICES]
+    available_capability: list[int] = [value for value, _ in EMPTION_CHOICES]
 
     if (
-        not isinstance(arp_data['pre_emption_capability'], str)
+        not isinstance(arp_data['pre_emption_capability'], int)
         or arp_data['pre_emption_capability'] not in available_capability
     ):
         raise ValidationError(
@@ -79,7 +86,7 @@ def validate_arp(arp_data):
         )
 
     if (
-        not isinstance(arp_data['pre_emption_vulnerability'], str)
+        not isinstance(arp_data['pre_emption_vulnerability'], int)
         or arp_data['pre_emption_vulnerability'] not in available_capability
     ):
         raise ValidationError(
@@ -163,7 +170,7 @@ def validate_br(br: dict, br_name: str):
                 raise ValidationError(
                     f'{br_name} ({field}) - value должно быть больше 0')
 
-        available_units: list[str] = [name for _, name in UNIT_CHOICES]
+        available_units: list[int] = [value for value, _ in UNIT_CHOICES]
         if br[field]['unit'] not in available_units:
             raise ValidationError(
                 f'{br_name} ({field}) - unit должнен принимать одно из '
@@ -182,11 +189,11 @@ def validate_session(session_data: dict):
     if not isinstance(session_data['name'], str):
         raise ValidationError('DNN/APN сессии должен быть строкой')
 
-    if not isinstance(session_data['type'], str):
-        raise ValidationError('Type сессии должен быть строкой')
-
-    available_types: list[str] = [name for _, name in SESSION_TYPE_CHOICES]
-    if session_data['type'] not in available_types:
+    available_types: list[int] = [value for value, _ in SESSION_TYPE_CHOICES]
+    if (
+        not isinstance(session_data['type'], int)
+        or session_data['type'] not in available_types
+    ):
         raise ValidationError(
             'Type сессии должнен принимать одно из следующих значений: '
             f'{", ".join(available_types)}'

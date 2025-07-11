@@ -4,9 +4,11 @@ from django_jsonform.widgets import JSONFormWidget
 
 from .models import Subscriber
 from .constants import (
-    UNIT_CHOICES, MIN_SST_VALUE, MAX_SST_VALUE, SESSION_TYPE_CHOICES,
-    QOS_INDEX_CHOICES, MIN_PRIORITY_LEVEL_VALUE, MAX_PRIORITY_LEVEL_VALUE,
-    EMPTION_CHOICES, MAX_SUBSCRIBER_HEX_LEN, SD_LEN, MAX_SUBSCRIBER_MSISDN_LEN
+    MIN_SST_VALUE,
+    MAX_SST_VALUE,
+    MAX_SUBSCRIBER_HEX_LEN,
+    SD_LEN,
+    MAX_SUBSCRIBER_MSISDN_LEN,
 )
 from .schemas import MSISDN_SCHEMA, SECURITY_SCHEMA, AMBR_SCHEMA, SLICE_SCHEMA
 from .utils import MongoJSONEncoder
@@ -102,27 +104,32 @@ class SubscriberForm(forms.ModelForm):
     def clean_security(self):
         security_data: dict = self.cleaned_data.get('security', {})
 
-        if not all(k in security_data for k in ['k', 'amf']):
+        hex_fields = ['k', 'amf', 'op', 'opc']
+        cleaned_security = {}
+        for field, value in security_data.items():
+            if field in hex_fields and value and isinstance(value, str):
+                cleaned_security[field] = value.replace(' ', '')
+            else:
+                cleaned_security[field] = value
+
+        if not all(k in cleaned_security for k in ['k', 'amf']):
             raise ValidationError(
                 'Поля "Subscriber Key (K)" и '
                 '"Authentication Management Field (AMF)" обязательны'
             )
 
-        hex_fields = [
-            ('k', 'Subscriber Key (K'),
-            ('amf', 'Authentication Management Field (AMF)'),
-            ('op', 'Operator Key (OP)'),
-            ('opc', 'Operator Key (OPc)'),
-        ]
-        for field, name in hex_fields:
-            if field in security_data and security_data[field]:
+        for field, name in [('k', 'Subscriber Key (K)'),
+                        ('amf', 'Authentication Management Field (AMF)'),
+                        ('op', 'Operator Key (OP)'),
+                        ('opc', 'Operator Key (OPc)')]:
+            if field in cleaned_security and cleaned_security[field]:
                 validate_hex_value(
-                    security_data[field], name, MAX_SUBSCRIBER_HEX_LEN)
+                    cleaned_security[field], name, MAX_SUBSCRIBER_HEX_LEN)
 
-        if security_data.get('op') and security_data.get('opc'):
+        if cleaned_security.get('op') and cleaned_security.get('opc'):
             raise ValidationError('Укажите только OP или OPc')
 
-        return security_data
+        return cleaned_security
 
     def clean_ambr(self):
         ambr_data = self.cleaned_data.get('ambr', {})
@@ -145,14 +152,25 @@ class SubscriberForm(forms.ModelForm):
 
     def _init_existing_instance(self):
         """Инициализация данных существующего абонента"""
-        self.fields['msisdn'].initial = getattr(
-            self.instance, 'msisdn', [])
-        self.fields['security'].initial = getattr(
-            self.instance, 'security', {})
-        self.fields['ambr'].initial = getattr(
-            self.instance, 'ambr', {})
-        self.fields['slice'].initial = getattr(
-            self.instance, 'slice', [])
+        self.fields['msisdn'].initial = getattr(self.instance, 'msisdn', [])
+        self.fields['ambr'].initial = getattr(self.instance, 'ambr', {})
+        self.fields['slice'].initial = getattr(self.instance, 'slice', [])
+
+        # Обработка security полей с удалением пробелов
+        security_data = getattr(self.instance, 'security', {})
+        if security_data:
+            cleaned_security = {}
+            hex_fields = ['k', 'amf', 'op', 'opc']
+
+            for field, value in security_data.items():
+                if field in hex_fields and value and isinstance(value, str):
+                    cleaned_security[field] = value.replace(' ', '')
+                else:
+                    cleaned_security[field] = value
+
+            self.fields['security'].initial = cleaned_security
+        else:
+            self.fields['security'].initial = {}
 
     def save(self, commit=True):
         instance = super().save(commit=False)
