@@ -11,7 +11,7 @@ class SubscriberAdmin(admin.ModelAdmin):
     list_per_page = MAX_SUBSCRIBER_PER_PAGE
     search_fields = ('imsi',)
     list_filter = ('subscriber_status', 'operator_determined_barring',)
-    ordering = ('-_id',)
+    ordering = ('-pk',)
     list_editable = ('subscriber_status', 'operator_determined_barring')
     form = SubscriberForm
 

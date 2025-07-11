@@ -15,7 +15,7 @@ from django.shortcuts import redirect
 from .models import PendingUser, User, Roles
 
 
-def role_required(allowed_roles: list[str] = []):
+def role_required(allowed_roles: list[str] = [str(Roles.USER)]):
     """
     Декоратор который предоставляет доступ админу или у кого есть определенная
     роль

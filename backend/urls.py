@@ -90,7 +90,8 @@ auth_urlpatterns = [
 ]
 
 app_urls = [
-    path('', include('users.urls')),
+    path('', include('open5gs.urls')),
+    path('users/', include('users.urls')),
     path('admin/', admin.site.urls),
 ]
 

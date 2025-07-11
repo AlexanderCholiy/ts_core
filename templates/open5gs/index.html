@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  {% for subscriber in subscribers %}
+    <div>
+      <div>
+        {{ subscriber.imsi }}
+      </div>
+      <div>
+        <a href="{% url 'open5gs:edit' subscriber.imsi %}">Изменить</a>
+      </div>
+      {% if not forloop.last %}
+        <hr>
+      {% endif %}
+    </div>
+  {% endfor %}
+{% endblock %}

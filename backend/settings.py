@@ -46,7 +46,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'backend.urls'
-LOGIN_REDIRECT_URL = 'users:index'
+LOGIN_REDIRECT_URL = 'open5gs:index'
 LOGIN_URL = 'login'
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')

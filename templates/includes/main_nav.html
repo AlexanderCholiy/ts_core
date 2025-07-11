@@ -3,9 +3,9 @@
     {% with request.resolver_match.view_name as view_name %}
       <li>
       <a 
-        href="{% url 'users:index' %}"
+        href="{% url 'open5gs:index' %}"
         class="nav-link 
-        {% if view_name  == 'user:index' %}active{% endif %}"
+        {% if view_name  == 'open5gs:index' %}active{% endif %}"
         >
         Главная
       </a>

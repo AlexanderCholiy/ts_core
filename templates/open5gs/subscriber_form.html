@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+  {% with data=form.instance %}
+    {% if "/edit/" in request.path %}
+      <h1>Редактировать запись {{ data.pk }}</h1>
+    {% elif "/delete/" in request.path %}
+      <h1>Удалить запись {{ data.pk }}</h1>
+    {% else %}
+      <h1>Создать запись</h1>
+    {% endif %} 
+
+    <form method="post">
+      {% csrf_token %}
+      {% form %}
+      {% if not "/delete/" in request.path %}
+        {% form %}
+        <button type="submit">Сохранить</button>
+      {% else %}
+        <p>{{ data.imsi }}</p>
+        <button type="submit">Удалить</button>
+      {% endif %}
+    </form>
+
+    {% if form.is_valid %}
+      {{ data.imsi }}
+    {% endif %}
+  {% endwith %}
+{% endblock %} 

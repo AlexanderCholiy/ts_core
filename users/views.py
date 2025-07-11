@@ -21,13 +21,6 @@ class CustomPasswordResetView(PasswordResetView):
         return initial
 
 
-@login_required
-@role_required()
-def index(request: HttpRequest) -> HttpResponse:
-    template_name = 'homepage/index.html'
-    return render(request, template_name)
-
-
 def register(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
