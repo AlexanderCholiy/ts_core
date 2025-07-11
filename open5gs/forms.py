@@ -4,6 +4,8 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django_jsonform.widgets import JSONFormWidget
 from djongo.models import ObjectIdField
+from django.utils.encoding import force_str
+from django.utils.html import format_html
 
 from .models import Subscriber
 from .constants import (
@@ -75,7 +77,7 @@ class SubscriberForm(forms.ModelForm):
 
         if default_indicator is None:
             raise ValidationError(
-                'Default S-NSSAI должен хотя бы где то быть True')
+                'Требуется как минимум 1 Default S-NSSAI')
 
         return cleaned_data
 
@@ -139,6 +141,10 @@ class SubscriberForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        if self.instance and self.instance.pk:
+            self.fields['imsi'].disabled = True
+            self.fields['imsi'].help_text = 'Нельзя изменить после создания'
+
         if self.instance and hasattr(self.instance, 'pk'):
             self._init_existing_instance()
 
@@ -156,11 +162,26 @@ class SubscriberForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super().save(commit=False)
 
-        # Сохраняем данные как есть (они уже прошли валидацию)
-        instance.msisdn = self.cleaned_data.get('msisdn', [])
-        instance.security = self.cleaned_data.get('security', {})
-        instance.ambr = self.cleaned_data.get('ambr', {})
-        instance.slice = self.cleaned_data.get('slice', [])
+        if instance.pk:
+            current_security = getattr(instance, 'security', {})
+            current_slice = getattr(instance, 'slice', [])
+            cleaned_security = self.cleaned_data.get('security', {})
+            if cleaned_security:
+                instance.security = {**current_security, **cleaned_security}
+
+            cleaned_slice = self.cleaned_data.get('slice', [])
+            if cleaned_slice:
+                for i, slice_item in enumerate(cleaned_slice):
+                    if i < len(current_slice):
+                        for key, value in current_slice[i].items():
+                            if key not in slice_item:
+                                slice_item[key] = value
+                instance.slice = cleaned_slice
+        else:
+            instance.msisdn = self.cleaned_data.get('msisdn', [])
+            instance.security = self.cleaned_data.get('security', {})
+            instance.ambr = self.cleaned_data.get('ambr', {})
+            instance.slice = self.cleaned_data.get('slice', [])
 
         if commit:
             instance.save()

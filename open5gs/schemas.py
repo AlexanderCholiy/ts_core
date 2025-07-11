@@ -73,7 +73,7 @@ AMBR_SCHEMA = {
                 'value': {
                     'type': 'integer',
                     'title': 'Value',
-                    'minimum': 0
+                    'minimum': 0,
                 },
                 'unit': {
                     'type': 'string',

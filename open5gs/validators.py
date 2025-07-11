@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 
 from .constants import (
     MAX_SESSION_NAME_LEN, MIN_PRIORITY_LEVEL_VALUE, MAX_PRIORITY_LEVEL_VALUE,
-    SESSION_TYPE_CHOICES, UNIT_CHOICES,
+    SESSION_TYPE_CHOICES, UNIT_CHOICES, EMPTION_CHOICES
 )
 
 
@@ -67,16 +67,23 @@ def validate_arp(arp_data):
             f'{MIN_PRIORITY_LEVEL_VALUE} и {MAX_PRIORITY_LEVEL_VALUE}'
         )
 
-    available_capability: list[str] = [name for _, name in UNIT_CHOICES]
+    available_capability: list[str] = [name for _, name in EMPTION_CHOICES]
 
-    print(arp_data['pre_emption_capability'])
-    print(arp_data['pre_emption_vulnerability'])
     if (
         not isinstance(arp_data['pre_emption_capability'], str)
         or arp_data['pre_emption_capability'] not in available_capability
     ):
         raise ValidationError(
             '"Capability" должен принимать одно из следующих значений: '
+            f'{", ".join(available_capability)}'
+        )
+
+    if (
+        not isinstance(arp_data['pre_emption_vulnerability'], str)
+        or arp_data['pre_emption_vulnerability'] not in available_capability
+    ):
+        raise ValidationError(
+            '"Vulnerability" должен принимать одно из следующих значений: '
             f'{", ".join(available_capability)}'
         )
 
@@ -99,8 +106,8 @@ def validate_qos(qos_data: dict, is_pcc_rule: bool):
     validate_arp(qos_data['arp'])
 
     if is_pcc_rule:
-        validate_br(qos_data['mbr'], 'PCC Rules (MBR)')
-        validate_br(qos_data['gbr'], 'PCC Rules (GBR)')
+        validate_br(qos_data['mbr'], 'PCC Rules MBR')
+        validate_br(qos_data['gbr'], 'PCC Rules GBR')
 
 
 def validate_pcc_rule(pcc_rule_data: dict):
@@ -120,21 +127,41 @@ def validate_br(br: dict, br_name: str):
 
     for field in required_fields:
         required_sub_fields = ['value', 'unit']
-        if (
-            not all(
-                sub_field in br[field] for sub_field in required_sub_fields
-            )
-            or any(
-                br[field][sub_field] is None
-                for sub_field in required_sub_fields
-            )
+        if not all(
+            sub_field in br[field] for sub_field in required_sub_fields
         ):
             raise ValidationError(
                 f'{br_name} ({field}) должен содержать value и unit')
 
-        if br[field]['value'] < 0:
-            raise ValidationError(
-                f'{br_name} ({field}) - value должно быть больше 0')
+        if any(
+            br[field][sub_field] is None for sub_field in required_sub_fields
+        ):
+            if ('pcc rules' in br_name.lower() and br[field]['unit'] is None):
+                raise ValidationError(
+                    f'{br_name} ({field}) должен содержать value и unit')
+            elif 'pcc rules' not in br_name.lower():
+                raise ValidationError(
+                    f'{br_name} ({field}) должен содержать value и unit')
+
+        if 'pcc rules' in br_name.lower():
+            if (
+                isinstance(br[field]['value'], int)
+                and br[field]['value'] < 0
+            ):
+                raise ValidationError(
+                    f'{br_name} ({field}) - value должно быть больше 0')
+            elif br[field]['value'] is None:
+                pass
+            else:
+                raise ValidationError(
+                    f'{br_name} ({field}) - value должно быть больше 0')
+        else:
+            if (
+                not isinstance(br[field]['value'], int)
+                or br[field]['value'] < 0
+            ):
+                raise ValidationError(
+                    f'{br_name} ({field}) - value должно быть больше 0')
 
         available_units: list[str] = [name for _, name in UNIT_CHOICES]
         if br[field]['unit'] not in available_units:
@@ -169,7 +196,6 @@ def validate_session(session_data: dict):
         raise ValidationError(
             f'Длина имени сессии не должна превышать {MAX_SESSION_NAME_LEN}')
 
-    print(session_data['ambr'])
     validate_br(session_data['ambr'], 'Session-AMBR')
     validate_qos(session_data['qos'], is_pcc_rule=False)
 
