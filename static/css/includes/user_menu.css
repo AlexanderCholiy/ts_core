@@ -1,0 +1,82 @@
+.user-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  background-color: var(--light-color);
+  border: 1px solid var(--light-gray-color);
+  border-radius: 6px;
+  min-width: 200px;
+  padding: 0.5rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  z-index: 1000;
+
+  /* Анимация */
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+body.dark .user-menu {
+  background-color: var(--dark-color);
+  border-color: var(--dark-gray-color);
+}
+
+.user-menu.visible {
+  max-height: 500px;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.user-menu .nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.user-menu .nav-item {
+  width: 100%;
+}
+
+.user-menu .nav-link,
+.user-menu .btn-logout {
+  display: block;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--transition-value);
+}
+
+.user-menu .nav-link:hover,
+.user-menu .btn-logout:hover {
+  background-color: var(--light-add-background-color);
+}
+
+body.dark .user-menu .nav-link:hover,
+body.dark .user-menu .btn-logout:hover {
+  background-color: var(--dark-add-background-color);
+}
+
+.user-menu .active {
+  font-weight: 600;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,90 @@
+.header-search {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 800px; /* ограничиваем ширину */
+  background-color: var(--light-add-background-color);
+  border: 1px solid var(--light-gray-color);
+  border-radius: 10px;
+  padding: 0.45rem 0.75rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: box-shadow var(--transition-value), background-color var(--transition-value), border-color var(--transition-value);
+  position: relative;
+}
+
+.header-search:focus-within {
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+body.dark .header-search:focus-within {
+  box-shadow: 0 0 0 2px rgb(55, 90, 158, 0.5);
+}
+
+/* 🌙 Темная тема */
+body.dark .header-search {
+  background-color: var(--dark-add-background-color);
+  border-color: var(--dark-gray-color);
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.05);
+}
+
+body.dark .header-search input[type="text"] {
+  color: var(--light-color); /* текстовое поле в темной теме */
+}
+
+body.dark .header-search input[type="text"]::placeholder {
+  color: var(--dark-gray-color); /* placeholder в темной теме */
+}
+
+body.dark .header-search button {
+  color: var(--light-color); /* иконка кнопки в темной теме */
+}
+
+.header-search input[type="text"] {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  color: inherit;
+  min-width: 0;
+}
+
+.header-search input[type="text"]::placeholder {
+  color: var(--light-gray-color);
+}
+
+.header-search input:focus {
+  outline: none;
+}
+
+.header-search button {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: inherit;
+  cursor: pointer;
+  padding: 0.45rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.header-search button:hover {
+  opacity: 0.85;
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .header-center {
+    width: 100%;
+    justify-content: center;
+    order: 2;
+  }
+
+  .header-search {
+    width: 100%;
+    max-width: 100%;
+    margin: 0.5rem 0;
+  }
+}

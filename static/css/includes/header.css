@@ -1,0 +1,142 @@
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--light-background-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 1000;
+}
+
+body.dark .site-header {
+  background-color: var(--dark-background-color);
+}
+
+.header-left,
+.header-center,
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+  display: none;
+}
+
+.logo-light {
+  display: block;
+}
+
+body.dark .logo-light {
+  display: none;
+}
+
+body.dark .logo-dark {
+  display: block;
+}
+
+.btn-toggle {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: inherit;
+  cursor: pointer;
+}
+
+#theme-toggle {
+  font-size: 1.4rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+#user-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.user-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-icon-fallback {
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dark-add-color);
+  transition: var(--transition-value);
+}
+
+body.dark .user-icon-fallback {
+  color: var(--light-add-color);
+}
+
+.user-menu-wrapper {
+  position: relative;
+}
+
+.user-menu {
+  position: absolute;
+  right: 0;
+  top: 120%;
+  background-color: var(--light-color);
+  border: 1px solid var(--light-gray-color);
+  border-radius: 6px;
+  min-width: 200px;
+  padding: 0.5rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  z-index: 9999;
+}
+
+body.dark .user-menu {
+  background-color: var(--dark-color);
+  border-color: var(--dark-gray-color);
+}
+
+
+@media (max-width: 768px) {
+  .site-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header-left,
+  .header-center,
+  .header-right {
+    justify-content: space-between;
+    width: 100%;
+    margin: 0.25rem 0;
+  }
+
+  .header-center {
+    order: 2;
+  }
+
+  .header-right {
+    order: 3;
+  }
+
+  .header-left {
+    order: 1;
+  }
+}

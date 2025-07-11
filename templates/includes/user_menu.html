@@ -1,0 +1,47 @@
+{% with request.resolver_match.view_name as view_name %}
+<div class="auth" id="auth-menu">
+    <ul class="nav-list">
+    {% if user.is_authenticated and user.is_active %}
+        <li class="nav-item">
+        <a class="nav-link{% if view_name == 'profile' %} active{% endif %}"
+            href="{% url 'users:profile' %}">
+            Профиль
+        </a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link{% if view_name == 'password_change' %} active{% endif %}"
+            href="{% url 'password_change' %}">
+            Изменить пароль
+        </a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link{% if view_name == 'change_email' %} active{% endif %}"
+            href="{% url 'users:change_email' %}">
+            Изменить email
+        </a>
+        </li>          
+        <li class="nav-item">
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="nav-link btn-logout" title="{{ user.username }}">
+            Выйти
+            </button>
+        </form>
+        </li>
+    {% else %}
+        <li class="nav-item">
+        <a class="nav-link{% if view_name == 'login' %} active{% endif %}"
+            href="{% url 'login' %}">
+            Войти
+        </a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link{% if view_name == 'users:register' %} active{% endif %}"
+            href="{% url 'users:register' %}">
+            Регистрация
+        </a>
+        </li>
+    {% endif %}
+    </ul>
+</div>
+{% endwith %}
