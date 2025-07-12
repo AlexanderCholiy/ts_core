@@ -11,6 +11,7 @@ body {
     font-weight: 400;
     font-style: normal;
     font-variation-settings: "wdth" 100;
+    transition: background-color var(--transition-value), color var(--transition-value);
 }
 
 body.light {
@@ -32,7 +33,7 @@ body.light .active {
 }
 
 body.dark .active {
-    color: var(--light-red-color);
+    color: var(--light-blue-color);
 }
 
 .wrapper {
@@ -68,5 +69,5 @@ body.light::-webkit-scrollbar-thumb:hover {
 }
 
 body.dark::-webkit-scrollbar-thumb:hover {
-    background: var(--light-red-color);
+    background: var(--light-blue-color);
 }

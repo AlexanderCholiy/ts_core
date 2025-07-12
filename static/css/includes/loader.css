@@ -26,15 +26,15 @@ body.dark .spinner-overlay {
 .spinner {
     width: 50px;
     height: 50px;
-    border: 6px solid var(--light-add-color);
+    border: 6px solid var(--light-gray-color);
     border-top-color: var(--dark-blue-color);
     border-radius: 50%;
     animation: spin 0.5s infinite;
 }
 
 body.dark .spinner {
-    border-color: var(--dark-add-color);
-    border-top-color: var(--light-red-color);
+    border-color: var(--dark-gray-color);
+    border-top-color: var(--light-blue-color);
 }
 
 @keyframes spin {

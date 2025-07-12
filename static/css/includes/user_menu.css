@@ -2,15 +2,13 @@
   position: absolute;
   right: 0;
   top: calc(100% + 8px);
-  background-color: var(--light-color);
+  background-color: var(--light-background-color);
   border: 1px solid var(--light-gray-color);
   border-radius: 6px;
   min-width: 200px;
   padding: 0.5rem 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 12px var(--dark-extra-color);
   z-index: 1000;
-
-  /* Анимация */
   max-height: 0;
   overflow: hidden;
   opacity: 0;
@@ -66,9 +64,6 @@ body.dark .user-menu .btn-logout:hover {
   background-color: var(--dark-add-background-color);
 }
 
-.user-menu .active {
-  font-weight: 600;
-}
 
 @keyframes fadeIn {
   from {

@@ -1,15 +1,18 @@
 :root {
-    --transition-value: 0.2s ease;
+    --transition-value: 1.2s ease;
 
     --light-background-color: #f5f9ff;
-    --light-add-background-color: #e6ecf7;
+    --light-add-background-color: #d5dbe5;
     --light-color: #ffffff;
     --light-add-color: #d0d6e0;
 
     --dark-background-color: #1a1d23;
-    --dark-add-background-color: #2a2e38;
+    --dark-add-background-color: #31343b;
     --dark-color: #1c1c1f;
     --dark-add-color: #3a3a3f;
+
+    --light-extra-color: rgba(255, 255, 255, 0.8);
+    --dark-extra-color: rgba(0, 0, 0, 0.8);
 
     --light-gray-color: #a0a5af;
     --light-red-color: #dc3545;

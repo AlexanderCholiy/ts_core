@@ -5,13 +5,15 @@
   gap: 1rem;
   padding: 0.75rem 1rem;
   background-color: var(--light-background-color);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px var(--dark-extra-color);
   position: relative;
   z-index: 1000;
+  transition: background-color var(--transition-value), box-shadow var(--transition-value);
 }
 
 body.dark .site-header {
   background-color: var(--dark-background-color);
+  box-shadow: 0 2px 6px var(--light-extra-color);
 }
 
 .header-left,
@@ -94,25 +96,6 @@ body.dark .user-icon-fallback {
 .user-menu-wrapper {
   position: relative;
 }
-
-.user-menu {
-  position: absolute;
-  right: 0;
-  top: 120%;
-  background-color: var(--light-color);
-  border: 1px solid var(--light-gray-color);
-  border-radius: 6px;
-  min-width: 200px;
-  padding: 0.5rem 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  z-index: 9999;
-}
-
-body.dark .user-menu {
-  background-color: var(--dark-color);
-  border-color: var(--dark-gray-color);
-}
-
 
 @media (max-width: 768px) {
   .site-header {
