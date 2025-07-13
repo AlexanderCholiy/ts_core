@@ -2,12 +2,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: var(--header-height);
   gap: 1rem;
   padding: 0.75rem 1rem;
   background-color: var(--light-background-color);
   box-shadow: 0 2px 6px var(--dark-extra-color);
   position: relative;
-  z-index: 1000;
+  z-index: 10;
   transition: background-color var(--transition-value), box-shadow var(--transition-value);
 }
 
@@ -101,6 +102,7 @@ body.dark .user-icon-fallback {
   .site-header {
     flex-direction: column;
     align-items: stretch;
+    height: var(--header-height-mobile);
   }
 
   .header-left,

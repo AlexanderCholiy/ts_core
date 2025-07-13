@@ -1,5 +1,10 @@
 :root {
     --transition-value: 1.2s ease;
+    --header-height: 72px;
+    --header-height-mobile: 220px;
+    --sidebar-width: 220px;
+    --sidebar-collapsed-width: 70px;
+    --footer-height: 60px;
 
     --light-background-color: #f5f9ff;
     --light-add-background-color: #d5dbe5;
@@ -11,8 +16,8 @@
     --dark-color: #1c1c1f;
     --dark-add-color: #3a3a3f;
 
-    --light-extra-color: rgba(255, 255, 255, 0.8);
-    --dark-extra-color: rgba(0, 0, 0, 0.8);
+    --light-extra-color: rgba(255, 255, 255, 1);
+    --dark-extra-color: rgba(0, 0, 0, 1);
 
     --light-gray-color: #a0a5af;
     --light-red-color: #dc3545;

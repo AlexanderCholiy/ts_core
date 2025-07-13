@@ -1,0 +1,22 @@
+<nav id="sidebar" class="sidebar">
+  <div class="sidebar-content">
+    <ul>
+      {% with request.resolver_match.view_name as view_name %}
+        <li>
+          <a href="{% url 'open5gs:index' %}" 
+            class="nav-link {% if view_name == 'open5gs:index' %}active{% endif %}">
+            <i class="bx bx-user"></i>
+            <span class="link-text">Абоненты</span>
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'pages:about' %}" 
+            class="nav-link {% if view_name == 'pages:about' %}active{% endif %}">
+            <i class="bx bx-info-circle"></i>
+            <span class="link-text">О нас</span>
+          </a>
+        </li>
+      {% endwith %}
+    </ul>
+  </div>
+</nav>

@@ -41,36 +41,37 @@
     <link rel="stylesheet" href="{% static 'css/root.css' %}">
     <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/includes/scrollbar.css' %}">
     <link rel="stylesheet" href="{% static 'css/includes/loader.css' %}">
     <link rel="stylesheet" href="{% static 'css/includes/header.css' %}">
     <link rel="stylesheet" href="{% static 'css/includes/search_bar.css' %}">
     <link rel="stylesheet" href="{% static 'css/includes/user_menu.css' %}">
+    <link rel="stylesheet" href="{% static 'css/includes/sidebar.css' %}">
     {% block extra_css %}{% endblock %}
   </head>
   <body>
+    {% include "includes/spinner.html" %}
+
     <div class="wrapper">
-      <div id="spinner-overlay" class="spinner-overlay">
-        <div class="spinner"></div>
-      </div>
       {% include "includes/header.html" %}
-      <main class="main-wrapper">
-          {% block content %}Контента пока нет :({% endblock %}
-      </main>
-      {% include "includes/footer.html" %}
-      {% if messages %}
-        <div class="messages">
-          {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-              {{ message }}
-            </div>
-          {% endfor %}
+      
+      <div class="layout">
+        {% include "includes/sidebar.html" %}
+
+        <div class="main-area">
+          <main class="content-wrapper">
+            {% block content %}Контента пока нет :({% endblock %}
+            {% include "includes/messages.html" %}
+          </main>
         </div>
-      {% endif %}
+      </div>
+      {% include "includes/footer.html" %}
     </div>
 
     <script src="{% static 'js/loader.js' %}"></script>
     <script src="{% static 'js/theme_toggle.js' %}"></script>
     <script src="{% static 'js/user_menu.js' %}"></script>
+    <script src="{% static 'js/sidebar.js' %}"></script>
     <script src="{% static 'js/scroll_to_top.js' %}"></script>
     {% block extra_js %}{% endblock %}
   </body>

@@ -1,0 +1,152 @@
+/* === Обёртки === */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout {
+  display: flex;
+  flex: 1;
+  min-height: 100vh;
+}
+
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left var(--transition-value);
+  margin-left: var(--sidebar-width);
+}
+
+.sidebar.collapsed ~ .main-area {
+  margin-left: var(--sidebar-collapsed-width);
+}
+
+/* === Sidebar (фиксирован) === */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--light-background-color);
+  overflow-y: auto;
+  z-index: 1;
+  transition: width var(--transition-value);
+  display: flex;
+  flex-direction: column;
+}
+
+/* === Внутренний контейнер с компенсацией header === */
+.sidebar-content {
+  margin-top: var(--header-height);
+  transition: margin-top var(--transition-value);
+}
+
+/* === Сброс отступа при прокрутке вниз (CSS-only решение) */
+body.scrolled .sidebar-content {
+  margin-top: 0;
+}
+
+/* === Sidebar свернутый === */
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed-width);
+}
+
+/* === Список меню === */
+.sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar li {
+  display: flex;
+}
+
+/* === Ссылки в меню === */
+.sidebar a.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: var(--dark-add-color);
+  width: 100%;
+  white-space: nowrap;
+  transition: background-color var(--transition-value);
+}
+
+.sidebar a.nav-link:hover {
+  background-color: var(--light-add-background-color);
+}
+
+/* === Иконки === */
+.sidebar i {
+  font-size: 1.4rem;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* === Текст рядом с иконками === */
+.link-text {
+  display: inline-block;
+  margin-left: 12px; /* всегда одинаковый отступ */
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: max-width var(--transition-value);
+}
+
+/* === Когда сайдбар свернут: скрыть текст без дерганий === */
+.sidebar.collapsed .link-text {
+  max-width: 0;
+  /* не убираем margin-left, чтобы текст не прыгал ближе к иконке */
+}
+
+/* === Мобильная адаптация (меню открывается справа) === */
+@media (max-width: 768px) {
+  .main-area {
+    margin-left: 0 !important;
+  }
+
+  .sidebar {
+    top: 0;
+    left: auto;
+    right: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background-color: var(--light-background-color);
+    transform: translateX(100%);
+    transition: transform var(--transition-value), box-shadow var(--transition-value);
+    z-index: 1100;
+    box-shadow: none;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Сброс ограничений collapse */
+  .sidebar.collapsed {
+    width: var(--sidebar-width);
+  }
+
+  .sidebar.collapsed .link-text {
+    max-width: 100%;
+    margin-left: 12px;
+  }
+
+  .sidebar.collapsed i {
+    text-align: center;
+  }
+
+  .sidebar-content {
+    margin-top: 0 !important;
+  }
+
+  body.sidebar-open {
+    overflow: hidden;
+  }
+}
