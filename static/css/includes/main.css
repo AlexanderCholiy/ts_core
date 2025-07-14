@@ -12,15 +12,13 @@
 }
 
 main .card {
-  background-color: var(--light-add-background-color);
   border-radius: 10px;
   box-shadow: 0 0 4px var(--dark-extra-color);
-  transition: background-color var(--transition-value) box-shadow var(--transition-value);
+  transition: box-shadow var(--transition-value);
 }
 
 body.dark main .card {
   box-shadow: 0 0 4px var(--light-extra-color);
-  background-color: var(--dark-add-background-color);
 }
 
 main .btn-icon {
@@ -44,6 +42,45 @@ body.dark main .btn-icon {
 
 body.dark main .btn-icon:hover {
   background-color: var(--dark-extra-color);
+}
+
+main .empty-message-card {
+  padding: 1.5rem;
+  border-radius: 8px;
+  color: var(--dark-red-color);
+  font-weight: bold;
+  text-align: center;
+  transition: color var(--transition-value);
+}
+
+body.dark main .empty-message-card {
+  color: var(--light-red-color);
+}
+
+.btn-primary {
+  background-color: var(--dark-blue-color);
+  padding: 0.5rem 1.2rem;
+  border: none;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--light-color);
+  transition: background-color var(--transition-value);
+}
+
+.btn-primary:hover {
+  background-color: var(--light-blue-color);
+}
+
+body.dark .btn-primary {
+  background-color: var(--light-blue-color);
+  color: var(--light-add-color);
+}
+
+body.dark .btn-primary:hover {
+  background-color: var(--dark-blue-color);
 }
 
 @media (max-width: 768px) {

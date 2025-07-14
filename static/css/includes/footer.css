@@ -89,7 +89,7 @@ footer.dark .footer-nav li a.active {
 #scroll-to-top {
   padding: 0.5rem 1rem;
   background-color: var(--dark-blue-color);
-  color: var(--dark-add-color);
+  color: var(--light-color);
   border: none;
   border-radius: 999px;
   cursor: pointer;
@@ -121,7 +121,6 @@ body.dark .bottom p {
   color: var(--dark-gray-color);
 }
 
-/* Мобильная адаптация */
 @media (max-width: 768px) {
   .footer-nav ul {
     flex-direction: column;
