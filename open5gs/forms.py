@@ -118,10 +118,12 @@ class SubscriberForm(forms.ModelForm):
                 '"Authentication Management Field (AMF)" обязательны'
             )
 
-        for field, name in [('k', 'Subscriber Key (K)'),
-                        ('amf', 'Authentication Management Field (AMF)'),
-                        ('op', 'Operator Key (OP)'),
-                        ('opc', 'Operator Key (OPc)')]:
+        for field, name in [
+            ('k', 'Subscriber Key (K)'),
+            ('amf', 'Authentication Management Field (AMF)'),
+            ('op', 'Operator Key (OP)'),
+            ('opc', 'Operator Key (OPc)'),
+        ]:
             if field in cleaned_security and cleaned_security[field]:
                 validate_hex_value(
                     cleaned_security[field], name, MAX_SUBSCRIBER_HEX_LEN)

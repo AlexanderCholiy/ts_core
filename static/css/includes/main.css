@@ -1,28 +1,46 @@
 .content-wrapper {
   flex: 1;
   padding: 0 1rem;
-  overflow-x: auto;
+  display: flex;
+  justify-content: center;
 }
 
 .container {
   max-width: 1200px;
-  width: 100%;
-  margin: 1.5rem auto;
+  margin: 1.5rem 1rem;
   box-sizing: border-box;
+  width: 100%;
 }
 
-main .card {
+.card {
   border-radius: 10px;
   box-shadow: 0 0 4px var(--dark-extra-color);
   transition: box-shadow var(--transition-value);
 }
 
-body.dark main .card {
+body.dark .card {
   box-shadow: 0 0 4px var(--light-extra-color);
+}
+
+.empty-message {
+  padding: 1rem 2rem;
+  margin: 1.5rem auto;
+  text-align: center;
+  color: var(--dark-red-color);
+}
+
+body.dark .empty-message {
+  color: var(--light-red-color);
 }
 
 .message-card {
   padding: 1rem 2rem;
+  max-width: 600px;
+  margin: 1.5rem auto;
+}
+
+body.dark .message-card {
+  box-shadow: 0 0 4px var(--light-extra-color);
 }
 
 @media (max-width: 768px) {

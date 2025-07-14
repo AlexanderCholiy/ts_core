@@ -15,8 +15,8 @@
     --dark-color: #1c1c1f;
     --dark-add-color: #3a3a3f;
 
-    --light-extra-color: rgba(255, 255, 255, 1);
-    --dark-extra-color: rgba(0, 0, 0, 1);
+    --light-extra-color: rgba(255, 255, 255, 0.5);
+    --dark-extra-color: rgba(0, 0, 0, 0.5);
 
     --light-gray-color: #a0a5af;
     --light-red-color: #dc3545;

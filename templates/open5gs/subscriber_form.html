@@ -1,15 +1,19 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/open5gs/subscriber_form.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="form-container">
     {% with data=form.instance %}
         {% if "/edit/" in request.path %}
-            <h1>Редактировать запись {{ data.imsi }}</h1>
+            <h1>Редактировать абонента {{ data.imsi }}</h1>
         {% elif "/delete/" in request.path %}
-            <h1>Удалить запись {{ data.imsi }}</h1>
+            <h1>Удалить абонента {{ data.imsi }}</h1>
         {% else %}
-            <h1>Создать запись</h1>
+            <h1>Добавить абонента</h1>
         {% endif %}
 
         <form method="post" enctype="multipart/form-data" class="subscriber-form">

@@ -18,6 +18,7 @@
   transition: margin-left var(--transition-value), background-color var(--transition-value);
   margin-left: var(--sidebar-width);
   background-color: var(--light-add-background-color);
+  overflow-x: auto;
 }
 
 body.dark .main-area {
