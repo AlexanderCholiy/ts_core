@@ -1,7 +1,6 @@
 #search-bar {
-  margin-left: 1000px;
+  margin-left: var(--sidebar-width);
   transition: all var(--transition-value);
-  background-color: red !important;
 }
 
 #search-bar.collapsed {
@@ -79,7 +78,7 @@ body.dark .header-search input[type="text"]::placeholder {
 }
 
 @media (max-width: 768px) {
-  #search_bar {
+  #search-bar {
     width: 100%;
     justify-content: center;
     order: 2;

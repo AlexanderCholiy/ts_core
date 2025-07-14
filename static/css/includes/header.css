@@ -36,9 +36,9 @@ body.dark .site-header {
 
 /* Логотип */
 .logo-img {
-  height: 36px;
+  height: 72px;
   width: auto;
-  display: none; /* показываем один из двух в зависимости от темы */
+  display: none;
 }
 .logo-light {
   display: block;

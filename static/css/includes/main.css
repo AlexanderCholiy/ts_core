@@ -15,11 +15,13 @@
 .card {
   border-radius: 10px;
   box-shadow: 0 0 4px var(--dark-extra-color);
-  transition: box-shadow var(--transition-value);
+  background-color: var(--light-background-color);
+  transition: box-shadow var(--transition-value), background-color var(--transition-value);
 }
 
 body.dark .card {
   box-shadow: 0 0 4px var(--light-extra-color);
+  background-color: var(--dark-background-color);
 }
 
 .empty-message {

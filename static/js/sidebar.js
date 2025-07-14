@@ -5,10 +5,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const isMobile = () => window.innerWidth <= 768;
 
-  const collapseSidebar = () => sidebar.classList.add("collapsed");
-  const expandSidebar = () => sidebar.classList.remove("collapsed");
+  const collapseSidebar = () => {
+    sidebar.classList.add("collapsed");
+    if (searchBar) searchBar.classList.add("collapsed");
+  };
 
-  // Инициализация (только для десктопа)
+  const expandSidebar = () => {
+    sidebar.classList.remove("collapsed");
+    if (searchBar) searchBar.classList.remove("collapsed");
+  };
+
+  // Инициализация на десктопе
   if (!isMobile()) {
     const savedState = localStorage.getItem("sidebar-collapsed");
     if (savedState === "true") {
@@ -20,13 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isMobile()) {
       sidebar.classList.toggle("mobile-open");
     } else {
-      sidebar.classList.toggle("collapsed");
-      const isCollapsed = sidebar.classList.contains("collapsed");
+      const isCollapsed = sidebar.classList.toggle("collapsed");
+      if (searchBar) searchBar.classList.toggle("collapsed", isCollapsed);
       localStorage.setItem("sidebar-collapsed", isCollapsed);
     }
   });
 
-  // Закрытие сайдбара при клике вне (на мобильных)
+  // Закрытие сайдбара при клике вне (на мобилках)
   document.addEventListener("click", (e) => {
     if (
       isMobile() &&
@@ -38,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Переключение поведения при ресайзе
+  // При ресайзе закрываем мобильный сайдбар
   window.addEventListener("resize", () => {
     if (!isMobile()) {
       sidebar.classList.remove("mobile-open");
@@ -46,10 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// Смена класса body при скролле
 window.addEventListener("scroll", () => {
-  if (window.scrollY > 0) {
-    document.body.classList.add("scrolled");
-  } else {
-    document.body.classList.remove("scrolled");
-  }
+  document.body.classList.toggle("scrolled", window.scrollY > 0);
 });
