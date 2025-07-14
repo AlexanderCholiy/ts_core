@@ -1,0 +1,79 @@
+.btn-icon {
+  background: none;
+  border: none;
+  color: var(--light-blue-color);
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 20%;
+  transition: background-color var(--transition-value);
+}
+.btn-icon:hover {
+  background-color: var(--light-extra-color);
+}
+body.dark .btn-icon {
+  color: var(--dark-blue-color);
+}
+body.dark .btn-icon:hover {
+  background-color: var(--dark-extra-color);
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  color: var(--light-color);
+  justify-content: center;
+}
+body.dark .btn {
+  color: var(--light-add-color);
+}
+
+/* PRIMARY */
+.btn-primary {
+  background-color: var(--dark-blue-color);
+}
+.btn-primary:hover {
+  background-color: var(--light-blue-color);
+}
+body.dark .btn-primary {
+  background-color: var(--light-blue-color);
+}
+body.dark .btn-primary:hover {
+  background-color: var(--dark-blue-color);
+}
+
+/* DANGER */
+.btn-danger {
+  background-color: var(--dark-red-color);
+}
+.btn-danger:hover {
+  background-color: var(--light-red-color);
+}
+body.dark .btn-danger {
+  background-color: var(--light-red-color);
+}
+body.dark .btn-danger:hover {
+  background-color: var(--dark-red-color);
+}
+
+/* SECONDARY */
+.btn-secondary {
+  background-color: var(--dark-gray-color);
+}
+.btn-secondary:hover {
+  background-color: var(--light-gray-color);
+}
+body.dark .btn-secondary {
+  background-color: var(--light-gray-color);
+}
+body.dark .btn-secondary:hover {
+  background-color: var(--dark-gray-color);
+}

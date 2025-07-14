@@ -89,18 +89,8 @@
 </div>
 {% endblock %}
 
-{% block extra_css %}
-{% endblock %}
-
 {% block extra_js %}
-    {{ form.media.js }}
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        if (window.djangoJSONForm) {
-            document.querySelectorAll('.django-jsonform').forEach(function(el) {
-                window.djangoJSONForm.init(el);
-            });
-        }
-    });
-    </script>
+{{ form.media.js }}
+<script src="{% static 'js/subscriber_form/activate_jsonform.js' %}"></script>
+<script src="{% static 'js/subscriber_form/unit_mapping.js' %}"></script>
 {% endblock %}

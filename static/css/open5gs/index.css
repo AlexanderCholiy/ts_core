@@ -20,13 +20,13 @@ main .card-title {
   margin: 0;
 }
 
-main .btn-group {
-  display: flex;
-  gap: 0.5rem;
-}
-
 main .add-button-wrapper {
   display: flex;
   justify-content: right;
   margin-top: 2rem;
+}
+
+main .btn-group {
+  display: flex;
+  gap: 0.5rem;
 }
