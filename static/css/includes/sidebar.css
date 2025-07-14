@@ -36,6 +36,11 @@
   transition: width var(--transition-value);
   display: flex;
   flex-direction: column;
+  transition: background-color var(--transition-value), width var(--transition-value);
+}
+
+body.dark .sidebar {
+  background-color: var(--dark-background-color);
 }
 
 /* === Внутренний контейнер с компенсацией header === */
@@ -74,11 +79,21 @@ body.scrolled .sidebar-content {
   color: var(--dark-add-color);
   width: 100%;
   white-space: nowrap;
-  transition: background-color var(--transition-value);
+  transition: background-color var(--transition-value), box-shadow var(--transition-value);
+}
+
+body.dark .sidebar a.nav-link {
+  color: var(--light-add-color);
 }
 
 .sidebar a.nav-link:hover {
   background-color: var(--light-add-background-color);
+  box-shadow: 0 0 6px var(--dark-extra-color);
+}
+
+body.dark .sidebar a.nav-link:hover {
+  background-color: var(--dark-add-background-color);
+  box-shadow: 0 0 6px var(--light-extra-color);
 }
 
 /* === Иконки === */
@@ -116,11 +131,9 @@ body.scrolled .sidebar-content {
     right: 0;
     width: var(--sidebar-width);
     height: 100vh;
-    background-color: var(--light-background-color);
     transform: translateX(100%);
-    transition: transform var(--transition-value), box-shadow var(--transition-value);
+    transition: transform var(--transition-value);
     z-index: 1100;
-    box-shadow: none;
   }
 
   .sidebar.mobile-open {

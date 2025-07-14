@@ -1,8 +1,8 @@
+/* === Основные стили header === */
 .site-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: var(--header-height);
   gap: 1rem;
   padding: 0.75rem 1rem;
   background-color: var(--light-background-color);
@@ -12,11 +12,13 @@
   transition: background-color var(--transition-value), box-shadow var(--transition-value);
 }
 
+/* Тёмная тема для header */
 body.dark .site-header {
   background-color: var(--dark-background-color);
   box-shadow: 0 2px 6px var(--light-extra-color);
 }
 
+/* Общие стили для блоков */
 .header-left,
 .header-center,
 .header-right {
@@ -25,103 +27,103 @@ body.dark .site-header {
   gap: 0.75rem;
 }
 
+/* Центр: поиск занимает пространство */
 .header-center {
   flex: 1;
-  display: flex;
   justify-content: center;
   min-width: 0;
 }
 
+/* Логотип */
 .logo-img {
-  height: 40px;
+  height: 50px;
   width: auto;
-  display: none;
+  display: none; /* показываем один из двух в зависимости от темы */
 }
-
 .logo-light {
   display: block;
 }
-
 body.dark .logo-light {
   display: none;
 }
-
 body.dark .logo-dark {
   display: block;
 }
 
-.btn-toggle {
-  background: none;
-  border: none;
-  font-size: 1.6rem;
-  color: inherit;
-  cursor: pointer;
-}
-
-#theme-toggle {
-  font-size: 1.4rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: inherit;
-}
-
+/* Кнопки */
+.btn-toggle,
+#theme-toggle,
 #user-toggle {
   background: none;
   border: none;
+  cursor: pointer;
+  color: inherit;
+  font-size: 2.6rem;
   padding: 0;
   margin: 0;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Иконка пользователя */
 .user-icon {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
 }
 
+/* Фоллбек иконка пользователя */
 .user-icon-fallback {
-  font-size: 1.8rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 2.8rem;
   color: var(--dark-add-color);
-  transition: var(--transition-value);
+  transition: color var(--transition-value);
 }
-
 body.dark .user-icon-fallback {
   color: var(--light-add-color);
 }
 
+/* Позиционирование меню пользователя */
 .user-menu-wrapper {
   position: relative;
 }
 
+/* === Мобильная версия (max-width: 768px) === */
 @media (max-width: 768px) {
+  /* Верстка шапки в 2 ряда */
   .site-header {
-    flex-direction: column;
-    align-items: stretch;
-    height: var(--header-height-mobile);
+    flex-wrap: wrap;
+    height: auto; /* пусть высота будет динамической */
+    padding: 0.5rem 1rem;
+    gap: 0; /* для первого ряда */
   }
 
+  /* Первый ряд: слева header-left, справа header-right */
   .header-left,
-  .header-center,
   .header-right {
-    justify-content: space-between;
-    width: 100%;
-    margin: 0.25rem 0;
+    flex: 1 1 50%;
+    justify-content: flex-start;
+    align-items: center;
   }
 
+  /* Правый блок — выравнивание вправо */
+  .header-right {
+    justify-content: flex-end;
+  }
+
+  /* Второй ряд: поиск */
   .header-center {
+    flex-basis: 100%;
     order: 2;
-  }
-
-  .header-right {
-    order: 3;
-  }
-
-  .header-left {
-    order: 1;
+    margin-top: 0.5rem;
+    justify-content: stretch;
+    width: 100%;
   }
 }

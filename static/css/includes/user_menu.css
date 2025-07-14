@@ -13,7 +13,7 @@
   overflow: hidden;
   opacity: 0;
   transform: translateY(-10px);
-  transition: all 0.3s ease;
+  transition: all var(--transition-value);
   pointer-events: none;
 }
 

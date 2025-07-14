@@ -1,7 +1,6 @@
 :root {
     --transition-value: 1.2s ease;
     --header-height: 72px;
-    --header-height-mobile: 220px;
     --sidebar-width: 220px;
     --sidebar-collapsed-width: 70px;
     --footer-height: 60px;
