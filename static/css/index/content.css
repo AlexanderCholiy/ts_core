@@ -1,0 +1,73 @@
+main .card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+main .card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+main .card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  word-break: break-word;
+  margin: 0;
+}
+
+main .btn-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* .empty-message-card {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: #f8d7da;
+  color: #721c24;
+  font-weight: bold;
+  text-align: center;
+} */
+
+/* .add-button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+} */
+
+/* .btn-primary {
+  background-color: var(--light-blue-color);
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+} */
+
+/* .btn-primary:hover {
+  background-color: #0056b3;
+} */
+
+/* @media (max-width: 768px) {
+  .card-body {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-group {
+    align-self: flex-end;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+} */

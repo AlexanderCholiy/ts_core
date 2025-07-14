@@ -47,6 +47,7 @@
     <link rel="stylesheet" href="{% static 'css/includes/search_bar.css' %}">
     <link rel="stylesheet" href="{% static 'css/includes/user_menu.css' %}">
     <link rel="stylesheet" href="{% static 'css/includes/sidebar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/includes/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/includes/footer.css' %}">
     {% block extra_css %}{% endblock %}
   </head>
@@ -60,9 +61,11 @@
         {% include "includes/sidebar.html" %}
 
         <div class="main-area">
+          {% include "includes/messages.html" %}
           <main class="content-wrapper">
-            {% block content %}Контента пока нет :({% endblock %}
-            {% include "includes/messages.html" %}
+            <div class="container">
+              {% block content %}Контента пока нет :({% endblock %}
+            </div>
           </main>
         </div>
       </div>

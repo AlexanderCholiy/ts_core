@@ -1,0 +1,60 @@
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/includes/paginator.css' %}">
+{% endblock %}
+
+<div class="pagination-wrapper">
+  <div class="pagination-summary">
+    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+  </div>
+
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="{{ page_url_base }}page=1">Первая</a>
+        {% comment %} <a class="page-link" href="?page=1">Первая</a> {% endcomment %}
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="{{ page_url_base }}page={{ page_obj.previous_page_number }}">
+          Предыдущая
+        </a>
+        {% comment %} <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+          Предыдущая
+        </a> {% endcomment %}
+      </li>
+    {% endif %}
+
+    {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="page-item active">
+          <span class="page-link">{{ i }}</span>
+        </li>
+      {% else %}
+        <li class="page-item">
+          <a class="page-link" href="{{ page_url_base }}page={{ i }}">{{ i }}</a>
+          {% comment %} <a class="page-link" href="?page={{ i }}">{{ i }}</a> {% endcomment %}
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="{{ page_url_base }}page={{ page_obj.next_page_number }}">
+          Следующая
+        </a>
+        {% comment %} <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+          Следующая
+        </a> {% endcomment %}
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="{{ page_url_base }}page={{ page_obj.paginator.num_pages }}">
+          Последняя
+        </a>
+        {% comment %} <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+          Последняя
+        </a> {% endcomment %}
+      </li>
+    {% endif %}
+  </ul>
+</div>
