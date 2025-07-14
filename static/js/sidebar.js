@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.getElementById("sidebar");
   const toggleButton = document.getElementById("sidebar-toggle");
+  const searchBar = document.getElementById("search-bar");
 
   const isMobile = () => window.innerWidth <= 768;
 

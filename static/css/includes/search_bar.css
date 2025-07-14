@@ -1,3 +1,13 @@
+#search-bar {
+  margin-left: 1000px;
+  transition: all var(--transition-value);
+  background-color: red !important;
+}
+
+#search-bar.collapsed {
+  margin-left: var(--sidebar-collapsed-width);
+}
+
 .header-search {
   display: flex;
   align-items: center;
@@ -69,10 +79,11 @@ body.dark .header-search input[type="text"]::placeholder {
 }
 
 @media (max-width: 768px) {
-  .header-center {
+  #search_bar {
     width: 100%;
     justify-content: center;
     order: 2;
+    margin-left: 0;
   }
 
   .header-search {

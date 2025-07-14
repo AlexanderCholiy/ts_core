@@ -19,12 +19,14 @@ def index(request: HttpRequest) -> HttpResponse:
 
     query = request.GET.get('q', '').strip()
     if query:
-        subscribers = (
-            Subscriber.objects.values('pk', 'imsi')
-            .filter(imsi__icontains=query).order_by('-pk')
-        )
+        subscribers = [i for i in range(100)]
+        # subscribers = (
+        #     Subscriber.objects.values('pk', 'imsi')
+        #     .filter(imsi__icontains=query).order_by('-pk')
+        # )
     else:
-        subscribers = Subscriber.objects.values('pk', 'imsi').order_by('-pk')
+        subscribers = [i for i in range(100)]
+        # subscribers = Subscriber.objects.values('pk', 'imsi').order_by('-pk')
 
     paginator = Paginator(subscribers, MAX_SUBSCRIBER_PER_PAGE)
     page_number = request.GET.get('page')
