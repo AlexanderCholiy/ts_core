@@ -36,7 +36,7 @@ body.dark .site-header {
 
 /* Логотип */
 .logo-img {
-  height: 50px;
+  height: 36px;
   width: auto;
   display: none; /* показываем один из двух в зависимости от темы */
 }
@@ -58,7 +58,7 @@ body.dark .logo-dark {
   border: none;
   cursor: pointer;
   color: inherit;
-  font-size: 2.6rem;
+  font-size: 1.6rem;
   padding: 0;
   margin: 0;
   display: flex;
@@ -68,21 +68,21 @@ body.dark .logo-dark {
 
 /* Иконка пользователя */
 .user-icon {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
 }
 
 /* Фоллбек иконка пользователя */
 .user-icon-fallback {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.8rem;
+  font-size: 1.8rem;
   color: var(--dark-add-color);
   transition: color var(--transition-value);
 }

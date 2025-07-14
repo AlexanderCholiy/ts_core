@@ -15,8 +15,13 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  transition: margin-left var(--transition-value);
+  transition: margin-left var(--transition-value), background-color var(--transition-value);
   margin-left: var(--sidebar-width);
+  background-color: var(--light-add-background-color);
+}
+
+body.dark .main-area {
+  background-color: var(--dark-add-background-color);
 }
 
 .sidebar.collapsed ~ .main-area {
@@ -46,6 +51,7 @@ body.dark .sidebar {
 /* === Внутренний контейнер с компенсацией header === */
 .sidebar-content {
   margin-top: var(--header-height);
+  margin-bottom: var(--footer-height);
   transition: margin-top var(--transition-value);
 }
 
@@ -133,7 +139,7 @@ body.dark .sidebar a.nav-link:hover {
     height: 100vh;
     transform: translateX(100%);
     transition: transform var(--transition-value);
-    z-index: 1100;
+    z-index: 20;
   }
 
   .sidebar.mobile-open {

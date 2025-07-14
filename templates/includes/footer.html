@@ -1,14 +1,18 @@
 <footer>
-  <div class="logo">
-      <h2>NT Cellular Systems</h2>
-  </div>
-
-  {% include "includes/footer_menu.html" %}
-
-  <div class="bottom">
-    <p>&copy; 2025 New Towers</p>
-    <button id="scroll-to-top" aria-label="Scroll to top" title="Вверх">
-        <i class="bx bx-up-arrow-alt"></i> Top
-    </button>
+  <div class="footer-container">
+    <div class="logo">
+        <a href="{% url 'open5gs:index' %}" title="На главную">
+          NT Cellular Systems
+        </a>
+    </div>
+  
+    {% include "includes/footer_menu.html" %}
+  
+    <div class="bottom">
+      <p>&copy; 2025 New Towers</p>
+      <button id="scroll-to-top" aria-label="Scroll to top" title="Вверх">
+          <i class="bx bx-up-arrow-alt"></i> Top
+      </button>
+    </div>
   </div>
 </footer>

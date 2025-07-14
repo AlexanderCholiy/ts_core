@@ -3,14 +3,14 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: 'Montserrat', sans-serif;
-  background-color: var(--light-add-background-color);
   color: var(--dark-color);
-  transition: background-color var(--transition-value), color var(--transition-value);
+  transition: color var(--transition-value);
+  background-color: var(--light-add-background-color);
 }
 
 body.dark {
-  background-color: var(--dark-add-background-color);
   color: var(--light-color);
+  background-color: var(--dark-add-background-color);
 }
 
 .active {
