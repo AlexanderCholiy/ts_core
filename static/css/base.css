@@ -15,11 +15,11 @@ body.dark {
 
 .active {
     font-weight: 600;
-    color: var(--dark-blue-color) !important;
+    color: var(--dark-priority-color) !important;
 }
 
 body.dark .active {
-    color: var(--light-blue-color) !important;
+    color: var(--light-priority-color) !important;
 }
 
 /* * {

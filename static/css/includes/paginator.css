@@ -42,7 +42,7 @@ body.dark .pagination-summary {
   display: inline-block;
   padding: 0.5rem 1rem;
   background-color: var(--light-add-background-color);
-  color: var(--dark-blue-color);
+  color: var(--dark-priority-color);
   border-radius: 8px;
   text-decoration: none;
   font-weight: 500;
@@ -53,29 +53,29 @@ body.dark .pagination-summary {
 }
 
 .page-link:hover {
-  background-color: var(--light-blue-color);
+  background-color: var(--light-priority-color);
   color: var(--light-color);
 }
 
 .page-item.active .page-link {
-  background-color: var(--dark-blue-color);
+  background-color: var(--dark-priority-color);
   color: var(--light-color);
   cursor: default;
 }
 
 body.dark .page-link {
   background-color: var(--dark-add-background-color);
-  color: var(--light-blue-color);
+  color: var(--light-priority-color);
   border-color: var(--dark-gray-color);
 }
 
 body.dark .page-link:hover {
-  background-color: var(--dark-blue-color);
+  background-color: var(--dark-priority-color);
   color: var(--light-add-color);
 }
 
 body.dark .page-item.active .page-link {
-  background-color: var(--light-blue-color);
+  background-color: var(--light-priority-color);
   color: var(--light-add-color);
 }
 

@@ -3,93 +3,92 @@
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/open5gs/subscriber_form.css' %}">
+  <link rel="stylesheet" href="{% static 'css/open5gs/includes/base_info.css' %}">
+  {% comment %} <link rel="stylesheet" href="{% static 'css/open5gs/includes/rjf_form.css' %}"> {% endcomment %}
+  {% comment %} <link rel="stylesheet" href="{% static 'css/open5gs/includes/msisdn.css' %}"> {% endcomment %}
 {% endblock %}
 
 {% block content %}
-<div class="form-container">
-    {% with data=form.instance %}
-        {% if "/edit/" in request.path %}
-            <h1>Редактировать абонента {{ data.imsi }}</h1>
-        {% elif "/delete/" in request.path %}
-            <h1>Удалить абонента {{ data.imsi }}</h1>
-        {% else %}
-            <h1>Добавить абонента</h1>
-        {% endif %}
+<div class="card">
+  {% with data=form.instance %}
+      {% if "/edit/" in request.path %}
+          <h1>Редактировать абонента {{ data.imsi }}</h1>
+      {% elif "/delete/" in request.path %}
+          <h1>Удалить абонента {{ data.imsi }}</h1>
+      {% else %}
+          <h1>Добавить абонента</h1>
+      {% endif %}
 
-        <form method="post" enctype="multipart/form-data" class="subscriber-form">
-            {% csrf_token %}
-            
-            <!-- Основные поля -->
-            <div class="form-section">
-                <h2>Основная информация</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="{{ form.imsi.id_for_label }}">{{ form.imsi.label }}</label>
-                        {{ form.imsi }}
-                        {% if form.imsi.errors %}
-                            <div class="error">{{ form.imsi.errors }}</div>
-                        {% endif %}
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="{{ form.subscriber_status.id_for_label }}">{{ form.subscriber_status.label }}</label>
-                        {{ form.subscriber_status }}
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="{{ form.operator_determined_barring.id_for_label }}">{{ form.operator_determined_barring.label }}</label>
-                        {{ form.operator_determined_barring }}
-                    </div>
-                </div>
-            </div>
+      <form method="post" enctype="multipart/form-data" class="subscriber-form">
+          {% csrf_token %}
+          
+          <!-- Основные поля -->
+          <div class="form-section">
+            <h2>Основная информация</h2>
+            <div class="form-row">
+              <div class="form-group">
+                  <label for="{{ form.imsi.id_for_label }}">{{ form.imsi.label }}</label>
+                  {{ form.imsi }}
+                  {% if form.imsi.errors %}
+                      <div class="error">{{ form.imsi.errors }}</div>
+                  {% endif %}
+              </div>
 
-            <!-- JSON поля -->
-            <div class="form-section">
-                <h2>{{ form.msisdn.label }}</h2>
-                <p class="help-text">{{ form.msisdn.help_text }}</p>
-                {{ form.msisdn }}
-                {% if form.msisdn.errors %}
-                    <div class="error">{{ form.msisdn.errors }}</div>
-                {% endif %}
-            </div>
+              <div class="form-group">
+                  <label for="{{ form.subscriber_status.id_for_label }}">{{ form.subscriber_status.label }}</label>
+                  {{ form.subscriber_status }}
+              </div>
+              
+              <div class="form-group">
+                  <label for="{{ form.operator_determined_barring.id_for_label }}">{{ form.operator_determined_barring.label }}</label>
+                  {{ form.operator_determined_barring }}
+              </div>
 
-            <div class="form-section">
-                <h2>{{ form.security.label }}</h2>
-                <p class="help-text">{{ form.security.help_text }}</p>
-                {{ form.security }}
-                {% if form.security.errors %}
-                    <div class="error">{{ form.security.errors }}</div>
-                {% endif %}
             </div>
+          </div>
 
-            <div class="form-section">
-                <h2>{{ form.ambr.label }}</h2>
-                <p class="help-text">{{ form.ambr.help_text }}</p>
-                {{ form.ambr }}
-                {% if form.ambr.errors %}
-                    <div class="error">{{ form.ambr.errors }}</div>
-                {% endif %}
-            </div>
+          <div class="form-section">
+            <h2>{{ form.msisdn.label }}</h2>
+            {{ form.msisdn }}
+            {% if form.msisdn.errors %}
+                <div class="error">{{ form.msisdn.errors }}</div>
+            {% endif %}
+          </div>
 
-            <div class="form-section">
-                <h2>{{ form.slice.label }}</h2>
-                <p class="help-text">{{ form.slice.help_text }}</p>
-                {{ form.slice }}
-                {% if form.slice.errors %}
-                    <div class="error">{{ form.slice.errors }}</div>
-                {% endif %}
-            </div>
+          <div class="form-section">
+            <h2>{{ form.security.label }}</h2>
+            {{ form.security }}
+            {% if form.security.errors %}
+                <div class="error">{{ form.security.errors }}</div>
+            {% endif %}
+          </div>
 
-            <div class="form-actions">
-                {% if not "/delete/" in request.path %}
-                    <button type="submit" class="btn-save">Сохранить</button>
-                {% else %}
-                    <button type="submit" class="btn-delete">Удалить</button>
-                {% endif %}
-                <a href="{% url 'open5gs:index' %}" class="btn-cancel">Отмена</a>
-            </div>
-        </form>
-    {% endwith %}
+          <div class="form-section">
+            <h2>{{ form.ambr.label }}</h2>
+            {{ form.ambr }}
+            {% if form.ambr.errors %}
+                <div class="error">{{ form.ambr.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="form-section">
+              <h2>{{ form.slice.label }}</h2>
+              {{ form.slice }}
+              {% if form.slice.errors %}
+                  <div class="error">{{ form.slice.errors }}</div>
+              {% endif %}
+          </div>
+
+          <div class="form-actions">
+              {% if not "/delete/" in request.path %}
+                  <button type="submit" class="btn btn-primary">Сохранить</button>
+              {% else %}
+                  <button type="submit" class="btn btn-delete">Удалить</button>
+              {% endif %}
+              <a href="{% url 'open5gs:index' %}" class="btn btn-secondary">Отмена</a>
+          </div>
+      </form>
+  {% endwith %}
 </div>
 {% endblock %}
 

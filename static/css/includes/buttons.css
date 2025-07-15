@@ -1,7 +1,7 @@
 .btn-icon {
   background: none;
   border: none;
-  color: var(--light-blue-color);
+  color: var(--light-priority-color);
   font-size: 1.3rem;
   cursor: pointer;
   padding: 0.4rem;
@@ -9,13 +9,13 @@
   transition: color var(--transition-value);
 }
 .btn-icon:hover {
-  color: var(--dark-blue-color);
+  color: var(--dark-priority-color);
 }
 body.dark .btn-icon {
-  color: var(--dark-blue-color);
+  color: var(--dark-priority-color);
 }
 body.dark .btn-icon:hover {
-  color: var(--light-blue-color);
+  color: var(--light-priority-color);
 }
 
 .btn {

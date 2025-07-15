@@ -26,21 +26,21 @@ body.dark footer {
   font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
-  color: var(--dark-blue-color);
+  color: var(--dark-priority-color);
   text-decoration: none;
   transition: color var(--transition-value);
 }
 
 body.dark .footer-container .logo a {
-  color: var(--light-blue-color);
+  color: var(--light-priority-color);
 }
 
 .footer-container .logo a:hover {
-  color: var(--light-blue-color);
+  color: var(--light-priority-color);
 }
 
 body.dark .footer-container .logo a:hover {
-  color: var(--dark-blue-color);
+  color: var(--dark-priority-color);
 }
 
 .footer-nav ul {
@@ -70,7 +70,7 @@ body.dark .footer-container .logo a:hover {
 
 .footer-nav li a:hover,
 .footer-nav li a.active {
-  color: var(--light-blue-color);
+  color: var(--light-priority-color);
 }
 
 footer.dark .footer-nav li a:hover,
@@ -88,7 +88,7 @@ footer.dark .footer-nav li a.active {
 
 #scroll-to-top {
   padding: 0.5rem 1rem;
-  background-color: var(--dark-blue-color);
+  background-color: var(--dark-priority-color);
   color: var(--light-color);
   border: none;
   border-radius: 999px;
@@ -101,16 +101,16 @@ footer.dark .footer-nav li a.active {
 }
 
 #scroll-to-top:hover {
-  background-color: var(--light-blue-color);
+  background-color: var(--light-priority-color);
 }
 
 body.dark #scroll-to-top {
   color: var(--light-add-color);
-  background-color: var(--light-blue-color);
+  background-color: var(--light-priority-color);
 }
 
 body.dark #scroll-to-top:hover {
-  background-color: var(--dark-blue-color);
+  background-color: var(--dark-priority-color);
 }
 
 .bottom p {

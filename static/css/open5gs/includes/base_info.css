@@ -1,0 +1,78 @@
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--dark-add-color);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+body.dark .form-group label {
+  color: var(--light-add-color);
+}
+
+.form-group input[type="text"],
+.form-group select {
+  padding: 0.6rem 0.75rem;
+  font-size: 1rem;
+  border: 1px solid var(--light-gray-color);
+  background-color: var(--light-add-background-color);
+  color: var(--dark-color);
+  border-radius: 6px;
+  transition: border-color 0.2s;
+}
+
+body.dark .form-group input[type="text"],
+body.dark .form-group select {
+  background-color: var(--dark-add-background-color);
+  border-color: var(--dark-gray-color);
+  color: var(--light-color);
+}
+
+.form-group input[type="text"]:focus,
+.form-group select:focus {
+  box-shadow: 0 0 1px var(--dark-extra-color);
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .form-group {
+    width: 100%;
+  }
+}
+
+.form-group select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 0.6rem 2.5rem 0.6rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='%23000'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  cursor: pointer;
+}
+
+body.dark .form-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='%23fff'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+}
+
+.form-group select option {
+  font-size: 1rem;
+  padding: 0.5rem;
+}
