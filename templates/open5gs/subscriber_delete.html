@@ -6,17 +6,19 @@
 {% endblock %}
 
 {% block content %}
-<div class="card message-card">
-    <h2>Подтверждение удаления</h2>
-    <p>Вы уверены, что хотите удалить абонента {{ subscriber.imsi }}?</p>
-    
-    <form method="post">
-        {% csrf_token %}
-        <div class="btn-group">
-            <button type="submit" class="btn btn-danger">Удалить</button>
-            <a href="{% url 'open5gs:index' %}" class="btn btn-secondary">Отмена</a>
-        </div>
-    </form>
+<div class="container sm">
+  <div class="card message-card">
+      <h2>Подтверждение удаления</h2>
+      <p>Вы уверены, что хотите удалить абонента {{ subscriber.imsi }}?</p>
+      
+      <form method="post">
+          {% csrf_token %}
+          <div class="btn-group">
+              <button type="submit" class="btn btn-danger">Удалить</button>
+              <a href="{% url 'open5gs:index' %}" class="btn btn-secondary">Отмена</a>
+          </div>
+      </form>
+  </div>
 </div>
 {% endblock %}
 

@@ -25,10 +25,6 @@ MSISDN_SCHEMA = {
         'type': 'string',
         'pattern': '^\\d+$',
         'maxLength': MAX_SUBSCRIBER_MSISDN_LEN,
-        'attrs': {
-            'placeholder': 'Введите номер MSISDN',
-            'class': 'msisdn-input',
-        }
     },
     'minItems': 0,
     'maxItems': MAX_MSISDN_COUNT,

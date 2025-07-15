@@ -1,9 +1,11 @@
-/* === JSON Form (msisdn, security, ambr) === */
-.rjf-form-wrapper {
-  background-color: #fafafa;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 1rem;
+.django-jsonform-container,
+.rjf-form-wrapper,
+.module.aligned,
+.rjf-form-group {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  border: none;
   box-sizing: border-box;
 }
 
@@ -11,31 +13,31 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  padding: 0;
+  margin: 0;
 }
 
 .rjf-form-row {
+  padding: 0 !important;
+  margin: 0 !important;
   display: flex;
   align-items: flex-start;
-  flex: 1 1 280px;
+  flex: 1 1 300px;
   gap: 0.75rem;
-  background: #fff;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 0.75rem;
 }
 
 .rjf-form-row-inner {
   flex-grow: 1;
+  padding: 0;
+  margin: 0;
 }
 
-/* Inline value + unit */
-.rjf-form-row-inner > div > label + .rjf-input-group {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
+/* .rjf-form-row */
+/* .rjf-form-row-controls */
+/* .rjf-form-row-inner */
 
-.rjf-input-group input,
+/* .rjf-input-group input,
 .rjf-input-group select {
   width: 100%;
   padding: 0.5rem 0.75rem;
@@ -43,24 +45,24 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: #fff;
-}
+} */
 
-.rjf-input-group input[type="number"] {
+/* .rjf-input-group input[type="number"] {
   flex: 1;
-}
+} */
 
-.rjf-input-group select {
+/* .rjf-input-group select {
   width: auto;
   min-width: 120px;
-}
+} */
 
-.rjf-form-row-controls {
+/* .rjf-form-row-controls {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-}
+} */
 
-.rjf-form-row-controls button {
+/* .rjf-form-row-controls button {
   all: unset;
   background-color: #e0e0e0;
   color: #333;
@@ -73,31 +75,31 @@
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.2s;
-}
+} */
 
-.rjf-form-row-controls button:hover {
+/* .rjf-form-row-controls button:hover {
   background-color: #ccc;
-}
+} */
 
 /* === Заголовки вложенных блоков === */
-.rjf-form-group-title {
+/* .rjf-form-group-title {
   font-weight: 600;
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 1rem;
-}
+} */
 
-.rjf-form-group-title button {
+/* .rjf-form-group-title button {
   all: unset;
   font-size: 1rem;
   cursor: pointer;
   padding: 0 0.25rem;
   color: #666;
   transition: color 0.2s;
-}
+} */
 
-.rjf-form-group-title button:hover {
+/* .rjf-form-group-title button:hover {
   color: #000;
-}
+} */

@@ -1,5 +1,5 @@
 #search-bar {
-  margin-left: var(--sidebar-width);
+  margin-left: calc(var(--sidebar-width) - 30px);
   transition: all var(--transition-value);
 }
 
@@ -11,7 +11,7 @@
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 800px;
+  max-width: 780px;
   background-color: var(--light-add-background-color);
   border-radius: 10px;
   padding: 0.45rem 0.75rem;

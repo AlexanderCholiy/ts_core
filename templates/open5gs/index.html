@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+ <div class="container">
   <div class="card-grid">
     {% for subscriber in page_obj %}
       <div class="card">
@@ -26,7 +27,7 @@
 
   {% if not page_obj %}
     <div class="card">
-      <p class="empty-message">Ничего не найдено</p>
+      <p class="error-message">Ничего не найдено</p>
     </div>
   {% endif %}
 
@@ -38,5 +39,5 @@
   {% if page_obj.has_other_pages %}
     {% include "includes/paginator.html" %}
   {% endif %}
-
+</div>
 {% endblock %}

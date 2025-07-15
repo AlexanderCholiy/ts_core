@@ -12,6 +12,11 @@
   width: 100%;
 }
 
+.container.sm {
+  margin: 0;
+  max-width: 800px;
+}
+
 .card {
   border-radius: 10px;
   box-shadow: 0 0 4px var(--dark-extra-color);
@@ -24,25 +29,15 @@ body.dark .card {
   background-color: var(--dark-background-color);
 }
 
-.empty-message {
+.error-message {
   padding: 1rem 2rem;
   margin: 1.5rem auto;
   text-align: center;
   color: var(--dark-red-color);
 }
 
-body.dark .empty-message {
+body.dark .error-message {
   color: var(--light-red-color);
-}
-
-.message-card {
-  padding: 1rem 2rem;
-  max-width: 600px;
-  margin: 1.5rem auto;
-}
-
-body.dark .message-card {
-  box-shadow: 0 0 4px var(--light-extra-color);
 }
 
 @media (max-width: 768px) {

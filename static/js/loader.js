@@ -3,5 +3,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => {
         spinnerOverlay.classList.add("hidden");
-    }, 500);
+    }, 400);
 });

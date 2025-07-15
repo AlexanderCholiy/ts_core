@@ -6,52 +6,49 @@
 {% endblock %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/registration/registration.css' %}">
+  <link rel="stylesheet" href="{% static 'css/users/profile_form.css' %}">
 {% endblock %}
 
 {% block content %}
-  <h2>Профиль</h2>
+<div class="container sm">
+  <div class="card">
+    <h2>Профиль</h2>
 
-  <form method="post" action="{% url 'users:profile' %}" enctype="multipart/form-data">
-    {% csrf_token %}
+    <form method="post" action="{% url 'users:profile' %}" enctype="multipart/form-data">
+      {% csrf_token %}
 
-    <div class="form-group">
-      <label for="{{ form.avatar.id_for_label }}">Аватар:</label>
-      {{ form.avatar }}
-      
-      {% if form.avatar.value %}
-        <img src="{{ form.avatar.value.url }}" alt="Аватар" class="avatar-preview">
-        <div class="avatar-actions">
-          <label class="delete-avatar">
-            <input type="checkbox" name="avatar-clear"> Удалить текущий аватар
-          </label>
-        </div>
-      {% endif %}
-    </div>
-
-    <div class="form-group">
-      <label for="{{ form.date_of_birth.id_for_label }}">Дата рождения:</label>
-      {{ form.date_of_birth }}
-      {{ form.date_of_birth.errors }}
-    </div>
-    
-    <div class="form-group">
-      <label for="{{ form.first_name.id_for_label }}">Имя:</label>
-      {{ form.first_name }}
-    </div>
-    
-    <div class="form-group">
-      <label for="{{ form.last_name.id_for_label }}">Фамилия:</label>
-      {{ form.last_name }}
-    </div>
-    
-    <div class="form-group">
-      <label>Роль:</label>
-      <div class="role-display">
-        {{ user.get_role_display }}
+      <div class="form-group">
+        <label for="{{ form.avatar.id_for_label }}">Аватар:</label>
+        {{ form.avatar }}
+        
+        {% if form.avatar.value %}
+          <img src="{{ form.avatar.value.url }}" alt="Аватар" class="avatar-preview">
+          <div class="avatar-actions">
+            <label class="delete-avatar">
+              <input type="checkbox" name="avatar-clear"> Удалить текущий аватар
+            </label>
+          </div>
+        {% endif %}
       </div>
-    </div>
 
-    <button type="submit">Сохранить</button>
-  </form>
+      <div class="form-group">
+        <label for="{{ form.date_of_birth.id_for_label }}">Дата рождения:</label>
+        {{ form.date_of_birth }}
+        {{ form.date_of_birth.errors }}
+      </div>
+      
+      <div class="form-group">
+        <label for="{{ form.first_name.id_for_label }}">Имя:</label>
+        {{ form.first_name }}
+      </div>
+      
+      <div class="form-group">
+        <label for="{{ form.last_name.id_for_label }}">Фамилия:</label>
+        {{ form.last_name }}
+      </div>
+
+      <button class="btn btn-primary" type="submit">Сохранить</button>
+    </form>
+  </div>
+</div>
 {% endblock %} 
