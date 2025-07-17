@@ -1,19 +1,27 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Страница не найдена: 404{% endblock %}
+{% block title %}Ошибка 404{% endblock %}
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/errors/page_error.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="error-body">
-  <div class="error-container">
-    <h1>Страница не найдена: 404</h1>
-    <p>Упс! Страницы с адресом <code>{{ path }}</code> не существует</p>
-    <div class="error-link">
-      <a href="{% url 'open5gs:index' %}">Вернуться на главную</a>
+<div class="container-sm">
+  <div class="card">
+    <div class="card-body">
+      <p class="card-title">Страница не найдена: 404</p>
+      <p class="card-text error-message">
+        {% if path %}
+          Упс! Страницы с адресом <code>{{ path }}</code> не существует.
+        {% else %}
+          Упс! Страницы с текущим адресом <code>http://127.0.0.1:8000/pages/about/</code> не существует.
+        {% endif %}
+      </p>
+      <p class="card-text">
+        <a href="{% url 'open5gs:index' %}" class="link-text">Вернуться на главную</a>
+      </p>
     </div>
   </div>
 </div>

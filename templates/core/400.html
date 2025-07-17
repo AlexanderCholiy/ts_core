@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Ошибка запроса: 400{% endblock %}
-
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/errors/page_error.css' %}">
-{% endblock %}
+{% block title %}Ошибка 400{% endblock %}
 
 {% block content %}
-<div class="error-body">
-  <div class="error-container">
-    <h1>Неверный запрос: 400</h1>
-    <p>Ваш запрос был некорректен или повреждён.</p>
-    <div class="error-link">
-      <a href="{% url 'open5gs:index' %}">Вернуться на главную</a>
+<div class="container-sm">
+  <div class="card">
+    <div class="card-body">
+      <p class="card-title">Неверный запрос: 400</p>
+      <p class="card-text error-message">
+        Ваш запрос был некорректен или повреждён.
+      </p>
+      <p class="card-text">
+        <a href="{% url 'open5gs:index' %}" class="link-text">Вернуться на главную</a>
+      </p>
     </div>
   </div>
 </div>
