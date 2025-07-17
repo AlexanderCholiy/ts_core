@@ -16,7 +16,7 @@
 .form-group label {
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: var(--gray-color);
+  color: var(--add-color);
 }
 
 .form-group input[type="text"],
@@ -175,6 +175,75 @@ body.dark .form-group input[type="date"]::-webkit-calendar-picker-indicator {
 
 .toggle-password:hover {
   color: var(--color);
+}
+
+.password_reset {
+  display: block;
+  margin: 1rem auto 0 auto;
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--gray-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--transition-value), text-shadow var(--transition-value);
+  cursor: pointer;
+}
+
+.password_reset:hover,
+.password_reset:focus {
+  color: var(--color);
+  text-decoration: underline;
+  outline: none;
+  text-shadow: 0 0 5px var(--priority-color);
+}
+
+.form-errors {
+  margin: 1rem auto;
+  max-width: 500px;
+  background-color: var(--red-color);
+  color: var(--background-color);
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px var(--extra-color);
+  animation: fadeIn 0.4s ease-in-out;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.form-errors ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.form-errors li::before {
+  content: '⚠ ';
+  margin-right: 4px;
+  color: inherit;
+}
+
+.error {
+  width: 100%;
+  max-width: 320px;
+  margin: 0.4rem auto 0;
+  color: var(--background-color);
+  background-color: var(--red-color);
+  margin-top: 0.4rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  animation: fadeIn 0.3s ease-in-out;
+  box-shadow: 0 1px 3px var(--extra-color);
+}
+
+.help-text {
+  font-size: 0.75rem;
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 768px) {

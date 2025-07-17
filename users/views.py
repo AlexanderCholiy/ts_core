@@ -41,7 +41,12 @@ def activate(request: HttpRequest, uidb64: str, token: str) -> HttpResponse:
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         pending_user = PendingUser.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+    except (
+        TypeError,
+        ValueError,
+        OverflowError,
+        PendingUser.DoesNotExist,
+    ):
         pass
 
     if (
@@ -95,7 +100,12 @@ def confirm_email_change(
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         pending_user = PendingUser.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+    except (
+        TypeError,
+        ValueError,
+        OverflowError,
+        PendingUser.DoesNotExist,
+    ):
         pass
 
     if (

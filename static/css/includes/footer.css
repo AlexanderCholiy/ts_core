@@ -70,20 +70,11 @@ footer {
 
 #scroll-to-top {
   padding: 0.5rem 1rem;
-  background-color: var(--priority-color);
-  color: var(--color);
-  border: none;
   border-radius: 999px;
-  cursor: pointer;
   font-weight: 500;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: background-color var(--transition-value);
-}
-
-#scroll-to-top:hover {
-  background-color: var(--priority-color);
 }
 
 .bottom p {

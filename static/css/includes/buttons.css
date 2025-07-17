@@ -29,8 +29,8 @@
 
 .btn:hover {
   box-shadow: 0 0 2px var(--extra-color);
-  border-color: var(--color);
-  color: var(--color);
+  border-color: var(--add-background-color);
+  color: var(--add-background-color);
 }
 
 .btn-primary {

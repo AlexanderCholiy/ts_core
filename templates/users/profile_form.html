@@ -15,7 +15,6 @@
       <form method="post" enctype="multipart/form-data" class="user-form">
         {% csrf_token %}
 
-        <!-- Аватар -->
         <div class="form-group avatar-upload">
           <label for="id_avatar" class="avatar-label" tabindex="0" aria-label="Загрузить или заменить аватар">
             <div class="avatar-preview" id="avatarPreview">
@@ -37,22 +36,21 @@
             </label>
           {% endif %}
 
-          <div class="form-error">{{ form.avatar.errors }}</div>
+          {% if  form.avatar.errors %}
+            <div class="error">{{ form.avatar.errors }}</div>
+          {% endif %}
         </div>
 
-        <!-- Имя -->
         <div class="form-group">
           {{ form.first_name.label_tag }}
           {{ form.first_name }}
         </div>
 
-        <!-- Фамилия -->
         <div class="form-group">
           {{ form.last_name.label_tag }}
           {{ form.last_name }}
         </div>
 
-        <!-- Дата рождения -->
         <div class="form-group">
           {{ form.date_of_birth.label_tag }}
           {{ form.date_of_birth }}

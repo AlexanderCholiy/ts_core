@@ -2,9 +2,15 @@
 {% load static %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/registration/registration.css' %}">
+  <link rel="stylesheet" href="{% static 'css/users/profile_form.css' %}">
 {% endblock %}
 
 {% block content %}
-  <h2>Вы вышли из системы</h2>
+<div class="container-sm">
+  <div class="card">
+    <div class="card-body">
+      <p class="card-text">Вы вышли из системы.</p>
+    </div>
+  </div>
+</div>
 {% endblock %}

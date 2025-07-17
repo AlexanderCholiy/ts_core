@@ -6,14 +6,30 @@
 {% endblock %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/registration/registration.css' %}">
+  <link rel="stylesheet" href="{% static 'css/users/profile_form.css' %}">
 {% endblock %}
 
 {% block content %}
-  <h2>Регистрация</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Зарегистрироваться</button>
-  </form>
+<div class="container-sm">
+  <div class="card">
+    <div class="card-body">
+      <form method="post" class="user-form">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            
+            {% if field.help_text %}
+              <p class="form-text"><small class="text-muted help-text">{{ field.help_text }}</small></p>
+            {% endif %}
+            
+            <div class="error">{{ field.errors }}</div>
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary submit-button">Зарегистрироваться</button>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}

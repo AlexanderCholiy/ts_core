@@ -2,7 +2,7 @@
     --transition-value: 1.2s ease;
     --sidebar-width: 220px;
     --sidebar-collapsed-width: 60px;
-    --message-animation: slideUpFade 0.6s ease, fadeOut 0.6s ease 7.4s forwards;
+    --message-animation: slideUpFade 0.6s ease, fadeOut 0.6s ease 9.4s forwards;
 
     --color: #1a1d23;
     --add-color: #31343b;

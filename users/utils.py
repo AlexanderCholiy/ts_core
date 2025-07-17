@@ -25,11 +25,11 @@ def role_required(allowed_roles: list[str] = [str(Roles.USER)]):
         def wrapped_view(request: HttpRequest, *args, **kwargs):
             user: User = request.user
             if user.role not in allowed_roles and not user.is_superuser:
-                messages.warning(
+                messages.success(
                     request,
                     (
                         'Вы успешно прошли регистрацию, теперь дождитесь пока '
-                        'вашу учетную запись подтвердит модератор'
+                        'вашу учетную запись подтвердит администратор'
                     )
                 )
                 return redirect(reverse(settings.LOGIN_URL))
