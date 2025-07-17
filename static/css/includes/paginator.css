@@ -12,17 +12,11 @@
   font-size: 1rem;
   font-weight: 500;
   padding: 0.5rem 1rem;
-  background-color: var(--light-add-background-color);
+  background-color: var(--add-background-color);
   border-radius: 8px;
-  color: var(--dark-gray-color);
+  color: var(--gray-color);
   transition: background-color var(--transition-value);
-  border: 1px solid var(--light-gray-color);
-}
-
-body.dark .pagination-summary {
-  color: var(--light-gray-color);
-  background-color: var(--dark-add-background-color);
-  border: 1px solid var(--dark-gray-color);
+  border: 1px solid var(--gray-color);
 }
 
 .pagination {
@@ -41,43 +35,28 @@ body.dark .pagination-summary {
 .page-link {
   display: inline-block;
   padding: 0.5rem 1rem;
-  background-color: var(--light-add-background-color);
-  color: var(--dark-priority-color);
+  background-color: var(--add-background-color);
+  color: var(--priority-color);
   border-radius: 8px;
   text-decoration: none;
   font-weight: 500;
   transition: 
     background-color var(--transition-value), 
     color var(--transition-value);
-  border: 1px solid var(--light-gray-color);
+  border: 1px solid var(--gray-color);
 }
 
 .page-link:hover {
-  background-color: var(--light-priority-color);
-  color: var(--light-color);
+  background-color: var(--priority-color);
+  color: var(--color);
 }
 
 .page-item.active .page-link {
-  background-color: var(--dark-priority-color);
-  color: var(--light-color);
+  background-color: var(--priority-color);
+  color: var(--color);
   cursor: default;
 }
 
-body.dark .page-link {
-  background-color: var(--dark-add-background-color);
-  color: var(--light-priority-color);
-  border-color: var(--dark-gray-color);
-}
-
-body.dark .page-link:hover {
-  background-color: var(--dark-priority-color);
-  color: var(--light-add-color);
-}
-
-body.dark .page-item.active .page-link {
-  background-color: var(--light-priority-color);
-  color: var(--light-add-color);
-}
 
 @media (max-width: 768px) {
   .pagination-wrapper {

@@ -2,12 +2,12 @@
   position: absolute;
   right: 0;
   top: calc(100% + 8px);
-  background-color: var(--light-background-color);
-  border: 1px solid var(--light-gray-color);
+  background-color: var(--background-color);
+  border: 1px solid var(--gray-color);
   border-radius: 6px;
   min-width: 200px;
   padding: 0.5rem 0;
-  box-shadow: 0 4px 12px var(--dark-extra-color);
+  box-shadow: 0 4px 12px var(--extra-color);
   z-index: 1000;
   max-height: 0;
   overflow: hidden;
@@ -15,11 +15,6 @@
   transform: translateY(-10px);
   transition: all var(--transition-value);
   pointer-events: none;
-}
-
-body.dark .user-menu {
-  background-color: var(--dark-color);
-  border-color: var(--dark-gray-color);
 }
 
 .user-menu.visible {
@@ -56,12 +51,7 @@ body.dark .user-menu {
 
 .user-menu .nav-link:hover,
 .user-menu .btn-logout:hover {
-  background-color: var(--light-add-background-color);
-}
-
-body.dark .user-menu .nav-link:hover,
-body.dark .user-menu .btn-logout:hover {
-  background-color: var(--dark-add-background-color);
+  background-color: var(--add-background-color);
 }
 
 

@@ -53,7 +53,25 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// Смена класса body при скролле
-window.addEventListener("scroll", () => {
-  document.body.classList.toggle("scrolled", window.scrollY > 0);
+document.addEventListener("DOMContentLoaded", () => {
+  const header = document.getElementById("header");
+  const sidebarContent = document.querySelector(".sidebar-content");
+
+  const headerHeight = header.offsetHeight;
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      const ratio = entry.intersectionRatio; // от 0 до 1
+      const offset = headerHeight * ratio;
+      sidebarContent.style.marginTop = `${offset}px`;
+    },
+    {
+      root: null,
+      threshold: Array.from({ length: 101 }, (_, i) => i / 100), // 0.00, 0.01, ..., 1.00
+    }
+  );
+
+  if (header) {
+    observer.observe(header);
+  }
 });

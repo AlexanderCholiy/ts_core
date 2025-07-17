@@ -1,23 +1,15 @@
 .card h1 {
   font-size: 1.6rem;
-  color: var(--dark-priority-color);
+  color: var(--priority-color);
   padding: 1.5rem;
   text-align: center;
-}
-
-body.dark .card h1 {
-  color: var(--light-priority-color);
 }
 
 .form-section {
   padding: 0 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 4px solid var(--light-add-background-color);
+  border-bottom: 4px solid var(--add-background-color);
   transition: border-color var(--transition-value);
-}
-
-body.dark .form-section {
-  border-color: var(--dark-add-background-color);
 }
 
 .subscriber-form h2 {

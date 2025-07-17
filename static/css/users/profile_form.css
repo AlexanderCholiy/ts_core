@@ -3,11 +3,7 @@ h2 {
   margin-bottom: 2rem;
   padding-top: 0.5rem;
   font-size: 1.75rem;
-  color: var(--dark-priority-color);
-}
-
-body.dark h2 {
-  color: var(--light-priority-color);
+  color: var(--priority-color);
 }
 
 .form-group {

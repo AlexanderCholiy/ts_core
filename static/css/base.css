@@ -3,23 +3,14 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: 'Montserrat', sans-serif;
-  color: var(--dark-color);
+  color: var(--color);
   transition: color var(--transition-value);
-  background-color: var(--light-add-background-color);
-}
-
-body.dark {
-  color: var(--light-color);
-  background-color: var(--dark-add-background-color);
+  background-color: var(--add-background-color);
 }
 
 .active {
     font-weight: 600;
-    color: var(--dark-priority-color) !important;
-}
-
-body.dark .active {
-    color: var(--light-priority-color) !important;
+    color: var(--priority-color) !important;
 }
 
 /* * {

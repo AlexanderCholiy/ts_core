@@ -1,7 +1,7 @@
 .btn-icon {
   background: none;
   border: none;
-  color: var(--light-priority-color);
+  color: var(--priority-color);
   font-size: 1.3rem;
   cursor: pointer;
   padding: 0.4rem;
@@ -9,13 +9,7 @@
   transition: color var(--transition-value);
 }
 .btn-icon:hover {
-  color: var(--dark-priority-color);
-}
-body.dark .btn-icon {
-  color: var(--dark-priority-color);
-}
-body.dark .btn-icon:hover {
-  color: var(--light-priority-color);
+  color: var(--priority-color);
 }
 
 .btn {
@@ -29,51 +23,30 @@ body.dark .btn-icon:hover {
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  color: var(--light-color);
+  color: var(--color);
   justify-content: center;
-}
-body.dark .btn {
-  color: var(--light-add-color);
 }
 
 /* PRIMARY */
 .btn-primary {
-  background-color: var(--dark-blue-color);
+  background-color: var(--blue-color);
 }
 .btn-primary:hover {
-  background-color: var(--light-blue-color);
-}
-body.dark .btn-primary {
-  background-color: var(--light-blue-color);
-}
-body.dark .btn-primary:hover {
-  background-color: var(--dark-blue-color);
+  background-color: var(--blue-color);
 }
 
 /* DANGER */
 .btn-danger {
-  background-color: var(--dark-red-color);
+  background-color: var(--red-color);
 }
 .btn-danger:hover {
-  background-color: var(--light-red-color);
-}
-body.dark .btn-danger {
-  background-color: var(--light-red-color);
-}
-body.dark .btn-danger:hover {
-  background-color: var(--dark-red-color);
+  background-color: var(--red-color);
 }
 
 /* SECONDARY */
 .btn-secondary {
-  background-color: var(--dark-gray-color);
+  background-color: var(--gray-color);
 }
 .btn-secondary:hover {
-  background-color: var(--light-gray-color);
-}
-body.dark .btn-secondary {
-  background-color: var(--light-gray-color);
-}
-body.dark .btn-secondary:hover {
-  background-color: var(--dark-gray-color);
+  background-color: var(--gray-color);
 }

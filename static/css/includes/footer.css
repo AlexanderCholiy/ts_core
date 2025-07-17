@@ -2,14 +2,9 @@ footer {
   width: 100%;
   position: relative;
   z-index: 10;
-  background-color: var(--light-background-color);
+  background-color: var(--background-color);
   margin-top: auto;
-  box-shadow: 0 2px 6px var(--dark-extra-color);
-}
-
-body.dark footer {
-  background-color: var(--dark-background-color);
-  box-shadow: 0 2px 6px var(--light-extra-color);
+  box-shadow: 0 2px 6px var(--extra-color);
 }
 
 .footer-container {
@@ -26,21 +21,13 @@ body.dark footer {
   font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
-  color: var(--dark-priority-color);
+  color: var(--priority-color);
   text-decoration: none;
   transition: color var(--transition-value);
 }
 
-body.dark .footer-container .logo a {
-  color: var(--light-priority-color);
-}
-
 .footer-container .logo a:hover {
-  color: var(--light-priority-color);
-}
-
-body.dark .footer-container .logo a:hover {
-  color: var(--dark-priority-color);
+  color: var(--priority-color);
 }
 
 .footer-nav ul {
@@ -70,12 +57,7 @@ body.dark .footer-container .logo a:hover {
 
 .footer-nav li a:hover,
 .footer-nav li a.active {
-  color: var(--light-priority-color);
-}
-
-footer.dark .footer-nav li a:hover,
-footer.dark .footer-nav li a.active {
-  color: var(--dark-cyan-color);
+  color: var(--priority-color);
 }
 
 .footer-container .bottom {
@@ -88,8 +70,8 @@ footer.dark .footer-nav li a.active {
 
 #scroll-to-top {
   padding: 0.5rem 1rem;
-  background-color: var(--dark-priority-color);
-  color: var(--light-color);
+  background-color: var(--priority-color);
+  color: var(--color);
   border: none;
   border-radius: 999px;
   cursor: pointer;
@@ -101,24 +83,11 @@ footer.dark .footer-nav li a.active {
 }
 
 #scroll-to-top:hover {
-  background-color: var(--light-priority-color);
-}
-
-body.dark #scroll-to-top {
-  color: var(--light-add-color);
-  background-color: var(--light-priority-color);
-}
-
-body.dark #scroll-to-top:hover {
-  background-color: var(--dark-priority-color);
+  background-color: var(--priority-color);
 }
 
 .bottom p {
-  color: var(--light-gray-color);
-}
-
-body.dark .bottom p {
-  color: var(--dark-gray-color);
+  color: var(--gray-color);
 }
 
 @media (max-width: 768px) {
