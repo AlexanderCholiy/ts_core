@@ -10,6 +10,7 @@ from django.contrib.auth.views import PasswordResetView
 from .utils import send_activation_email, send_confirm_email, role_required
 from .forms import UserRegisterForm, ChangeEmailForm, UserForm
 from .models import User, PendingUser
+from core.logger import email_logger
 
 
 class CustomPasswordResetView(PasswordResetView):
@@ -46,8 +47,8 @@ def activate(request: HttpRequest, uidb64: str, token: str) -> HttpResponse:
         ValueError,
         OverflowError,
         PendingUser.DoesNotExist,
-    ):
-        pass
+    ) as e:
+        email_logger.exception(e)
 
     if (
         pending_user
@@ -105,8 +106,8 @@ def confirm_email_change(
         ValueError,
         OverflowError,
         PendingUser.DoesNotExist,
-    ):
-        pass
+    ) as e:
+        email_logger.exception(e)
 
     if (
         pending_user

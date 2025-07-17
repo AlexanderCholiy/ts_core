@@ -3,10 +3,6 @@
 
 {% block title %}Ошибка 404{% endblock %}
 
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/errors/page_error.css' %}">
-{% endblock %}
-
 {% block content %}
 <div class="container-sm">
   <div class="card">
@@ -16,7 +12,7 @@
         {% if path %}
           Упс! Страницы с адресом <code>{{ path }}</code> не существует.
         {% else %}
-          Упс! Страницы с текущим адресом <code>http://127.0.0.1:8000/pages/about/</code> не существует.
+          Упс! Страницы с текущим адресом не существует.
         {% endif %}
       </p>
       <p class="card-text">

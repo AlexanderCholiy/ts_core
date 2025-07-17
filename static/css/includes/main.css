@@ -46,7 +46,7 @@
   margin: 0;
 }
 
-.text-muted {
+main .text-muted {
   color: var(--gray-color);
   font-size: 0.9rem;
 }
@@ -62,7 +62,7 @@
   line-height: 1.5;
 }
 
-.link-text {
+main .link-text {
   vertical-align: -2px;
   line-height: 1;
   margin: 0;
@@ -70,8 +70,8 @@
   transition: color var(--transition-value);
 }
 
-.link-text:hover,
-.link-text:focus {
+main .link-text:hover,
+main .link-text:focus {
   color: var(--blue-color);
 }
 

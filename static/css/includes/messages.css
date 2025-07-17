@@ -34,6 +34,11 @@
   padding: 0;
 }
 
+.message--hidden {
+  opacity: 0;
+  z-index: -1;
+}
+
 @keyframes slideUpFade {
   to {
     opacity: 1;

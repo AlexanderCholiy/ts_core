@@ -13,6 +13,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 from .models import PendingUser, User, Roles
+from core.logger import email_logger
 
 
 def role_required(allowed_roles: list[str] = [str(Roles.USER)]):
@@ -130,12 +131,13 @@ def send_activation_email(
             subject, message, settings.DEFAULT_FROM_EMAIL, [pending_user.email]
         )
         return True
-    except Exception:
+    except Exception as e:
         pending_user.delete()
         messages.error(
             request,
             'Не удалось отправить письмо с подтверждением. Попробуйте позже.'
         )
+        email_logger.exception(e)
     return False
 
 
@@ -169,10 +171,11 @@ def send_confirm_email(user: PendingUser, request: HttpRequest) -> bool:
             recipient_list=[user.email]
         )
         return True
-    except Exception:
+    except Exception as e:
         user.delete()
         messages.error(
             request,
             'Не удалось отправить письмо с подтверждением. Попробуйте позже.'
         )
+        email_logger.exception(e)
     return False

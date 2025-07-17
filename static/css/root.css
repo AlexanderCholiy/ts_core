@@ -1,5 +1,5 @@
 :root {
-    --transition-value: 1.2s ease;
+    --transition-value: 0.2s ease;
     --sidebar-width: 220px;
     --sidebar-collapsed-width: 60px;
     --message-animation: slideUpFade 0.6s ease, fadeOut 0.6s ease 9.4s forwards;
@@ -8,13 +8,13 @@
     --add-color: #31343b;
     --extra-color: rgba(0, 0, 0, 0.5);
 
-    --gray-color: #676a6f;
-    --red-color: #a71d2a;
-    --green-color: #1e7e34;
-    --blue-color: #375a9e;
-    --yellow-color: #b38600;
-    --magenta-color: #862dbd;
-    --cyan-color: #126e82;
+    --gray-color: #a0a5af;
+    --red-color: #dc3545;
+    --green-color: #28a745;
+    --blue-color: #1586ff;
+    --yellow-color: #ffc107;
+    --magenta-color: #b23aee;
+    --cyan-color: #17a2b8;
 
     --priority-color: var(--blue-color);
 
@@ -28,16 +28,17 @@ body.dark {
     --add-color: #d5dbe5;
     --extra-color: rgba(255, 255, 255, 0.5);
 
-    --gray-color: #a0a5af;
-    --red-color: #dc3545;
-    --green-color: #28a745;
-    --blue-color: #1586ff;
-    --yellow-color: #ffc107;
-    --magenta-color: #b23aee;
-    --cyan-color: #17a2b8;
+    --gray-color: #676a6f;
+    --red-color: #a71d2a;
+    --green-color: #1e7e34;
+    --blue-color: #375a9e;
+    --yellow-color: #b38600;
+    --magenta-color: #862dbd;
+    --cyan-color: #126e82;
+
+    --priority-color: var(--blue-color);
 
     --background-color: #1a1d23;
     --add-background-color: #31343b;
 
-    --priority-color: var(--blue-color);
 }

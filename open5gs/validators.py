@@ -29,7 +29,6 @@ def validate_hex_value(
     name: str,
     max_value_len: Optional[int] = None,
     min_value_len: Optional[int] = None,
-
 ) -> str:
     try:
         hexadecimal_validator(value)
