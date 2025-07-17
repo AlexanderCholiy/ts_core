@@ -25,7 +25,7 @@ username_format_validators = [
         limit_value=MIN_USER_USERNAME_LEN,
         message=(
             'Имя пользователя должно содержать минимум '
-            f'{MIN_USER_USERNAME_LEN} символов.'
+            f'{MIN_USER_USERNAME_LEN} символа.'
         )
     )
 ]

@@ -18,7 +18,8 @@
   font-size: 16px;
   color: var(--background-color);
   box-shadow: 0 2px 10px var(--extra-color);
-  animation: var(--message-animation);
+  /* Задержка в JS */
+  animation: slideUpFade 0.6s ease, fadeOut 0.6s ease 4.4s forwards; 
   opacity: 0;
   transform: translateY(30px);
   animation-fill-mode: forwards;
