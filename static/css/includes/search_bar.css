@@ -1,5 +1,5 @@
 #search-bar {
-  margin-left: calc(var(--sidebar-width) - 30px);
+  margin-left: calc(var(--sidebar-width) - 195px)!important;
   transition: all var(--transition-value);
 }
 
@@ -82,7 +82,7 @@ body.dark .header-search input[type="text"]::placeholder {
     width: 100%;
     justify-content: center;
     order: 2;
-    margin-left: 0;
+    margin-left: 0!important;
   }
 
   .header-search {

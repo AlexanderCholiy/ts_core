@@ -35,4 +35,11 @@
     --dark-yellow-color: #b38600;
     --dark-magenta-color: #862dbd;
     --dark-cyan-color: #126e82;
+
+    --text-muted-color: #a71d2a;
+}
+
+
+body.dark {
+  --text-muted-color: #375a9e;
 }

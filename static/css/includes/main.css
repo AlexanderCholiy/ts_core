@@ -12,21 +12,47 @@
   width: 100%;
 }
 
-.container.sm {
-  margin: 0;
+.container-sm {
   max-width: 800px;
+  margin: 1.5rem 0;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .card {
   border-radius: 10px;
   box-shadow: 0 0 4px var(--dark-extra-color);
-  background-color: var(--light-background-color);
-  transition: box-shadow var(--transition-value), background-color var(--transition-value);
+  border: none;
 }
 
 body.dark .card {
   box-shadow: 0 0 4px var(--light-extra-color);
+}
+
+.card-header {
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+    background-color: var(--light-add-background-color);
+    border-bottom: 1px solid var(--dark-gray-color);
+}
+
+body.dark .card-header {
+  background-color: var(--dark-add-background-color);
+  border-bottom: 1px solid var(--light-gray-color);
+}
+
+.card-body {
+  background-color: var(--light-background-color);
+  border-bottom-left-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+}
+
+body.dark .card-body {
   background-color: var(--dark-background-color);
+}
+
+.text-muted {
+  color: var(--text-muted-color);
 }
 
 .error-message {
