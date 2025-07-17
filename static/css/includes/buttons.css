@@ -14,39 +14,36 @@
 
 .btn {
   padding: 0.6rem 1.2rem;
-  border: none;
   border-radius: 6px;
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  color: var(--add-color);
+  transition: all var(--transition-value);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  color: var(--color);
   justify-content: center;
+  user-select: none;
 }
 
-/* PRIMARY */
+.btn:hover {
+  box-shadow: 0 0 2px var(--extra-color);
+  border-color: var(--color);
+  color: var(--color);
+}
+
 .btn-primary {
-  background-color: var(--blue-color);
-}
-.btn-primary:hover {
+  border: 1.8px solid var(--blue-color);
   background-color: var(--blue-color);
 }
 
-/* DANGER */
 .btn-danger {
-  background-color: var(--red-color);
-}
-.btn-danger:hover {
+  border: 1.8px solid var(--red-color);
   background-color: var(--red-color);
 }
 
-/* SECONDARY */
 .btn-secondary {
-  background-color: var(--gray-color);
-}
-.btn-secondary:hover {
+  border: 1.8px solid var(--gray-color);
   background-color: var(--gray-color);
 }

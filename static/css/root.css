@@ -7,7 +7,7 @@
     --add-color: #31343b;
     --extra-color: rgba(0, 0, 0, 0.5);
 
-    --gray-color: #6c757d;
+    --gray-color: #676a6f;
     --red-color: #a71d2a;
     --green-color: #1e7e34;
     --blue-color: #375a9e;
@@ -30,7 +30,7 @@ body.dark {
     --gray-color: #a0a5af;
     --red-color: #dc3545;
     --green-color: #28a745;
-    --blue-color: #007bff;
+    --blue-color: #1586ff;
     --yellow-color: #ffc107;
     --magenta-color: #b23aee;
     --cyan-color: #17a2b8;

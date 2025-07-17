@@ -1,54 +1,104 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %} 
-  Профиль
-{% endblock %}
+{% block title %}Профиль{% endblock %}
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/users/profile_form.css' %}">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
-<div class="container sm">
+<div class="container-sm">
   <div class="card">
-    <h2>Профиль</h2>
+    <div class="card-body">
 
-    <form method="post" action="{% url 'users:profile' %}" enctype="multipart/form-data">
-      {% csrf_token %}
+      <form method="post" enctype="multipart/form-data" class="user-form">
+        {% csrf_token %}
 
-      <div class="form-group">
-        <label for="{{ form.avatar.id_for_label }}">Аватар:</label>
-        {{ form.avatar }}
-        
-        {% if form.avatar.value %}
-          <img src="{{ form.avatar.value.url }}" alt="Аватар" class="avatar-preview">
-          <div class="avatar-actions">
-            <label class="delete-avatar">
-              <input type="checkbox" name="avatar-clear"> Удалить текущий аватар
+        <!-- Аватар -->
+        <div class="form-group avatar-upload">
+          <label for="id_avatar" class="avatar-label" tabindex="0" aria-label="Загрузить или заменить аватар">
+            <div class="avatar-preview" id="avatarPreview">
+              {% if form.instance.avatar and form.instance.avatar.name %}
+                <img src="{{ form.instance.avatar.url }}" alt="Аватар" id="avatarImage">
+              {% else %}
+                <i class="bx bx-user-circle" id="avatarIcon"></i>
+              {% endif %}
+            </div>
+            <span class="avatar-text">загрузить / заменить</span>
+          </label>
+
+          <input type="file" name="avatar" id="id_avatar" accept="image/*" class="avatar-input" onchange="previewAvatar(this)">
+
+          {% if form.instance.avatar and form.instance.avatar.name %}
+            <label class="avatar-clear-label">
+              <input type="checkbox" name="avatar-clear" id="id_avatar-clear" class="avatar-clear-checkbox" onchange="toggleAvatarIcon()">
+              <span class="btn btn-danger avatar-clear-btn">Удалить аватар</span>
             </label>
-          </div>
-        {% endif %}
-      </div>
+          {% endif %}
 
-      <div class="form-group">
-        <label for="{{ form.date_of_birth.id_for_label }}">Дата рождения:</label>
-        {{ form.date_of_birth }}
-        {{ form.date_of_birth.errors }}
-      </div>
-      
-      <div class="form-group">
-        <label for="{{ form.first_name.id_for_label }}">Имя:</label>
-        {{ form.first_name }}
-      </div>
-      
-      <div class="form-group">
-        <label for="{{ form.last_name.id_for_label }}">Фамилия:</label>
-        {{ form.last_name }}
-      </div>
+          <div class="form-error">{{ form.avatar.errors }}</div>
+        </div>
 
-      <button class="btn btn-primary" type="submit">Сохранить</button>
-    </form>
+        <!-- Имя -->
+        <div class="form-group">
+          {{ form.first_name.label_tag }}
+          {{ form.first_name }}
+          <div class="form-error">{{ form.first_name.errors }}</div>
+        </div>
+
+        <!-- Фамилия -->
+        <div class="form-group">
+          {{ form.last_name.label_tag }}
+          {{ form.last_name }}
+          <div class="form-error">{{ form.last_name.errors }}</div>
+        </div>
+
+        <!-- Дата рождения -->
+        <div class="form-group">
+          {{ form.date_of_birth.label_tag }}
+          {{ form.date_of_birth }}
+          <div class="form-error">{{ form.date_of_birth.errors }}</div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary submit-button">Сохранить</button>
+      </form>
+    </div>
   </div>
 </div>
-{% endblock %} 
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const avatarPreview = document.getElementById('avatarPreview');
+  const originalAvatarUrl = "{% if form.instance.avatar and form.instance.avatar.name %}{{ form.instance.avatar.url }}{% else %}{% endif %}";
+
+  function previewAvatar(input) {
+    const file = input.files[0];
+    const clearCheckbox = document.getElementById('id_avatar-clear');
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        avatarPreview.innerHTML = `<img src="${e.target.result}" alt="avatar" id="avatarImage">`;
+        if (clearCheckbox) clearCheckbox.checked = false;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function toggleAvatarIcon() {
+    const checkbox = document.getElementById('id_avatar-clear');
+
+    if (checkbox.checked) {
+      avatarPreview.innerHTML = '<i class="bx bx-user-circle" id="avatarIcon"></i>';
+    } else {
+      if (originalAvatarUrl) {
+        avatarPreview.innerHTML = `<img src="${originalAvatarUrl}" alt="avatar" id="avatarImage">`;
+      }
+    }
+  }
+</script>
+{% endblock %}

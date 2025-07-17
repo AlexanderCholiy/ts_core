@@ -184,6 +184,10 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('avatar', 'date_of_birth', 'first_name', 'last_name',)
         widgets = {
+            'avatar': forms.ClearableFileInput(attrs={
+                'class': 'avatar-input',
+                'accept': 'image/*',
+            }),
             'date_of_birth': forms.DateInput(
                 attrs={
                     'type': 'date',
@@ -214,6 +218,8 @@ class UserForm(forms.ModelForm):
             raise ValidationError(
                 f'Пользователь должен быть младше {MAX_USER_AGE}'
             )
+        if age == 26:
+            raise ValidationError('Тестовая ошибка')
         return value
 
     def save(self, commit=True):
