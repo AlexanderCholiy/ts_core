@@ -26,8 +26,9 @@ def register(request: HttpRequest) -> HttpResponse:
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             pending_user = form.save()
-            send_activation_email(pending_user, request)
-            return render(request, 'registration/email_confirmation_sent.html')
+            if send_activation_email(pending_user, request):
+                return render(
+                    request, 'users/email_confirmation_sent.html')
     else:
         form = UserRegisterForm()
 
@@ -71,12 +72,13 @@ def change_email(request: HttpRequest) -> HttpResponse:
                 email=new_email,
                 password=user.password,
             )
-            send_confirm_email(pending_user, request)
-            return render(request, 'users/email_confirmation_sent.html')
+            if send_confirm_email(pending_user, request):
+                return render(request, 'users/email_confirmation_sent.html')
         else:
             for name, errors in form.errors.items():
                 if name == '__all__':
-                    messages.error(request, errors)
+                    for error in set(errors):
+                        messages.error(request, error)
     else:
         form = ChangeEmailForm(instance=request.user)
 
@@ -127,8 +129,10 @@ def profile(request: HttpRequest) -> HttpResponse:
             messages.success(request, 'Профиль успешно обновлён')
             return redirect('users:profile')
         else:
-            for _, errors in form.errors.items():
-                messages.error(request, errors)
+            for name, errors in form.errors.items():
+                if name == '__all__':
+                    for error in set(errors):
+                        messages.error(request, error)
     else:
         form = UserForm(instance=request.user)
 

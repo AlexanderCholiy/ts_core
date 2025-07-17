@@ -218,8 +218,7 @@ class UserForm(forms.ModelForm):
             raise ValidationError(
                 f'Пользователь должен быть младше {MAX_USER_AGE}'
             )
-        if age == 26:
-            raise ValidationError('Тестовая ошибка')
+
         return value
 
     def save(self, commit=True):

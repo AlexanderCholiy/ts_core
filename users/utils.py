@@ -106,7 +106,7 @@ def timedelta_to_human_time(time_delta: timedelta) -> str:
 
 def send_activation_email(
     pending_user: PendingUser, request: HttpRequest
-) -> None:
+) -> bool:
     token = default_token_generator.make_token(pending_user)
     uid = urlsafe_base64_encode(force_bytes(pending_user.pk))
     activation_path = reverse(
@@ -125,11 +125,21 @@ def send_activation_email(
         f'Срок действия ссылки — {valid_period}.\n\n'
         f'Если вы не регистрировались — просто проигнорируйте это письмо.'
     )
-    send_mail(
-        subject, message, settings.DEFAULT_FROM_EMAIL, [pending_user.email])
+    try:
+        send_mail(
+            subject, message, settings.DEFAULT_FROM_EMAIL, [pending_user.email]
+        )
+        return True
+    except Exception:
+        pending_user.delete()
+        messages.error(
+            request,
+            'Не удалось отправить письмо с подтверждением. Попробуйте позже.'
+        )
+    return False
 
 
-def send_confirm_email(user: PendingUser, request: HttpRequest) -> None:
+def send_confirm_email(user: PendingUser, request: HttpRequest) -> bool:
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     confirmation_path = reverse(
@@ -153,7 +163,16 @@ def send_confirm_email(user: PendingUser, request: HttpRequest) -> None:
         f'Если вы не запрашивали смену email — проигнорируйте это письмо.'
     )
 
-    send_mail(
-        subject, message, settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[user.email]
-    )
+    try:
+        send_mail(
+            subject, message, settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[user.email]
+        )
+        return True
+    except Exception:
+        user.delete()
+        messages.error(
+            request,
+            'Не удалось отправить письмо с подтверждением. Попробуйте позже.'
+        )
+    return False

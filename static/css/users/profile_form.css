@@ -21,7 +21,9 @@
 
 .form-group input[type="text"],
 .form-group input[type="date"],
-.form-group input[type="file"] {
+.form-group input[type="file"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
   padding: 0.65rem 1rem;
   font-size: 1rem;
   border: 1.8px solid var(--gray-color);
@@ -44,7 +46,9 @@ body.dark .form-group input[type="date"]::-webkit-calendar-picker-indicator {
 
 .form-group input[type="text"]:focus,
 .form-group input[type="date"]:focus,
-.form-group input[type="file"]:focus {
+.form-group input[type="file"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus {
   border-color: var(--priority-color);
   box-shadow: 0 0 5px var(--extra-color);
   outline: none;
@@ -151,6 +155,26 @@ body.dark .form-group input[type="date"]::-webkit-calendar-picker-indicator {
 #id_avatar,
 .avatar-clear-checkbox {
   display: none;
+}
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: var(--gray-color);
+  cursor: pointer;
+  transition: color var(--transition-value);
+}
+
+.toggle-password:hover {
+  color: var(--color);
 }
 
 @media (max-width: 768px) {

@@ -1,0 +1,76 @@
+.messages-container {
+  position: fixed;
+  bottom: 30px;
+  left: calc(var(--message-left, 50%));
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  transition: left var(--transition-value);
+}
+
+.message {
+  min-width: 250px;
+  max-width: 90vw;
+  border-radius: 8px;
+  font-size: 16px;
+  color: var(--background-color);
+  box-shadow: 0 2px 10px var(--extra-color);
+  animation: var(--message-animation);
+  opacity: 0;
+  transform: translateY(30px);
+  animation-fill-mode: forwards;
+  padding: 1rem;
+  font-weight: 500;
+}
+
+.message ul,
+.message ol,
+.message li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes slideUpFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.alert-success {
+  background-color: var(--green-color);
+}
+
+.alert-info {
+  background-color: var(--blue-color);
+}
+
+.alert-warning {
+  background-color: var(--yellow-color);
+}
+
+.alert-error,
+.alert-danger {
+  background-color: var(--red-color);
+}
+
+@media (min-width: 768px) {
+  body.sidebar-expanded .messages-container {
+    --message-left: calc(50% + 110px);
+  }
+
+  body.sidebar-collapsed .messages-container {
+    --message-left: calc(50% + 32px);
+  }
+}

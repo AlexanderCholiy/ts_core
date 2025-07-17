@@ -30,7 +30,7 @@ class Roles(models.TextChoices):
 
 class User(AbstractUser):
     email = models.EmailField(
-        'Почта',
+        'Email',
         unique=True,
         max_length=MAX_USER_EMAIL_LEN,
         help_text='Введите адрес электронной почты',

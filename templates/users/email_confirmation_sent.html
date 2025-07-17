@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} 
+  Смена email
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/registration/registration.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-sm">
+  <div class="card">
+    <div class="card-body">
+      <p class="card-title">Подтверждение Email</p>
+      <p class="card-text">На указанную вами почту была отправлена ссылка для подтверждения.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -51,6 +51,34 @@ document.addEventListener("DOMContentLoaded", () => {
       sidebar.classList.remove("mobile-open");
     }
   });
+
+  const updateBodySidebarClass = () => {
+    if (isMobile()) {
+      document.body.classList.remove("sidebar-expanded", "sidebar-collapsed");
+    } else {
+      if (sidebar.classList.contains("collapsed")) {
+        document.body.classList.add("sidebar-collapsed");
+        document.body.classList.remove("sidebar-expanded");
+      } else {
+        document.body.classList.add("sidebar-expanded");
+        document.body.classList.remove("sidebar-collapsed");
+      }
+    }
+  };
+
+  // Вызов при загрузке
+  updateBodySidebarClass();
+
+  // Вызов при клике по кнопке
+  toggleButton.addEventListener("click", () => {
+    // уже есть внутри toggle, просто добавь:
+    updateBodySidebarClass();
+  });
+
+  // Вызов при ресайзе
+  window.addEventListener("resize", () => {
+    updateBodySidebarClass();
+  });
 });
 
 document.addEventListener("DOMContentLoaded", () => {

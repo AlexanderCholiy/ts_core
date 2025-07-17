@@ -40,6 +40,12 @@
   padding: 1.25rem;
 }
 
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
 .text-muted {
   color: var(--gray-color);
   font-size: 0.9rem;

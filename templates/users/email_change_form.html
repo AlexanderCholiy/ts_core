@@ -6,25 +6,37 @@
 {% endblock %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/registration/registration.css' %}">
+  <link rel="stylesheet" href="{% static 'css/users/profile_form.css' %}">
 {% endblock %}
 
 {% block content %}
-  <h2>Смена email</h2>
+<div class="container-sm">
+  <div class="card">
+    <div class="card-body">
+      <form method="post" action="{% url 'users:change_email' %}" class="user-form">
+        {% csrf_token %}
 
-  <form method="post" action="{% url 'users:change_email' %}">
-    {% csrf_token %}
+        <div class="form-group">
+          {{ form.email.label_tag }}
+          {{ form.email }}
+        </div>
 
-    <div class="form-group">
-      <label for="{{ form.password.id_for_label }}">Пароль:</label>
-      {{ form.password }}
+        <div class="form-group password-toggle-group">
+          {{ form.password.label_tag }}
+          <div class="password-wrapper">
+            {{ form.password }}
+            <i class='bx bx-lock toggle-password' id="togglePassword"></i>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary submit-button">Сменить email</button>
+      </form>
     </div>
+  </div>
+</div>
 
-    <div class="form-group">
-      <label for="{{ form.email.id_for_label }}">Email:</label>
-      {{ form.email }}
-    </div>
-
-    <button type="submit">Сменить email</button>
-  </form>
 {% endblock %} 
+
+{% block extra_js %}
+  <script src="{% static 'js/users/password_toggle.js' %}"></script>
+{% endblock %}
