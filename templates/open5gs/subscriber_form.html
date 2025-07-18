@@ -6,9 +6,10 @@
   <link rel="stylesheet" href="{% static 'css/open5gs/includes/rjf_form.css' %}">
   <link rel="stylesheet" href="{% static 'css/open5gs/includes/base_info.css' %}">
   <link rel="stylesheet" href="{% static 'css/open5gs/includes/buttons.css' %}">
-  {% comment %} <link rel="stylesheet" href="{% static 'css/open5gs/includes/msisdn.css' %}"> {% endcomment %}
+  <link rel="stylesheet" href="{% static 'css/open5gs/includes/msisdn.css' %}">
   <link rel="stylesheet" href="{% static 'css/open5gs/includes/security.css' %}">
   <link rel="stylesheet" href="{% static 'css/open5gs/includes/ambr.css' %}">
+  <link rel="stylesheet" href="{% static 'css/open5gs/includes/slice.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -68,19 +69,19 @@
                   </div>
 
                   <div class="form-section">
-                      <p class="card-title">{{ form.ambr.label }}</p>
-                      {{ form.ambr }}
-                      {% if form.ambr.errors %}
-                          <div class="error">{{ form.ambr.errors }}</div>
-                      {% endif %}
+                    <p class="card-title">{{ form.ambr.label }}</p>
+                    {{ form.ambr }}
+                    {% if form.ambr.errors %}
+                      <div class="error">{{ form.ambr.errors }}</div>
+                    {% endif %}
                   </div>
 
                   <div class="form-section">
-                      <p class="card-title">{{ form.slice.label }}</p>
-                      {{ form.slice }}
-                      {% if form.slice.errors %}
-                          <div class="error">{{ form.slice.errors }}</div>
-                      {% endif %}
+                    <p class="card-title">{{ form.slice.label }}</p>
+                    {{ form.slice }}
+                    {% if form.slice.errors %}
+                      <div class="error">{{ form.slice.errors }}</div>
+                    {% endif %}
                   </div>
 
                   <div class="form-actions">
@@ -91,6 +92,7 @@
                       {% endif %}
                       <a href="{% url 'open5gs:index' %}" class="btn btn-secondary">Отмена</a>
                   </div>
+
               </form>
           {% endwith %}
           </div>

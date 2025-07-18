@@ -79,6 +79,11 @@ body.dark .rjf-input-group select {
   padding: 0.5rem;
 }
 
+.rjf-form-group-title {
+  font-weight: bold;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .form-group,
   .rjf-input-group {

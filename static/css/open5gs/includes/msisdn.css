@@ -1,5 +1,21 @@
-/* .rjf-form-row-controls {
+#id_msisdn_jsonform .rjf-form-group-children {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem 1.5rem;
+  width: 100%;
+}
+
+#id_msisdn_jsonform .rjf-form-row-inner,
+#id_msisdn_jsonform .rjf-input-group {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-} */
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  #id_msisdn_jsonform .rjf-form-group-children {
+    grid-template-columns: 1fr;
+  }
+}

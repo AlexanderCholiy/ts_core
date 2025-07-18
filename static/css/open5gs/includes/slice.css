@@ -1,0 +1,51 @@
+/* Slice */
+.rjf-form-group-wrapper .rjf-form-group-wrapper {
+  border: 4px solid var(--blue-color);
+  padding-left: 1rem;
+  margin-top: 1rem;
+  position: relative;
+}
+
+/* Session */
+.rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-form-group-wrapper {
+  border: 4px solid var(--red-color);
+  padding-left: 1rem;
+  margin-top: 1rem;
+  position: relative;
+  width: auto;
+}
+
+/* PCC Rules */
+.rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-form-group-wrapper {
+  border: 4px solid var(--gray-color);
+  padding-left: 1rem;
+  margin-top: 1rem;
+  position: relative;
+}
+
+.rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-form-group-wrapper {
+  border: 4px solid var(--yellow-color);
+  padding-left: 1rem;
+  margin-top: 1rem;
+  position: relative;
+}
+
+.rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-form-group-wrapper {
+  border: 4px solid var(--green-color);
+  padding-left: 1rem;
+  margin-top: 1rem;
+  position: relative;
+}
+
+/* .rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-form-group-wrapper::before{
+  content: attr(data-depth);
+  left: -2.5rem; 
+  position: absolute;
+  top: 0;
+  background: #4a90e2;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+} */

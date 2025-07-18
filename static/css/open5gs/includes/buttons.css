@@ -34,19 +34,9 @@ body.dark .rjf-add-button:hover {
   transform: scale(0.97);
 }
 
-#id_msisdn_jsonform .rjf-add-button {
-  border: 1.8px solid var(--blue-color);
-  background-color: var(--blue-color);
-}
-
-#id_slice_jsonform .rjf-form-group-inner .rjf-add-button {
+#id_slice_jsonform .rjf-form-group-wrapper .rjf-add-button {
   border: 1.8px solid var(--red-color);
   background-color: var(--red-color);
-}
-
-#id_slice_jsonform .rjf-add-button {
-  border: 1.8px solid var(--blue-color);
-  background-color: var(--blue-color);
 }
 
 .rjf-collapse-button {
