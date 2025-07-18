@@ -1,26 +1,12 @@
-.card h1 {
-  font-size: 1.6rem;
-  color: var(--priority-color);
-  padding: 1.5rem;
-  text-align: center;
-}
-
 .form-section {
-  padding: 0 1.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 4px solid var(--add-background-color);
   transition: border-color var(--transition-value);
-}
-
-.subscriber-form h2 {
-  margin-bottom: 1rem;
-  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
 }
 
 .form-actions {
-  margin-inline: 0.75rem;
   margin-top: 1.5rem;
-  padding-bottom: 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;

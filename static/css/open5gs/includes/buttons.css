@@ -1,0 +1,128 @@
+/* Add buttons */
+
+.rjf-add-button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--add-background-color);
+  transition: all var(--transition-value);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  outline: none;
+}
+
+body.dark .rjf-add-button{
+  color: var(--add-color);
+}
+
+.rjf-add-button:hover {
+  box-shadow: 0 0 5px var(--extra-color);
+  transform: translateY(-1px);
+  color: var(--background-color);
+}
+
+body.dark .rjf-add-button:hover {
+  color: var(--color);
+}
+
+.rjf-add-button:active {
+  transform: scale(0.97);
+}
+
+#id_msisdn_jsonform .rjf-add-button {
+  border: 1.8px solid var(--blue-color);
+  background-color: var(--blue-color);
+}
+
+#id_slice_jsonform .rjf-form-group-inner .rjf-add-button {
+  border: 1.8px solid var(--red-color);
+  background-color: var(--red-color);
+}
+
+#id_slice_jsonform .rjf-add-button {
+  border: 1.8px solid var(--blue-color);
+  background-color: var(--blue-color);
+}
+
+.rjf-collapse-button {
+  display: none;
+}
+
+/* Small buttons control */
+
+.rjf-form-row-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.rjf-form-row-controls button {
+  border: none;
+  border-radius: 20%;
+  padding: 4px 8px;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--add-background-color);
+  transition: all var(--transition-value);
+}
+
+body.dark .rjf-form-row-controls button {
+  color: var(--add-color);
+}
+
+.rjf-form-row-controls button:hover {
+  box-shadow: 0 0 2px var(--extra-color);
+  transform: scale(1.02);
+}
+.rjf-form-row-controls button:active {
+  transform: scale(0.98);
+}
+
+.rjf-move-up-button,
+.rjf-move-down-button {
+  background-color: var(--blue-color);
+}
+.rjf-remove-button {
+  background-color: var(--red-color);
+}
+
+/* Checkbox */
+.rjf-check-input {
+  flex: 1 1 300px;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: var(--add-color);
+  font-size: 0.95rem;
+}
+
+.rjf-check-input input[type="checkbox"] {
+  margin-right: 0.5rem;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--extra-color);
+  cursor: pointer;
+  border: 1px solid var(--gray-color);
+  background-color: var(--add-background-color);
+  color: var(--color);
+  margin-left: 0;
+}
+
+.rjf-check-input label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.rjf-form-row-inner {
+  display: flex;
+  flex: 1 1 100%;
+}

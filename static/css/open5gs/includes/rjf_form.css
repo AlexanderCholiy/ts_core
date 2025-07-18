@@ -1,4 +1,4 @@
-.django-jsonform-container,
+/* .django-jsonform-container,
 .rjf-form-wrapper,
 .module.aligned,
 .rjf-form-group {
@@ -7,17 +7,17 @@
   width: 100%;
   border: none;
   box-sizing: border-box;
-}
+} */
 
-.rjf-form-group-children {
+/* .rjf-form-group-children {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   padding: 0;
   margin: 0;
-}
+} */
 
-.rjf-form-row {
+/* .rjf-form-row {
   padding: 0 !important;
   margin: 0 !important;
   display: flex;
@@ -25,13 +25,13 @@
   flex: 1 1 300px;
   gap: 0.75rem;
   border: 1px solid #ddd;
-}
+} */
 
-.rjf-form-row-inner {
+/* .rjf-form-row-inner {
   flex-grow: 1;
   padding: 0;
   margin: 0;
-}
+} */
 
 /* .rjf-form-row */
 /* .rjf-form-row-controls */

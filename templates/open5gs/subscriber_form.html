@@ -5,92 +5,96 @@
   <link rel="stylesheet" href="{% static 'css/open5gs/subscriber_form.css' %}">
   <link rel="stylesheet" href="{% static 'css/open5gs/includes/rjf_form.css' %}">
   <link rel="stylesheet" href="{% static 'css/open5gs/includes/base_info.css' %}">
+  <link rel="stylesheet" href="{% static 'css/open5gs/includes/buttons.css' %}">
   {% comment %} <link rel="stylesheet" href="{% static 'css/open5gs/includes/msisdn.css' %}"> {% endcomment %}
+  <link rel="stylesheet" href="{% static 'css/open5gs/includes/security.css' %}">
+  <link rel="stylesheet" href="{% static 'css/open5gs/includes/ambr.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="card">
-    {% with data=form.instance %}
-        {% if "/edit/" in request.path %}
-            <h1>Редактировать абонента {{ data.imsi }}</h1>
-        {% elif "/delete/" in request.path %}
-            <h1>Удалить абонента {{ data.imsi }}</h1>
-        {% else %}
-            <h1>Добавить абонента</h1>
-        {% endif %}
+      <div class="card-body">
+          {% with data=form.instance %}
 
-        <form method="post" enctype="multipart/form-data" class="subscriber-form">
-            {% csrf_token %}
-            
-            <!-- Основные поля -->
-            <div class="form-section">
-                <h2>Основная информация</h2>
-                <div class="form-row">
-                <div class="form-group">
-                    <label for="{{ form.imsi.id_for_label }}">{{ form.imsi.label }}</label>
-                    {{ form.imsi }}
-                    {% if form.imsi.errors %}
-                        <div class="error">{{ form.imsi.errors }}</div>
-                    {% endif %}
-                </div>
+              <form method="post" enctype="multipart/form-data" class="subscriber-form">
+                  {% csrf_token %}
+                  
+                  <!-- Основные поля -->
+                  <div class="form-section">
+                      <p class="card-title">Основная информация<p>
+                      <div class="form-row">
+                        <div class="form-group">
+                            <label for="{{ form.imsi.id_for_label }}">{{ form.imsi.label }}</label>
+                            {{ form.imsi }}
+                            {% if form.imsi.errors %}
+                                <div class="error">{{ form.imsi.errors }}</div>
+                            {% endif %}
+                        </div>
 
-                <div class="form-group">
-                    <label for="{{ form.subscriber_status.id_for_label }}">{{ form.subscriber_status.label }}</label>
-                    {{ form.subscriber_status }}
-                </div>
-                
-                <div class="form-group">
-                    <label for="{{ form.operator_determined_barring.id_for_label }}">{{ form.operator_determined_barring.label }}</label>
-                    {{ form.operator_determined_barring }}
-                </div>
+                        <div class="form-group">
+                            <label for="{{ form.subscriber_status.id_for_label }}">{{ form.subscriber_status.label }}</label>
+                            {{ form.subscriber_status }}
+                            {% if form.subscriber_status.errors %}
+                                <div class="error">{{ form.subscriber_status.errors }}</div>
+                            {% endif %}
+                        </div>
 
-                </div>
-            </div>
+                        <div class="form-group">
+                            <label for="{{ form.operator_determined_barring.id_for_label }}">{{ form.operator_determined_barring.label }}</label>
+                            {{ form.operator_determined_barring }}
+                            {% if form.operator_determined_barring.errors %}
+                                <div class="error">{{ form.operator_determined_barring.errors }}</div>
+                            {% endif %}
+                        </div>
 
-            <div class="form-section">
-                <h2>{{ form.msisdn.label }}</h2>
-                {{ form.msisdn }}
-                {% if form.msisdn.errors %}
-                    <div class="error">{{ form.msisdn.errors }}</div>
-                {% endif %}
-            </div>
+                      </div>
+                  </div>
 
-            <div class="form-section">
-                <h2>{{ form.security.label }}</h2>
-                {{ form.security }}
-                {% if form.security.errors %}
-                    <div class="error">{{ form.security.errors }}</div>
-                {% endif %}
-            </div>
+                  <div class="form-section">
+                      <p class="card-title">{{ form.msisdn.label }}</p>
+                      {{ form.msisdn }}
+                      {% if form.msisdn.errors %}
+                          <div class="error">{{ form.msisdn.errors }}</div>
+                      {% endif %}
+                  </div>
 
-            <div class="form-section">
-                <h2>{{ form.ambr.label }}</h2>
-                {{ form.ambr }}
-                {% if form.ambr.errors %}
-                    <div class="error">{{ form.ambr.errors }}</div>
-                {% endif %}
-            </div>
+                  <div class="form-section">
+                      <p class="card-title">{{ form.security.label }}</p>
+                      {{ form.security }}
+                      {% if form.security.errors %}
+                          <div class="error">{{ form.security.errors }}</div>
+                      {% endif %}
+                  </div>
 
-            <div class="form-section">
-                <h2>{{ form.slice.label }}</h2>
-                {{ form.slice }}
-                {% if form.slice.errors %}
-                    <div class="error">{{ form.slice.errors }}</div>
-                {% endif %}
-            </div>
+                  <div class="form-section">
+                      <p class="card-title">{{ form.ambr.label }}</p>
+                      {{ form.ambr }}
+                      {% if form.ambr.errors %}
+                          <div class="error">{{ form.ambr.errors }}</div>
+                      {% endif %}
+                  </div>
 
-            <div class="form-actions">
-                {% if not "/delete/" in request.path %}
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
-                {% else %}
-                    <button type="submit" class="btn btn-delete">Удалить</button>
-                {% endif %}
-                <a href="{% url 'open5gs:index' %}" class="btn btn-secondary">Отмена</a>
-            </div>
-        </form>
-    {% endwith %}
-    </div>
+                  <div class="form-section">
+                      <p class="card-title">{{ form.slice.label }}</p>
+                      {{ form.slice }}
+                      {% if form.slice.errors %}
+                          <div class="error">{{ form.slice.errors }}</div>
+                      {% endif %}
+                  </div>
+
+                  <div class="form-actions">
+                      {% if not "/delete/" in request.path %}
+                          <button type="submit" class="btn btn-primary">Сохранить</button>
+                      {% else %}
+                          <button type="submit" class="btn btn-delete">Удалить</button>
+                      {% endif %}
+                      <a href="{% url 'open5gs:index' %}" class="btn btn-secondary">Отмена</a>
+                  </div>
+              </form>
+          {% endwith %}
+          </div>
+      </div>
 </div>
 {% endblock %}
 
@@ -98,4 +102,7 @@
 {{ form.media.js }}
 <script src="{% static 'js/open5gs/activate_jsonform.js' %}"></script>
 <script src="{% static 'js/open5gs/unit_mapping.js' %}"></script>
+{% endblock %}
+
+{% block extra_scripts %}
 {% endblock %}
