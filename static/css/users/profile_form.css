@@ -177,7 +177,7 @@ body.dark .form-group input[type="date"]::-webkit-calendar-picker-indicator {
   color: var(--color);
 }
 
-.password_reset {
+.password-reset {
   display: block;
   margin: 1rem auto 0 auto;
   text-align: center;
@@ -185,16 +185,15 @@ body.dark .form-group input[type="date"]::-webkit-calendar-picker-indicator {
   color: var(--gray-color);
   text-decoration: none;
   font-weight: 600;
-  transition: color var(--transition-value), text-shadow var(--transition-value);
+  transition: color var(--transition-value);
   cursor: pointer;
 }
 
-.password_reset:hover,
-.password_reset:focus {
+.password-reset:hover,
+.password-reset:focus {
   color: var(--color);
   text-decoration: underline;
   outline: none;
-  text-shadow: 0 0 5px var(--priority-color);
 }
 
 .form-errors {

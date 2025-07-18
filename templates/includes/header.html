@@ -3,11 +3,11 @@
 <header id="header" class="site-header">
   <!-- Левый блок: кнопка сайдбара + логотип -->
   <div class="header-left">
-    <button id="sidebar-toggle" class="btn-toggle" aria-label="Скрыть/показать меню" title="Меню">
+    <button id="sidebar-toggle" class="btn-toggle tooltip" data-title="Меню">
       <i class="bx bx-menu"></i>
     </button>
     <div class="logo">
-      <a href="{% url 'open5gs:index' %}" title="На главную">
+      <a href="{% url 'open5gs:index' %}" class="tooltip" data-title="На главную">
         <img
           src="{% static 'img/logo_light.png' %}"
           alt="Логотип NT Cellular Systems"
@@ -29,12 +29,12 @@
 
   <!-- Правый блок: тема + пользователь -->
   <div class="header-right">
-    <button id="theme-toggle" title="Переключить тему">
+    <button id="theme-toggle" class="tooltip" data-title="Переключить тему">
       <i id="theme-icon" class="bx bx-sun"></i>
     </button>
 
     <div class="user-menu-wrapper">
-      <button id="user-toggle" title="Профиль">
+      <button id="user-toggle" class="tooltip" data-title="Профиль">
         {% if user.is_authenticated %}
           {% if user.avatar and user.avatar.url %}
             <img src="{{ user.avatar.url }}" class="user-icon" alt="{{ user.username }}">

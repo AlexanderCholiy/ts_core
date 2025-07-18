@@ -48,11 +48,25 @@ body.dark .logo-dark {
   cursor: pointer;
   color: inherit;
   font-size: 1.6rem;
+  border-radius: 20%;
   padding: 0;
   margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all var(--transition-value);
+}
+
+.btn-toggle:hover,
+#theme-toggle:hover,
+#user-toggle:hover {
+  color: var(--priority-color);
+}
+
+.btn-toggle:active,
+#theme-toggle:active,
+#user-toggle:active {
+  transform: scale(0.95);
 }
 
 .user-icon {

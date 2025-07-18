@@ -1,0 +1,21 @@
+.tooltip {
+  cursor: pointer;
+}
+
+.tooltip-text {
+  position: fixed;
+  background-color: var(--add-background-color);
+  color: var(--add-color);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  /* Задержка через JS */
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  z-index: 10000;
+  display: none;
+  box-shadow: 0 0 8px var(--extra-color);
+}

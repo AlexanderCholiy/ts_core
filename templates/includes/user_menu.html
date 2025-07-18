@@ -23,7 +23,7 @@
         <li class="nav-item">
         <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
-            <button type="submit" class="nav-link btn-logout" title="{{ user.username }}">
+            <button type="submit" class="nav-link btn-logout tooltip" data-title="{{ user.username }}">
             Выйти
             </button>
         </form>

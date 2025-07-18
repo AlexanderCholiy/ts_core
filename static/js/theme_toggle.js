@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     themeIcon.className = 'bx ' + themeIcons[theme];
-    themeToggle.title = themeTitles[theme];
+    themeToggle.setAttribute('data-title', themeTitles[theme]);
   }
 
   function nextTheme(current) {
