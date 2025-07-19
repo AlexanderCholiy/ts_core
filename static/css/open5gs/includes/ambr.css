@@ -5,6 +5,21 @@
   width: 100%;
 }
 
+@media (max-width: 768px) {
+  #id_ambr_jsonform .rjf-form-group-children {
+    grid-template-columns: 1fr;
+  }
+}
+
+#id_ambr_jsonform .rjf-form-group-children .rjf-form-group-children {
+  display: grid;             /* Включаем CSS Grid */
+  grid-template-columns: 3fr 1fr;  /* Две колонки: первая — 3/4, вторая — 1/4 */
+  gap: 1.5rem;               
+  width: 100%;               /* Чтобы растянуть на всю ширину родителя */
+  align-items: end;          /* Выравнивание по нижнему краю (если элементы разной высоты) */
+  grid-auto-rows: minmax(100px, auto);
+}
+
 #id_ambr_jsonform .rjf-form-row-inner,
 #id_ambr_jsonform .rjf-input-group {
   width: 100%;
@@ -14,8 +29,21 @@
   padding: 0;
 }
 
+/* #id_ambr_jsonform .rjf-form-row-inner,
+#id_ambr_jsonform .rjf-input-group {
+  display: flex;
+}
+
+
+#id_ambr_jsonform .rjf-form-row .rjf-form-row {
+  border: 1px solid blue;
+}
+#id_ambr_jsonform .rjf-form-row {
+  border: 1px solid red;
+}
+
 @media (max-width: 768px) {
   #id_ambr_jsonform .rjf-form-group-children {
     grid-template-columns: 1fr;
   }
-}
+} */

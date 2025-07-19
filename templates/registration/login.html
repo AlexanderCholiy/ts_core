@@ -30,14 +30,18 @@
 
       {% if next %}
         {% if user.is_authenticated %}
-        <p class="card-text error-message">
+        <div class="messages-container">
+          <div class="message alert-error">
             Ваш аккаунт не имеет доступа к этой странице.
             Войдите под другим аккаунтом.
-        </p>
+          </div>
+        </div>
         {% else %}
-          <p class="card-text error-message">
+        <div class="messages-container">
+          <div class="message alert-warning">
             Пожалуйста, войдите в систему, чтобы просматривать эту страницу.
-          </p>
+          </div>
+        </div>
         {% endif %}
       {% endif %}
 
