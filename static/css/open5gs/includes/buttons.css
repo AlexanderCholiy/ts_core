@@ -34,7 +34,25 @@ body.dark .rjf-add-button:hover {
   transform: scale(0.97);
 }
 
-#id_slice_jsonform .rjf-form-group-wrapper .rjf-add-button {
+#id_msisdn_jsonform .rjf-add-button {
+  border: 1.8px solid var(--blue-color);
+  background-color: var(--blue-color);
+}
+
+/* PCC Rules */
+#id_slice_jsonform .rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-add-button {
+  border: 1.8px solid var(--gray-color);
+  background-color: var(--gray-color);
+}
+
+/* Session Configurations */
+#id_slice_jsonform .rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-form-group-wrapper .rjf-add-button {
+  border: 1.8px solid var(--blue-color);
+  background-color: var(--blue-color);
+}
+
+/* Slice Configurations */
+#id_slice_jsonform .rjf-add-button {
   border: 1.8px solid var(--red-color);
   background-color: var(--red-color);
 }
