@@ -28,22 +28,3 @@
   margin: 0;
   padding: 0;
 }
-
-/* #id_ambr_jsonform .rjf-form-row-inner,
-#id_ambr_jsonform .rjf-input-group {
-  display: flex;
-}
-
-
-#id_ambr_jsonform .rjf-form-row .rjf-form-row {
-  border: 1px solid blue;
-}
-#id_ambr_jsonform .rjf-form-row {
-  border: 1px solid red;
-}
-
-@media (max-width: 768px) {
-  #id_ambr_jsonform .rjf-form-group-children {
-    grid-template-columns: 1fr;
-  }
-} */

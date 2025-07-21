@@ -32,4 +32,4 @@ class SubscriberAdmin(admin.ModelAdmin):
     )
 
     class Media:
-        js = ('js/subscriber_form/unit_mapping.js',)
+        js = ('js/subscriber_form/unit_mapping_admin.js',)

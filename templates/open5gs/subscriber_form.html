@@ -103,8 +103,49 @@
 
 {% block extra_js %}
 {{ form.media.js }}
-<script src="{% static 'js/open5gs/activate_jsonform.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.1/underscore-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsonform/2.5.1/jsonform.min.js"></script>
 <script src="{% static 'js/open5gs/unit_mapping.js' %}"></script>
+<script>
+function applyTitleClasses(container = document) {
+  container.querySelectorAll('.rjf-form-group-title').forEach(titleEl => {
+    const wrapper = titleEl.closest('.rjf-form-group-wrapper');
+    if (!wrapper) return;
+
+    const text = titleEl.childNodes[0].textContent.trim()
+      .toLowerCase()
+      .replace(/[^\w]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    const cls = `group-${text}`;
+
+    // Добавляем класс к wrapper
+    wrapper.classList.add(cls);
+
+    // Добавляем тот же класс к .rjf-form-group-children внутри wrapper
+    const children = wrapper.querySelector('.rjf-form-group-children');
+    if (children) {
+      children.classList.add(cls);
+    }
+  });
+}
+
+// При изменениях в DOM — пересоздаем классы
+function observeSchemaChanges(rootSelector) {
+  const container = document.querySelector(rootSelector);
+  if (!container) return;
+  const mo = new MutationObserver(() => {
+    clearTimeout(container._tc);
+    container._tc = setTimeout(() => applyTitleClasses(container), 100);
+  });
+  mo.observe(container, { childList: true, subtree: true });
+  applyTitleClasses(container);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  observeSchemaChanges('#id_slice_jsonform');
+});
+</script>
 {% endblock %}
 
 {% block extra_scripts %}

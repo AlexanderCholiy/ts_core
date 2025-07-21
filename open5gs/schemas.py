@@ -25,6 +25,7 @@ MSISDN_SCHEMA = {
         'type': 'string',
         'pattern': '^\\d+$',
         'maxLength': MAX_SUBSCRIBER_MSISDN_LEN,
+        'placeholder': 'Номер мобильного абонента',
     },
     'minItems': 0,
     'maxItems': MAX_MSISDN_COUNT,
@@ -41,6 +42,7 @@ SECURITY_SCHEMA = {
             'title': 'Subscriber Key (K)',
             'default': generate_hex_key(MAX_SUBSCRIBER_HEX_LEN),
             'maxLength': MAX_SUBSCRIBER_HEX_LEN,
+            'placeholder': '128-битный ключ в hex',
         },
         'amf': {
             'type': 'string',
@@ -64,7 +66,7 @@ SECURITY_SCHEMA = {
             'maxLength': MAX_SUBSCRIBER_HEX_LEN,
         },
     },
-    'required': ['k', 'amf']
+    'required': ['k', 'amf'],
 }
 
 AMBR_SCHEMA = {
@@ -77,7 +79,8 @@ AMBR_SCHEMA = {
                 'value': {
                     'type': 'integer',
                     'title': 'Value',
-                    'minimum': 0
+                    'minimum': 0,
+                    'placeholder': 'Макс. скорость загрузки',
                 },
                 'unit': {
                     'type': 'integer',
@@ -95,7 +98,8 @@ AMBR_SCHEMA = {
                 'value': {
                     'type': 'integer',
                     'title': 'Value',
-                    'minimum': 0
+                    'minimum': 0,
+                    'placeholder': 'Макс. скорость передачи',
                 },
                 'unit': {
                     'type': 'integer',
@@ -117,7 +121,7 @@ SESSION_SCHEMA = {
             'type': 'string',
             'title': 'DNN/APN',
             'maxLength': MAX_SESSION_NAME_LEN,
-            'default': 'internet'
+            'default': 'internet',
         },
         'type': {
             'type': 'integer',
@@ -178,7 +182,8 @@ SESSION_SCHEMA = {
                                 'type': 'integer',
                                 'title': '5QI/QCI',
                                 'enum': [choice[0] for choice in QOS_INDEX_CHOICES],
-                                'default': QOS_INDEX_CHOICES[0][0]
+                                'default': QOS_INDEX_CHOICES[0][0],
+                                'placeholder': 'Индекс QoS',
                             },
                             'arp': {
                                 'type': 'object',
@@ -189,6 +194,7 @@ SESSION_SCHEMA = {
                                         'minimum': MIN_PRIORITY_LEVEL_VALUE,
                                         'maximum': MAX_PRIORITY_LEVEL_VALUE,
                                         'default': MIN_PRIORITY_LEVEL_VALUE + 1,
+                                        'placeholder': '1 - 15',
                                     },
                                     'pre_emption_capability': {
                                         'type': 'integer',
@@ -229,7 +235,7 @@ SLICE_SCHEMA = {
                 'type': 'integer',
                 'title': 'SST',
                 'enum': list(range(MIN_SST_VALUE, MAX_SST_VALUE + 1)),
-                'default': MIN_SST_VALUE
+                'default': MIN_SST_VALUE,
             },
             'sd': {
                 'type': 'string',
@@ -251,7 +257,7 @@ SLICE_SCHEMA = {
                 'maxItems': MAX_SST_VALUE
             }
         },
-        'required': ['sst', 'session']
+        'required': ['sst', 'session'],
     },
     'minItems': 1,
     'maxItems': MAX_SLICE_COUNT

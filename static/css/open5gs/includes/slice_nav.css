@@ -2,9 +2,7 @@
 #id_slice_jsonform .rjf-form-group-children {
   border-left: 4px solid var(--red-color);
   padding-left: 1rem;
-  padding-right: 1rem;
   margin-bottom: 1rem;
-  /* position: relative; */
 }
 
 /* Slice */
@@ -18,7 +16,6 @@
 #id_slice_jsonform .rjf-form-group-children .rjf-form-group-children .rjf-form-group-children {
   border-left: 4px solid var(--blue-color);
   padding-left: 1rem;
-  padding-right: 1rem;
   margin-bottom: 1rem;
 }
 
@@ -33,7 +30,6 @@
 #id_slice_jsonform .rjf-form-group-children .rjf-form-group-children .rjf-form-group-children .rjf-form-group-children .rjf-form-group-wrapper .rjf-form-group-children {
   border-left: 4px solid var(--gray-color);
   padding-left: 1rem;
-  padding-right: 1rem;
   margin-bottom: 1rem;
 }
 

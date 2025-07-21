@@ -82,6 +82,8 @@ body.dark .rjf-input-group select {
 .rjf-form-group-title {
   font-weight: bold;
   text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 @media (max-width: 768px) {
