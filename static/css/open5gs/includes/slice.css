@@ -82,15 +82,11 @@
 }
 
 /* 5QI/QCI */
-#id_slice_jsonform .group-5qi-qci.group-arp.group-ambr.group-downlink.group-uplink.group-pcc-rules 
-  > .rjf-form-group .rjf-form-group-children .rjf-form-group-children .rjf-form-group-children {
-  /* display: grid; */
-  /* gap: 1rem 1.5rem; */
-  /* grid-template-columns: repeat(auto-fit, minmax(280px, 2fr)); */
-  width: 100%;
-  border: 2px dotted skyblue;
+#id_slice_jsonform .rjf-form-group-children.group-5qi-qci.group-arp.group-ambr.group-downlink.group-uplink.group-pcc-rules .rjf-form-group-inner .rjf-form-group-inner .rjf-form-group-children{
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
 }
-
 
 /* PCC Rules */
 #id_slice_jsonform .rjf-form-group-children:nth-of-type(1) .rjf-form-group-children:nth-of-type(1) .rjf-form-group-children .rjf-form-group-children .rjf-form-group-children .rjf-form-group-children {
