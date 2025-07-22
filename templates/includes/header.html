@@ -23,9 +23,11 @@
   </div>
 
   <!-- Центр: поиск -->
-  <div id="search-bar" class="header-center">
-    {% include "includes/search_bar.html" %}
-  </div>
+  {% if user.is_authenticated %}
+    <div id="search-bar" class="header-center">
+      {% include "includes/search_bar.html" %}
+    </div>
+  {% endif %}
 
   <!-- Правый блок: тема + пользователь -->
   <div class="header-right">
