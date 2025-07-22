@@ -17,7 +17,7 @@ ALLOWED_HOSTS = ['*']
 
 INTERNAL_IPS = ['127.0.0.1', 'localhost']
 
-CSRF_TRUSTED_ORIGINS = ['https://razor-selfserver.ddns.net']
+CSRF_TRUSTED_ORIGINS = ['https://fridge.newtowers.ru']
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 

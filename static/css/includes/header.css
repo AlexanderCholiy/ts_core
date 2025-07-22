@@ -25,21 +25,6 @@
   min-width: 0;
 }
 
-.logo-img {
-  height: 72px;
-  width: auto;
-  display: none;
-}
-.logo-light {
-  display: block;
-}
-body.dark .logo-light {
-  display: none;
-}
-body.dark .logo-dark {
-  display: block;
-}
-
 .btn-toggle,
 #theme-toggle,
 #user-toggle {

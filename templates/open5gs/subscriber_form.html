@@ -17,87 +17,102 @@
 <div class="container">
     <div class="card">
       <div class="card-body">
-          {% with data=form.instance %}
-
-              <form method="post" enctype="multipart/form-data" class="subscriber-form">
-                  {% csrf_token %}
-                  
-                  <!-- Основные поля -->
-                  <div class="form-section">
-                      <p class="card-title">Основная информация<p>
-                      <div class="form-row">
-                        <div class="form-group">
-                            <label for="{{ form.imsi.id_for_label }}">{{ form.imsi.label }}</label>
-                            {{ form.imsi }}
-                            {% if form.imsi.errors %}
-                                <div class="error">{{ form.imsi.errors }}</div>
-                            {% endif %}
-                        </div>
-
-                        <div class="form-group">
-                            <label for="{{ form.subscriber_status.id_for_label }}">{{ form.subscriber_status.label }}</label>
-                            {{ form.subscriber_status }}
-                            {% if form.subscriber_status.errors %}
-                                <div class="error">{{ form.subscriber_status.errors }}</div>
-                            {% endif %}
-                        </div>
-
-                        <div class="form-group">
-                            <label for="{{ form.operator_determined_barring.id_for_label }}">{{ form.operator_determined_barring.label }}</label>
-                            {{ form.operator_determined_barring }}
-                            {% if form.operator_determined_barring.errors %}
-                                <div class="error">{{ form.operator_determined_barring.errors }}</div>
-                            {% endif %}
-                        </div>
-
-                      </div>
-                  </div>
-
-                  <div class="form-section">
-                      <p class="card-title">{{ form.msisdn.label }}</p>
-                      {{ form.msisdn }}
-                      {% if form.msisdn.errors %}
-                          <div class="error">{{ form.msisdn.errors }}</div>
-                      {% endif %}
-                  </div>
-
-                  <div class="form-section">
-                      <p class="card-title">{{ form.security.label }}</p>
-                      {{ form.security }}
-                      {% if form.security.errors %}
-                          <div class="error">{{ form.security.errors }}</div>
-                      {% endif %}
-                  </div>
-
-                  <div class="form-section">
-                    <p class="card-title">{{ form.ambr.label }}</p>
-                    {{ form.ambr }}
-                    {% if form.ambr.errors %}
-                      <div class="error">{{ form.ambr.errors }}</div>
-                    {% endif %}
-                  </div>
-
-                  <div class="form-section">
-                    <p class="card-title">{{ form.slice.label }}</p>
-                    {{ form.slice }}
-                    {% if form.slice.errors %}
-                      <div class="error">{{ form.slice.errors }}</div>
-                    {% endif %}
-                  </div>
-
-                  <div class="form-actions">
-                      {% if not "/delete/" in request.path %}
-                          <button type="submit" class="btn btn-primary">Сохранить</button>
-                      {% else %}
-                          <button type="submit" class="btn btn-delete">Удалить</button>
-                      {% endif %}
-                      <a href="{% url 'open5gs:index' %}" class="btn btn-secondary">Отмена</a>
-                  </div>
-
-              </form>
-          {% endwith %}
+        {% if form.errors %}
+          <div class="form-errors">
+            <ul>
+              {% for field in form %}
+                {% for error in field.errors %}
+                  <li>{{ error }}</li>
+                {% endfor %}
+              {% endfor %}
+              {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
           </div>
+        {% endif %}
+
+        {% with data=form.instance %}
+
+            <form method="post" enctype="multipart/form-data" class="subscriber-form">
+                {% csrf_token %}
+                
+                <!-- Основные поля -->
+                <div class="form-section">
+                    <p class="card-title">Основная информация<p>
+                    <div class="form-row">
+                      <div class="form-group">
+                          <label for="{{ form.imsi.id_for_label }}">{{ form.imsi.label }}</label>
+                          {{ form.imsi }}
+                          {% if form.imsi.errors %}
+                              <div class="error">{{ form.imsi.errors }}</div>
+                          {% endif %}
+                      </div>
+
+                      <div class="form-group">
+                          <label for="{{ form.subscriber_status.id_for_label }}">{{ form.subscriber_status.label }}</label>
+                          {{ form.subscriber_status }}
+                          {% if form.subscriber_status.errors %}
+                              <div class="error">{{ form.subscriber_status.errors }}</div>
+                          {% endif %}
+                      </div>
+
+                      <div class="form-group">
+                          <label for="{{ form.operator_determined_barring.id_for_label }}">{{ form.operator_determined_barring.label }}</label>
+                          {{ form.operator_determined_barring }}
+                          {% if form.operator_determined_barring.errors %}
+                              <div class="error">{{ form.operator_determined_barring.errors }}</div>
+                          {% endif %}
+                      </div>
+
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <p class="card-title">{{ form.msisdn.label }}</p>
+                    {{ form.msisdn }}
+                    {% if form.msisdn.errors %}
+                        <div class="error">{{ form.msisdn.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-section">
+                    <p class="card-title">{{ form.security.label }}</p>
+                    {{ form.security }}
+                    {% if form.security.errors %}
+                        <div class="error">{{ form.security.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-section">
+                  <p class="card-title">{{ form.ambr.label }}</p>
+                  {{ form.ambr }}
+                  {% if form.ambr.errors %}
+                    <div class="error">{{ form.ambr.errors }}</div>
+                  {% endif %}
+                </div>
+
+                <div class="form-section">
+                  <p class="card-title">{{ form.slice.label }}</p>
+                  {{ form.slice }}
+                  {% if form.slice.errors %}
+                    <div class="error">{{ form.slice.errors }}</div>
+                  {% endif %}
+                </div>
+
+                <div class="form-actions">
+                    {% if not "/delete/" in request.path %}
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-delete">Удалить</button>
+                    {% endif %}
+                    <a href="{% url 'open5gs:index' %}" class="btn btn-secondary">Отмена</a>
+                </div>
+
+            </form>
+        {% endwith %}
       </div>
+    </div>
 </div>
 {% endblock %}
 

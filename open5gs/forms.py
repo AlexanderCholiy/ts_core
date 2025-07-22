@@ -1,3 +1,5 @@
+from bson import ObjectId
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django_jsonform.widgets import JSONFormWidget
@@ -12,7 +14,9 @@ from .constants import (
 )
 from .schemas import MSISDN_SCHEMA, SECURITY_SCHEMA, AMBR_SCHEMA, SLICE_SCHEMA
 from .utils import MongoJSONEncoder
-from .validators import validate_hex_value, validate_session, validate_br
+from .validators import (
+    validate_hex_value, validate_session, validate_br, is_valid_objectid
+)
 
 
 class SubscriberForm(forms.ModelForm):
@@ -131,6 +135,12 @@ class SubscriberForm(forms.ModelForm):
         if cleaned_security.get('op') and cleaned_security.get('opc'):
             raise ValidationError('Укажите только OP или OPc')
 
+        # Замена на None пустых значений
+        if not cleaned_security.get('op'):
+            cleaned_security['op'] = None
+        if not cleaned_security.get('opc'):
+            cleaned_security['opc'] = None
+
         return cleaned_security
 
     def clean_ambr(self):
@@ -175,30 +185,81 @@ class SubscriberForm(forms.ModelForm):
             self.fields['security'].initial = {}
 
     def save(self, commit=True):
-        instance = super().save(commit=False)
+        instance: Subscriber = super().save(commit=False)
 
+        # Новые JSON данные из формы:
+        new_msisdn: list[str] = self.cleaned_data.get('msisdn', [])
+        new_security: dict = self.cleaned_data.get('security', {})
+        new_ambr: dict = self.cleaned_data.get('ambr', {})
+        new_slice: list[dict] = self.cleaned_data.get('slice', [])
+
+        # MSISDN и Ambr не имеют доп. полей:
+        instance.msisdn = new_msisdn
+        instance.ambr = new_ambr
+        # Slice имеет скрытые поля _id, flow которые надо проверить:
+        instance.slice = self.add_hide_objects_to_slice(new_slice)
+
+        # Security имеет скрытое поле sqn (sqn: Long('2529')):
         if instance.pk:
-            current_security = getattr(instance, 'security', {})
-            current_slice = getattr(instance, 'slice', [])
-            cleaned_security = self.cleaned_data.get('security', {})
-            if cleaned_security:
-                instance.security = {**current_security, **cleaned_security}
-
-            cleaned_slice = self.cleaned_data.get('slice', [])
-            if cleaned_slice:
-                for i, slice_item in enumerate(cleaned_slice):
-                    if i < len(current_slice):
-                        for key, value in current_slice[i].items():
-                            if key not in slice_item:
-                                slice_item[key] = value
-                instance.slice = cleaned_slice
+            old_sqn = getattr(instance, 'security', {}).get('sqn')
         else:
-            instance.msisdn = self.cleaned_data.get('msisdn', [])
-            instance.security = self.cleaned_data.get('security', {})
-            instance.ambr = self.cleaned_data.get('ambr', {})
-            instance.slice = self.cleaned_data.get('slice', [])
+            old_sqn = None
+
+        security = new_security.copy()
+        security['sqn'] = old_sqn
+        instance.security = security
 
         if commit:
             instance.save()
 
         return instance
+
+    @staticmethod
+    def add_hide_objects_to_slice(slices: list[dict]) -> list[dict]:
+        """Добавлям скрытые поля, которые должны быть по умолчанию"""
+        for slice_item in slices:
+            used_ids = set()
+
+            def get_unique_objectid():
+                new_id = ObjectId()
+                while str(new_id) in used_ids:
+                    new_id = ObjectId()
+                used_ids.add(str(new_id))
+                return new_id
+
+            if not is_valid_objectid(slice_item.get('_id')):
+                slice_item['_id'] = get_unique_objectid()
+            else:
+                oid_str = str(slice_item['_id'])
+                if oid_str in used_ids:
+                    slice_item['_id'] = get_unique_objectid()
+                else:
+                    used_ids.add(oid_str)
+
+            for session in slice_item.get('session', []):
+                if not is_valid_objectid(session.get('_id')):
+                    session['_id'] = get_unique_objectid()
+                else:
+                    oid_str = str(session['_id'])
+                    if oid_str in used_ids:
+                        session['_id'] = get_unique_objectid()
+                    else:
+                        used_ids.add(oid_str)
+
+                for pcc_rule in session.get('pcc_rule', []):
+                    if not is_valid_objectid(pcc_rule.get('_id')):
+                        pcc_rule['_id'] = get_unique_objectid()
+                    else:
+                        oid_str = str(pcc_rule['_id'])
+                        if oid_str in used_ids:
+                            pcc_rule['_id'] = get_unique_objectid()
+                        else:
+                            used_ids.add(oid_str)
+
+                    if (
+                        'flow' not in pcc_rule
+                        or not isinstance(pcc_rule['flow'], list)
+                    ):
+                        pcc_rule['flow'] = []
+
+        return slices

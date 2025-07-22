@@ -51,13 +51,6 @@ main .text-muted {
   font-size: 0.9rem;
 }
 
-.error-message {
-  margin: 2rem auto;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: var(--red-color);
-}
-
 .card-text {
   line-height: 1.5;
 }

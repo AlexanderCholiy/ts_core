@@ -1,0 +1,33 @@
+header .logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 12px;
+}
+
+header .logo:active .logo-img {
+  transform: scale(0.95);
+}
+
+header .logo a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  position: relative;
+}
+
+header .logo-img {
+  height: 72px;
+  width: auto;
+  display: none;
+  transition: transform var(--transition-value);
+}
+header .logo-light {
+  display: block;
+}
+body.dark header .logo-light {
+  display: none;
+}
+body.dark header .logo-dark {
+  display: block;
+}

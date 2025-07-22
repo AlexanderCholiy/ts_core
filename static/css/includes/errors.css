@@ -1,0 +1,62 @@
+/* Ошибки в карточках */
+.error-message {
+  margin: 2rem auto;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--red-color);
+}
+
+/* Ошибки в формах */
+.error {
+  width: 100%;
+  margin: 0.4rem auto 0;
+  color: var(--add-color);
+  background-color: var(--red-color);
+  margin-top: 0.4rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  animation: fadeIn var(--transition-value);
+  box-shadow: 0 1px 3px var(--extra-color);
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.container-sm .error {
+    max-width: 320px;
+}
+
+.form-errors {
+  margin: 1rem auto;
+  max-width: 760px;
+  background-color: var(--red-color);
+  color: var(--add-color);
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px var(--extra-color);
+  animation: fadeIn 0.4s ease-in-out;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.container-sm .form-error {
+   max-width: 500px;
+}
+
+.form-errors ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.form-errors li::before {
+  content: '⚠ ';
+  margin-right: 4px;
+  color: inherit;
+}
+
+.help-text {
+  font-size: 0.75rem;
+}

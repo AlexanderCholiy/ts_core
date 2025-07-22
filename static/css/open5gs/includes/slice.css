@@ -82,7 +82,7 @@
 }
 
 /* 5QI/QCI */
-#id_slice_jsonform .rjf-form-group-children.group-5qi-qci.group-arp.group-ambr.group-downlink.group-uplink.group-pcc-rules .rjf-form-group-inner .rjf-form-group-inner .rjf-form-group-children{
+#id_slice_jsonform .rjf-form-group-children.group-5qi-qci.group-arp.group-ambr.group-downlink.group-uplink.group-pcc-rules .rjf-form-group-inner .rjf-form-group-inner .rjf-form-group-children {
   display: grid;
   grid-template-columns: 1fr;
   align-items: start;

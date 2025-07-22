@@ -19,6 +19,13 @@ from .constants import (
 from .utils import generate_hex_key
 
 
+ID_FIELD = {
+    'type': 'string',
+    'title': '_id',
+    'pattern': '^[0-9a-fA-F]+$',
+    'readOnly': True,
+}
+
 MSISDN_SCHEMA = {
     'type': 'array',
     'items': {
@@ -62,7 +69,7 @@ SECURITY_SCHEMA = {
             'type': 'string',
             'pattern': '^[0-9a-fA-F]+$',
             'title': 'USIM Type: OPc',
-            'default': generate_hex_key(MAX_SUBSCRIBER_HEX_LEN),
+            'default': None,
             'maxLength': MAX_SUBSCRIBER_HEX_LEN,
         },
     },
@@ -215,12 +222,24 @@ SESSION_SCHEMA = {
                             'gbr': AMBR_SCHEMA,
                         },
                         'required': ['index', 'arp']
-                    }
+                    },
+                    '_id': ID_FIELD,
+                    'flow': {
+                        'type': 'array',
+                        'default': [],
+                        'title': 'Flow',
+                        'items': {
+                            'type': 'object',
+                            'properties': {}
+                        },
+                        'readOnly': True,
+                    },
                 }
             },
             'default': [],
             'maxItems': MAX_PCC_RULE_COUNT
-        }
+        },
+        '_id': ID_FIELD,
     },
     'required': ['name', 'type', 'qos', 'ambr']
 }
@@ -255,7 +274,8 @@ SLICE_SCHEMA = {
                 'items': SESSION_SCHEMA,
                 'minItems': 1,
                 'maxItems': MAX_SST_VALUE
-            }
+            },
+            '_id': ID_FIELD,
         },
         'required': ['sst', 'session'],
     },

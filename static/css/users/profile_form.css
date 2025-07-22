@@ -54,13 +54,6 @@ body.dark .form-group input[type="date"]::-webkit-calendar-picker-indicator {
   outline: none;
 }
 
-.form-error {
-  color: var(--red-color);
-  font-size: 0.85rem;
-  margin-top: 0.3rem;
-  font-weight: 600;
-}
-
 .submit-button {
   font-size: 1.15rem;
   font-weight: 700;
@@ -195,50 +188,6 @@ body.dark .form-group input[type="date"]::-webkit-calendar-picker-indicator {
   text-decoration: underline;
   outline: none;
 }
-
-.form-errors {
-  margin: 1rem auto;
-  max-width: 500px;
-  background-color: var(--red-color);
-  color: var(--background-color);
-  padding: 1rem 1.25rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px var(--extra-color);
-  animation: fadeIn 0.4s ease-in-out;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.form-errors ul {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-
-.form-errors li::before {
-  content: '⚠ ';
-  margin-right: 4px;
-  color: inherit;
-}
-
-.error {
-  width: 100%;
-  max-width: 320px;
-  margin: 0.4rem auto 0;
-  color: var(--background-color);
-  background-color: var(--red-color);
-  margin-top: 0.4rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  animation: fadeIn 0.3s ease-in-out;
-  box-shadow: 0 1px 3px var(--extra-color);
-}
-
-.help-text {
-  font-size: 0.75rem;
-}
-
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-5px); }

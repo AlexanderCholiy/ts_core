@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.contrib import messages
 
 from users.utils import role_required
 from .forms import SubscriberForm
@@ -19,14 +20,12 @@ def index(request: HttpRequest) -> HttpResponse:
 
     query = request.GET.get('q', '').strip()
     if query:
-        subscribers = [i for i in range(100)]
-        # subscribers = (
-        #     Subscriber.objects.values('pk', 'imsi')
-        #     .filter(imsi__icontains=query).order_by('-pk')
-        # )
+        subscribers = (
+            Subscriber.objects.values('pk', 'imsi')
+            .filter(imsi__icontains=query).order_by('-pk')
+        )
     else:
-        subscribers = [i for i in range(100)]
-        # subscribers = Subscriber.objects.values('pk', 'imsi').order_by('-pk')
+        subscribers = Subscriber.objects.values('pk', 'imsi').order_by('-pk')
 
     paginator = Paginator(subscribers, MAX_SUBSCRIBER_PER_PAGE)
     page_number = request.GET.get('page')
@@ -39,7 +38,11 @@ def index(request: HttpRequest) -> HttpResponse:
     if query_params:
         page_url_base += urlencode(query_params) + '&'
 
-    context = {'page_obj': page_obj, 'search_query': query, 'page_url_base': page_url_base}
+    context = {
+        'page_obj': page_obj,
+        'search_query': query,
+        'page_url_base': page_url_base,
+    }
     return render(request, template_name, context)
 
 
@@ -55,7 +58,12 @@ def subscriber(
         form = SubscriberForm(request.POST, instance=instance)
         if form.is_valid():
             form.save()
-            return redirect('open5gs:index')
+            messages.success(
+                request,
+                f'Абонент ({form.cleaned_data["imsi"]}) сохранен'
+            )
+        else:
+            messages.error(request, 'Проверьте данные')
     else:
         form = SubscriberForm(instance=instance)
 

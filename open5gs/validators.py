@@ -1,4 +1,6 @@
 from typing import Optional
+from bson import ObjectId
+from bson.errors import InvalidId
 
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
@@ -22,6 +24,14 @@ digits_validator = RegexValidator(
     regex=r'^\d+$',
     message='Разрешены только цифры.'
 )
+
+
+def is_valid_objectid(oid: str) -> bool:
+    try:
+        ObjectId(str(oid))
+        return True
+    except (InvalidId, TypeError):
+        return False
 
 
 def validate_hex_value(
@@ -125,56 +135,35 @@ def validate_pcc_rule(pcc_rule_data: dict):
 
 def validate_br(br: dict, br_name: str):
     required_fields = ['downlink', 'uplink']
-    if (
-        not all(field in br for field in required_fields)
-        or any(br[field] is None for field in required_fields)
-    ):
-        raise ValidationError(f'{br_name} должен содержать downlink и uplink')
+    required_sub_fields = ['value', 'unit']
+    available_units: list[int] = [value for value, _ in UNIT_CHOICES]
 
     for field in required_fields:
-        required_sub_fields = ['value', 'unit']
-        if not all(
-            sub_field in br[field] for sub_field in required_sub_fields
-        ):
+        if field not in br or not isinstance(br[field], dict):
             raise ValidationError(
-                f'{br_name} ({field}) должен содержать value и unit')
+                f'{br_name} должен содержать {field} как объект')
 
-        if any(
-            br[field][sub_field] is None for sub_field in required_sub_fields
-        ):
-            if ('pcc rules' in br_name.lower() and br[field]['unit'] is None):
-                raise ValidationError(
-                    f'{br_name} ({field}) должен содержать value и unit')
-            elif 'pcc rules' not in br_name.lower():
-                raise ValidationError(
-                    f'{br_name} ({field}) должен содержать value и unit')
+        for sub_field in required_sub_fields:
+            val = br[field].get(sub_field, None)
 
-        if 'pcc rules' in br_name.lower():
-            if (
-                isinstance(br[field]['value'], int)
-                and br[field]['value'] < 0
-            ):
+            if val is None:
                 raise ValidationError(
-                    f'{br_name} ({field}) - value должно быть больше 0')
-            elif br[field]['value'] is None:
-                pass
-            else:
-                raise ValidationError(
-                    f'{br_name} ({field}) - value должно быть больше 0')
-        else:
-            if (
-                not isinstance(br[field]['value'], int)
-                or br[field]['value'] < 0
-            ):
-                raise ValidationError(
-                    f'{br_name} ({field}) - value должно быть больше 0')
+                    f'{br_name} ({field}) должен содержать {sub_field} '
+                    '(не None)'
+                )
 
-        available_units: list[int] = [value for value, _ in UNIT_CHOICES]
-        if br[field]['unit'] not in available_units:
-            raise ValidationError(
-                f'{br_name} ({field}) - unit должнен принимать одно из '
-                f'следующих значений: {", ".join(available_units)}'
-            )
+            if sub_field == 'value':
+                if not isinstance(val, int) or val < 0:
+                    raise ValidationError(
+                        f'{br_name} ({field}) - value должен быть целым '
+                        'числом >= 0'
+                    )
+            elif sub_field == 'unit':
+                if not isinstance(val, int) or val not in available_units:
+                    raise ValidationError(
+                        f'{br_name} ({field}) - unit должен быть одним из: '
+                        f'{", ".join(map(str, available_units))}'
+                    )
 
 
 def validate_session(session_data: dict):

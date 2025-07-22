@@ -11,12 +11,12 @@
     {% for subscriber in page_obj %}
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">{{ subscriber }}</h5>
+          <h5 class="card-title">{{ subscriber.imsi }}</h5>
           <div class="btn-group">
-            <a href="{% url 'open5gs:edit' subscriber %}" class="btn-icon tooltip" data-title="Изменить">
+            <a href="{% url 'open5gs:edit' subscriber.imsi %}" class="btn-icon tooltip" data-title="Изменить">
               <i class="bx bx-edit-alt"></i>
             </a>
-            <a href="{% url 'open5gs:delete' subscriber %}" class="btn-icon tooltip" data-title="Удалить">
+            <a href="{% url 'open5gs:delete' subscriber.imsi %}" class="btn-icon tooltip" data-title="Удалить">
               <i class="bx bx-trash"></i>
             </a>
           </div>

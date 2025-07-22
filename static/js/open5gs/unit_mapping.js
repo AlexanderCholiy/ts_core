@@ -45,6 +45,32 @@ function updateSelectElements() {
   });
 }
 
+// Скрывает поля по их title (в label)
+function hideFieldsByTitle(titlesToHide = []) {
+  titlesToHide.forEach(title => {
+    // Скрываем по label с текстом title
+    document.querySelectorAll('label').forEach(label => {
+      if (label.textContent.trim() === title) {
+        let container = label.closest('.rjf-form-row');
+        if (container) {
+          container.style.display = 'none';
+        }
+      }
+    });
+
+    // Скрываем по div.rjf-form-group-title с текстом title
+    document.querySelectorAll('.rjf-form-group-title').forEach(div => {
+      if (div.textContent.trim() === title) {
+        let container = div.closest('.rjf-form-group');
+        if (container) {
+          container.style.display = 'none';
+        }
+      }
+    });
+  });
+}
+
+
 // Наблюдатель для динамических изменений формы
 function setupMutationObserver() {
   const form = document.querySelector('#subscriber_form');
@@ -57,8 +83,8 @@ function setupMutationObserver() {
     const hasRelevantChanges = mutations.some(mutation =>
       Array.from(mutation.addedNodes).some(node =>
         node.nodeType === Node.ELEMENT_NODE &&
-        (node.matches('select[name*="unit"], select[name*="type"], select[name*="emption"]') || 
-         node.querySelector?.('select[name*="unit"], select[name*="type"], select[name*="emption"]'))
+        (node.matches('select[name*="unit"], select[name*="type"], select[name*="emption"], label') || 
+         node.querySelector?.('select[name*="unit"], select[name*="type"], select[name*="emption"], label'))
       )
     );
 
@@ -67,6 +93,8 @@ function setupMutationObserver() {
       updateTimeout = setTimeout(() => {
         isUpdating = true;
         updateSelectElements();
+        // Скрываем нужные поля по title
+        hideFieldsByTitle(['_id', 'Flow']);
         isUpdating = false;
       }, 100);
     }
@@ -87,7 +115,10 @@ function setupButtonClickHandler() {
 
   container.addEventListener('click', (event) => {
     if (event.target.tagName === 'BUTTON') {
-      setTimeout(updateSelectElements, 50);  // отложить чтобы DOM успел обновиться
+      setTimeout(() => {
+        updateSelectElements();
+        hideFieldsByTitle(['_id', 'Flow']);
+      }, 50);  // отложить чтобы DOM успел обновиться
     }
   });
 }
@@ -95,6 +126,7 @@ function setupButtonClickHandler() {
 // Инициализация
 document.addEventListener('DOMContentLoaded', () => {
   updateSelectElements();
+  hideFieldsByTitle(['_id', 'Flow']);
   setupMutationObserver();
   setupButtonClickHandler();
 });
