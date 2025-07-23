@@ -15,7 +15,10 @@ from .constants import (
 from .schemas import MSISDN_SCHEMA, SECURITY_SCHEMA, AMBR_SCHEMA, SLICE_SCHEMA
 from .utils import MongoJSONEncoder
 from .validators import (
-    validate_hex_value, validate_session, validate_br, is_valid_objectid
+    validate_hex_value,
+    validate_session,
+    validate_br,
+    is_valid_objectid,
 )
 
 
@@ -75,6 +78,16 @@ class SubscriberForm(forms.ModelForm):
 
             for session in slice_item['session']:
                 validate_session(session)
+                # Оставляем только непустые значения:
+                for field in ['ue', 'smf']:
+                    ip_config = session.get(field)
+
+                    if ip_config:
+                        ip_config = {k: v for k, v in ip_config.items() if v}
+                        if ip_config:
+                            session[field] = ip_config
+                        else:
+                            session.pop(field, None)
 
         if default_indicator is None:
             raise ValidationError(

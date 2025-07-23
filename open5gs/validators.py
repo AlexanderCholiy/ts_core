@@ -1,3 +1,4 @@
+import ipaddress
 from typing import Optional
 from bson import ObjectId
 from bson.errors import InvalidId
@@ -60,6 +61,31 @@ def validate_hex_value(
             f'{name} должен быть не менее {min_value_len} символов')
 
 
+def validate_ip_config(ip_config: dict, field_name: str):
+    if not isinstance(ip_config, dict):
+        raise ValidationError(f'{field_name} должен быть объектом (dict)')
+
+    ipv4 = ip_config.get('ipv4')
+    if ipv4:
+        try:
+            ipaddress.IPv4Address(ipv4)
+        except ipaddress.AddressValueError:
+            raise ValidationError(
+                f'{field_name}: поле "ipv4" содержит невалидный IPv4-адрес: '
+                f'{ipv4}'
+            )
+
+    ipv6 = ip_config.get('ipv6')
+    if ipv6:
+        try:
+            ipaddress.IPv6Address(ipv6)
+        except ipaddress.AddressValueError:
+            raise ValidationError(
+                f'{field_name}: поле "ipv6" содержит невалидный IPv6-адрес: '
+                f'{ipv6}'
+            )
+
+
 def validate_arp(arp_data):
     required_arp_fields = [
         'priority_level', 'pre_emption_capability', 'pre_emption_vulnerability'
@@ -119,8 +145,6 @@ def validate_qos(qos_data: dict, is_pcc_rule: bool):
             'QoS должен содержать "5QI/QCI" и "ARP Parameters"'
         )
 
-    validate_arp(qos_data['arp'])
-
     if is_pcc_rule:
         validate_br(qos_data['mbr'], 'PCC Rules MBR')
         validate_br(qos_data['gbr'], 'PCC Rules GBR')
@@ -167,11 +191,12 @@ def validate_br(br: dict, br_name: str):
 
 
 def validate_session(session_data: dict):
-    required_fields = ['name', 'type', 'qos', 'ambr', 'pcc_rule']
+    required_fields = ['name', 'type', 'qos', 'ambr', 'ue', 'smf', 'pcc_rule']
     if not all(field in session_data for field in required_fields):
         raise ValidationError(
             'Session должна содержать "DNN/APN", "Type", '
-            '"QoS Parameters", "AMBR Parameters", "PCC Rules"'
+            '"QoS Parameters", "AMBR Parameters", "UE IP Configuration",  '
+            '"SMF IP Configuration", "PCC Rules"'
         )
 
     if not isinstance(session_data['name'], str):
@@ -193,6 +218,8 @@ def validate_session(session_data: dict):
 
     validate_br(session_data['ambr'], 'Session-AMBR')
     validate_qos(session_data['qos'], is_pcc_rule=False)
+    validate_ip_config(session_data['ue'], 'UE IP Configuration')
+    validate_ip_config(session_data['smf'], 'SMF IP Configuration')
 
     for pcc_rule in session_data['pcc_rule']:
         validate_pcc_rule(pcc_rule)

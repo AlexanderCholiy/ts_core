@@ -121,6 +121,25 @@ AMBR_SCHEMA = {
     'required': ['downlink', 'uplink']
 }
 
+IP_CONFIG_SCHEMA = {
+    'type': 'object',
+    'properties': {
+        'ipv4': {
+            'type': 'string',
+            'format': 'ipv4',
+            'placeholder': 'X.X.X.X',
+            'title': 'IPv4 Address',
+        },
+        'ipv6': {
+            'type': 'string',
+            'format': 'ipv6',
+            'placeholder': 'XXXX:XXXX:XXXX:XXXX:XXXX:XXXX:XXXX:XXXX',
+            'title': 'IPv6 Address',
+        }
+    },
+    'additionalProperties': False
+}
+
 SESSION_SCHEMA = {
     'type': 'object',
     'properties': {
@@ -175,6 +194,14 @@ SESSION_SCHEMA = {
             'required': ['index', 'arp']
         },
         'ambr': AMBR_SCHEMA,
+        'ue': {
+            **IP_CONFIG_SCHEMA,
+            'title': 'UE IP Configuration',
+        },
+        'smf': {
+            **IP_CONFIG_SCHEMA,
+            'title': 'SMF IP Configuration',
+        },
         'pcc_rule': {
             'type': 'array',
             'title': 'PCC Rules',

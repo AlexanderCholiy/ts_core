@@ -32,6 +32,8 @@
 .form-group input[type="text"],
 .rjf-input-group input[type="text"],
 .rjf-input-group input[type="number"],
+.rjf-input-group input[type="ipv4"],
+.rjf-input-group input[type="ipv6"],
 .form-group select,
 .rjf-input-group select {
   padding: 0.6rem 0.75rem;
@@ -46,6 +48,8 @@
 .form-group input[type="text"]:focus,
 .rjf-input-group input[type="text"]:focus,
 .rjf-input-group input[type="number"]:focus,
+.rjf-input-group input[type="ipv4"]:focus,
+.rjf-input-group input[type="ipv6"]:focus,
 .form-group select:focus,
 .rjf-input-group select:focus {
   box-shadow: 0 0 1px var(--extra-color);
