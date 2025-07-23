@@ -27,7 +27,9 @@
 
   {% if not page_obj %}
     <div class="card">
-      <p class="error-message">Ничего не найдено</p>
+      <div class="card-body">
+        <p class="card-text error-message">Ничего не найдено</p>
+      </div>
     </div>
   {% endif %}
 
