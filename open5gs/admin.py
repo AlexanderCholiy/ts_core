@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from .models import Subscriber
-from .forms import SubscriberForm
 from .constants import MAX_SUBSCRIBER_PER_PAGE
+from .forms import SubscriberForm
+from .models import Subscriber
 
 
 @admin.register(Subscriber)

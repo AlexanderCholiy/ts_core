@@ -1,20 +1,19 @@
 import ipaddress
 from typing import Optional
+
 from bson import ObjectId
 from bson.errors import InvalidId
-
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
 from .constants import (
+    EMPTION_CHOICES,
+    MAX_PRIORITY_LEVEL_VALUE,
     MAX_SESSION_NAME_LEN,
     MIN_PRIORITY_LEVEL_VALUE,
-    MAX_PRIORITY_LEVEL_VALUE,
     SESSION_TYPE_CHOICES,
     UNIT_CHOICES,
-    EMPTION_CHOICES,
 )
-
 
 hexadecimal_validator = RegexValidator(
     regex=r'^[0-9A-Fa-f]+$',

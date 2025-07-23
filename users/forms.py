@@ -1,20 +1,19 @@
 from datetime import date
 
 from django import forms
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.hashers import check_password
 
-from .models import PendingUser, User
-from .validators import validate_user_email
 from .constants import (
-    MIN_USER_PASSWORD_LEN,
+    MAX_USER_AGE,
     MAX_USER_USERNAME_DISPLAY_LEN,
     MIN_USER_AGE,
-    MAX_USER_AGE,
+    MIN_USER_PASSWORD_LEN,
 )
+from .models import PendingUser, User
+from .validators import validate_user_email
 
 
 class UserRegisterForm(forms.ModelForm):

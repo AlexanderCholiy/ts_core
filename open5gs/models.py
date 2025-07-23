@@ -2,8 +2,8 @@ from djongo import models
 
 from .constants import (
     MAX_SUBSCRIBER_IMSI_LEN,
-    SUBSCRIBER_STATUS_CHOICES,
     OPERATOR_DETERMINED_BARRING_CHOICES,
+    SUBSCRIBER_STATUS_CHOICES,
 )
 from .validators import digits_validator
 

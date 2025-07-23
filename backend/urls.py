@@ -11,7 +11,6 @@ from rest_framework import permissions
 from users.forms import AuthForm
 from users.views import CustomPasswordResetView
 
-
 handler400 = 'core.views.bad_request'
 handler403 = 'core.views.permission_denied'
 handler404 = 'core.views.page_not_found'

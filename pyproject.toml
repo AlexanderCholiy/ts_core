@@ -1,0 +1,11 @@
+[tool.isort]
+profile = "black"
+line_length = 88
+known_first_party = ["backend", "core", "pages", "users", "api", "open5gs"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+multi_line_output = 3
+include_trailing_comma = false
+force_grid_wrap = 0
+lines_between_sections = 1
+no_sections = false
+skip = ["migrations", "venv", "env"]

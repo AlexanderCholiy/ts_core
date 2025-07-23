@@ -1,6 +1,6 @@
 import secrets
-from bson import ObjectId
 
+from bson import ObjectId
 from django.core.serializers.json import DjangoJSONEncoder
 
 

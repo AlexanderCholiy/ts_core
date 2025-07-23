@@ -1,5 +1,5 @@
-from typing import Optional
 from http import HTTPStatus
+from typing import Optional
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpRequest, HttpResponse

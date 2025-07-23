@@ -1,24 +1,23 @@
 from bson import ObjectId
-
 from django import forms
 from django.core.exceptions import ValidationError
 from django_jsonform.widgets import JSONFormWidget
 
-from .models import Subscriber
 from .constants import (
-    MIN_SST_VALUE,
     MAX_SST_VALUE,
     MAX_SUBSCRIBER_HEX_LEN,
-    SD_LEN,
     MAX_SUBSCRIBER_MSISDN_LEN,
+    MIN_SST_VALUE,
+    SD_LEN,
 )
-from .schemas import MSISDN_SCHEMA, SECURITY_SCHEMA, AMBR_SCHEMA, SLICE_SCHEMA
+from .models import Subscriber
+from .schemas import AMBR_SCHEMA, MSISDN_SCHEMA, SECURITY_SCHEMA, SLICE_SCHEMA
 from .utils import MongoJSONEncoder
 from .validators import (
+    is_valid_objectid,
+    validate_br,
     validate_hex_value,
     validate_session,
-    validate_br,
-    is_valid_objectid,
 )
 
 

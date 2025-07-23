@@ -1,25 +1,26 @@
 import time
-from django.contrib.auth.models import AbstractUser
-from django.db import models
-from django.core.files.storage import default_storage
-from django.utils import timezone
+
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
+from django.core.files.storage import default_storage
+from django.db import models
+from django.utils import timezone
 
 from .constants import (
     MAX_USER_EMAIL_LEN,
-    MAX_USER_USERNAME_LEN,
     MAX_USER_PASSWORD_LEN,
     MAX_USER_ROLE_LEN,
-    USERNAME_HELP_TEXT,
+    MAX_USER_USERNAME_LEN,
     PASSWORD_HELP_TEXT,
+    USERNAME_HELP_TEXT,
 )
 from .validators import (
-    username_format_validators,
     password_validators,
-    validate_user_username,
-    validate_user_email,
-    validate_pending_username,
+    username_format_validators,
     validate_pending_email,
+    validate_pending_username,
+    validate_user_email,
+    validate_user_username,
 )
 
 

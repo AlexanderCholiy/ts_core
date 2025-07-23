@@ -1,17 +1,16 @@
-from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator, MinLengthValidator
 from django.contrib.auth.password_validation import (
-    MinimumLengthValidator,
     CommonPasswordValidator,
+    MinimumLengthValidator,
     NumericPasswordValidator,
     UserAttributeSimilarityValidator
 )
+from django.core.exceptions import ValidationError
+from django.core.validators import MinLengthValidator, RegexValidator
 
 from .constants import (
-    MIN_USER_USERNAME_LEN,
     MIN_USER_PASSWORD_LEN,
+    MIN_USER_USERNAME_LEN,
 )
-
 
 username_format_validators = [
     RegexValidator(
@@ -39,7 +38,7 @@ password_validators = [
 
 
 def validate_user_username(username: str, instance=None):
-    from .models import User, PendingUser
+    from .models import PendingUser, User
 
     if instance is not None:
         qs = User.objects.filter(username__iexact=username)
@@ -57,7 +56,7 @@ def validate_user_username(username: str, instance=None):
 
 
 def validate_user_email(email: str, instance=None):
-    from .models import User, PendingUser
+    from .models import PendingUser, User
 
     if instance is not None:
         qs = User.objects.filter(email=email)
@@ -76,7 +75,7 @@ def validate_user_email(email: str, instance=None):
 
 
 def validate_pending_username(username: str, instance=None):
-    from .models import User, PendingUser
+    from .models import PendingUser, User
 
     if User.objects.filter(username=username).exists():
         raise ValidationError('Имя пользователя уже занято.')
@@ -93,7 +92,7 @@ def validate_pending_username(username: str, instance=None):
 
 
 def validate_pending_email(email: str, instance=None):
-    from .models import User, PendingUser
+    from .models import PendingUser, User
 
     if User.objects.filter(email=email).exists():
         raise ValidationError('Email уже зарегистрирован.')

@@ -1,16 +1,17 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpRequest
-from django.utils.encoding import force_str
 from django.contrib import messages
-from django.utils.http import urlsafe_base64_decode
-from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetView
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import redirect, render
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
 
-from .utils import send_activation_email, send_confirm_email, role_required
-from .forms import UserRegisterForm, ChangeEmailForm, UserForm
-from .models import User, PendingUser
 from core.logger import email_logger
+
+from .forms import ChangeEmailForm, UserForm, UserRegisterForm
+from .models import PendingUser, User
+from .utils import role_required, send_activation_email, send_confirm_email
 
 
 class CustomPasswordResetView(PasswordResetView):

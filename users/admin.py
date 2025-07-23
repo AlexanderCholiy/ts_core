@@ -1,8 +1,7 @@
 from django.contrib import admin
 
 from .constants import MAX_USERS_PER_PAGE
-from .models import User, PendingUser
-
+from .models import PendingUser, User
 
 admin.site.empty_value_display = 'Не задано'
 

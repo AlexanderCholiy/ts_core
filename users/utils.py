@@ -1,19 +1,20 @@
 from datetime import timedelta
-from typing import Callable
 from functools import wraps
+from typing import Callable
 
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.http import HttpRequest
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from django.contrib import messages
-from django.shortcuts import redirect
 
-from .models import PendingUser, User, Roles
 from core.logger import email_logger
+
+from .models import PendingUser, Roles, User
 
 
 def role_required(allowed_roles: list[str] = [str(Roles.USER)]):
