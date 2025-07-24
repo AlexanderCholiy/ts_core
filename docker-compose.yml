@@ -1,0 +1,42 @@
+version: '3'
+
+volumes:
+  ts_core_db_data:
+  ts_core_static:
+  ts_core_media:
+
+services:
+  ts_core_db:
+    image: postgres:13.10
+    container_name: ts_core_db
+    env_file: .env
+    volumes:
+      - ts_core_db_data:/var/log/postgresql/data
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+
+  ts_core_backend:
+    build: .
+    container_name: ts_core_backend
+    env_file: .env
+    volumes:
+      - ts_core_static:/collected_static
+      - ts_core_media:/app/media/
+    depends_on:
+      - ts_core_db
+    networks:
+      - ts_core_network
+
+  gateway:
+    build: ./gateway/
+    container_name: ts_core_gateway
+    ports:
+      - "8000:80"
+    volumes:
+      - ts_core_static:/staticfiles/
+      - ts_core_media:/mediafiles/
+    depends_on:
+      - ts_core_backend
+    networks:
+      - ts_core_network

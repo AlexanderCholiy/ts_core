@@ -73,15 +73,24 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', 'django'),
+        'USER': os.getenv('POSTGRES_USER', 'django'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', 5432),
     },
     'open5gs_db': {
         'ENGINE': 'djongo',
         'NAME': 'open5gs',
-        'HOST': 'localhost',
+        'HOST': os.getenv('MONGO_DB_HOST', 'localhost'),
         'PORT': 27017,
         'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'serverSelectionTimeoutMS': 5000,  # Таймаут отв. первого подкл.
+            'connectTimeoutMS': 3000,          # Таймаут подключения
+            'socketTimeoutMS': 3000            # Таймаут на чтение/запись
+        }
     },
 }
 
