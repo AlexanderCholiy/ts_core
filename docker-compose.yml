@@ -14,7 +14,6 @@ services:
   # PostgreSQL
   ts_core_db:
     image: postgres:13.10
-    container_name: ts_core_db
     env_file: .env
     volumes:
       - ts_core_db_data:/var/lib/postgresql/data
@@ -26,10 +25,9 @@ services:
   ts_core_backend:
     build:
       context: .
-    container_name: ts_core_backend_container
     env_file: .env
     volumes:
-      - ts_core_static:/collected_static
+      - ts_core_static:/backend_static
       - ts_core_media:/app/media/
     depends_on:
       - ts_core_db
@@ -41,10 +39,9 @@ services:
     restart: unless-stopped
 
   # Nginx
-  gateway:
+  ts_core_gateway:
     build:
       context: ./gateway/
-    container_name: ts_core_gateway
     ports:
       - "8000:80"
     volumes:
@@ -59,8 +56,9 @@ services:
   # Socat прокси для локального MongoDB
   socat_proxy:
     image: alpine/socat
-    container_name: socat_proxy
     command: tcp-listen:27018,fork,reuseaddr tcp-connect:host.docker.internal:27017
     networks:
       - ts_core_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped

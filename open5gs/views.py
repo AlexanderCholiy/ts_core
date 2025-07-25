@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
+from django.db import DatabaseError
 
 from core.logger import mongo_logger
 from users.utils import role_required
@@ -36,9 +37,7 @@ def index(request: HttpRequest) -> HttpResponse:
         paginator = Paginator(subscribers, MAX_SUBSCRIBER_PER_PAGE)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-    except Exception as e:
-        print(f"Ошибка: {e}")
-        print(traceback.format_exc())
+    except DatabaseError as e:
         mongo_logger.exception(e)
         raise
 

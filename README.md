@@ -76,13 +76,14 @@ sudo docker build -t ts_core_backend .
 sudo apt install socat
 sudo socat TCP-LISTEN:27018,fork TCP:127.0.0.1:27017
 2. Запуск контейнера с Django-приложением (учитывая, что MongoDB слушает только на 127.0.0.1):
-sudo docker run --env-file .env --net ts_core_network --name ts_core_backend_container --add-host=host.docker.internal:host-gateway -p 8000:8000 ts_core_backend
+sudo docker run --env-file .env --net ts_core_network --name ts_core_backend --add-host=host.docker.internal:host-gateway -p 8000:8000 ts_core_backend
 
-
-<!-- Т.к. MongoDB у тебя запущена локально на хосте и слушает только на 127.0.0.1 (localhost), Docker-контейнер не видит её на localhost контейнера. -->
-<!-- Решение — запускать Django контейнер с сетью хоста, чтобы localhost в контейнере совпадал с localhost на хосте. -->
-<!-- sudo docker run --net=host --env-file .env --name ts_core_backend_container ts_core_backend -->
-<!-- sudo docker run -d --name ts_core_backend_container --env-file .env --add-host=host.docker.internal:host-gateway -p 8000:8000 ts_core_backend -->
-<!-- apt update && apt install -y nano -->
-
-sudo docker container stop ts_core_backend_container && sudo docker container rm ts_core_backend_container && sudo docker image rm ts_core_backend
+# Сборка проекта:
+1. Запуск с пересборкой контейнеров:
+sudo docker compose stop && sudo docker compose up --build
+2. Применить миграции к БД:
+sudo docker compose exec ts_core_backend python manage.py migrate
+3. Сборка статики:
+sudo docker compose exec ts_core_backend python manage.py collectstatic
+4. Копируем статику в /collected_static/static/, которая попадёт на volume static в папку /static/
+sudo docker compose exec ts_core_backend cp -r /app/collected_static/. /backend_static/ 
