@@ -8,8 +8,8 @@ from django.core.paginator import Paginator
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 
-from users.utils import role_required
 from core.logger import mongo_logger
+from users.utils import role_required
 
 from .constants import MAX_SUBSCRIBER_PER_PAGE
 from .forms import SubscriberForm

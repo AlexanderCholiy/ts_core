@@ -1,35 +1,49 @@
-version: '3'
+version: '3.8'
 
 volumes:
   ts_core_db_data:
   ts_core_static:
   ts_core_media:
 
+networks:
+  ts_core_network:
+    driver: bridge
+
 services:
+
+  # PostgreSQL
   ts_core_db:
     image: postgres:13.10
     container_name: ts_core_db
     env_file: .env
     volumes:
-      - ts_core_db_data:/var/log/postgresql/data
-    ports:
-      - 5432:5432
+      - ts_core_db_data:/var/lib/postgresql/data
+    networks:
+      - ts_core_network
     restart: unless-stopped
 
+  # Django backend
   ts_core_backend:
-    build: .
-    container_name: ts_core_backend
+    build:
+      context: .
+    container_name: ts_core_backend_container
     env_file: .env
     volumes:
       - ts_core_static:/collected_static
       - ts_core_media:/app/media/
     depends_on:
       - ts_core_db
+      - socat_proxy
     networks:
       - ts_core_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
 
+  # Nginx
   gateway:
-    build: ./gateway/
+    build:
+      context: ./gateway/
     container_name: ts_core_gateway
     ports:
       - "8000:80"
@@ -40,3 +54,13 @@ services:
       - ts_core_backend
     networks:
       - ts_core_network
+    restart: unless-stopped
+
+  # Socat прокси для локального MongoDB
+  socat_proxy:
+    image: alpine/socat
+    container_name: socat_proxy
+    command: tcp-listen:27018,fork,reuseaddr tcp-connect:host.docker.internal:27017
+    networks:
+      - ts_core_network
+    restart: unless-stopped

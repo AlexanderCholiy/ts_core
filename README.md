@@ -75,7 +75,6 @@ sudo docker build -t ts_core_backend .
 2. Контейнер будет обращаться к host.docker.internal:27018, а это будет проброшено на 127.0.0.1:27017 через socat
 sudo apt install socat
 sudo socat TCP-LISTEN:27018,fork TCP:127.0.0.1:27017
-* Если хочешь, можно настроить это через docker-compose и проброс socat через отдельный контейнер — скажи, покажу как.
 2. Запуск контейнера с Django-приложением (учитывая, что MongoDB слушает только на 127.0.0.1):
 sudo docker run --env-file .env --net ts_core_network --name ts_core_backend_container --add-host=host.docker.internal:host-gateway -p 8000:8000 ts_core_backend
 
