@@ -1,3 +1,4 @@
+import traceback
 from typing import Optional, Union
 from urllib.parse import urlencode
 
@@ -8,6 +9,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 
 from users.utils import role_required
+from core.logger import mongo_logger
 
 from .constants import MAX_SUBSCRIBER_PER_PAGE
 from .forms import SubscriberForm
@@ -20,24 +22,31 @@ def index(request: HttpRequest) -> HttpResponse:
     template_name = 'open5gs/index.html'
 
     query = request.GET.get('q', '').strip()
-    if query:
-        subscribers = (
-            Subscriber.objects.values('pk', 'imsi')
-            .filter(imsi__icontains=query).order_by('-pk')
-        )
-    else:
-        subscribers = Subscriber.objects.values('pk', 'imsi').order_by('-pk')
+    try:
+        if query:
+            subscribers = (
+                Subscriber.objects.values('pk', 'imsi')
+                .filter(imsi__icontains=query).order_by('-pk')
+            )
+        else:
+            subscribers = (
+                Subscriber.objects.values('pk', 'imsi').order_by('-pk')
+            )
 
-    paginator = Paginator(subscribers, MAX_SUBSCRIBER_PER_PAGE)
-    page_number = request.GET.get('page')
+        paginator = Paginator(subscribers, MAX_SUBSCRIBER_PER_PAGE)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+    except Exception as e:
+        print(f"Ошибка: {e}")
+        print(traceback.format_exc())
+        mongo_logger.exception(e)
+        paginator = None
+        page_number = None
+        page_obj = None
 
-    page_obj = paginator.get_page(page_number)
     query_params = request.GET.copy()
-    if 'page' in query_params:
-        del query_params['page']
-    page_url_base = '?'
-    if query_params:
-        page_url_base += urlencode(query_params) + '&'
+    query_params.pop('page', None)
+    page_url_base = f'?{query_params.urlencode()}&' if query_params else '?'
 
     context = {
         'page_obj': page_obj,

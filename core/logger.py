@@ -50,3 +50,6 @@ class FileRotatingLogger:
 email_logger = FileRotatingLogger(
     os.path.join(settings.BASE_DIR, 'log'), 'email.log', debug=settings.DEBUG
 ).get_logger()
+mongo_logger = FileRotatingLogger(
+    os.path.join(settings.BASE_DIR, 'log'), 'mongo.log', debug=settings.DEBUG
+).get_logger()

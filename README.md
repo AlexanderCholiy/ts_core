@@ -58,21 +58,32 @@ docker info | grep "Docker Root Dir"
 1. Создайте volume для хранения данных PostgreSQL:
 sudo docker volume create ts_core_db_data 
 2. Создание и запуск БД в Docker контейнере с параметрами указанными в .env файле и хранением данных в Docker volume:
-<!-- Для разработки -->
-sudo docker run --name ts_core_db --env-file .env -v ts_core_db_data:/var/log/postgresql/data -p 5432:5432 postgres:13.10
-<!-- В продакшн -->
-sudo docker run -d --name ts_core_db --env-file .env --network ts_core_network -v pg_data:/var/log/postgresql/data postgres:13.10 
+<!-- Для разработки мы откроем нужный нам порт, например 5432 хоста и перенаправим его на контейнер с портом 5432 (как в БД) -->
+sudo docker run --name ts_core_db --env-file .env -v ts_core_db_data:/var/lib/postgresql/data -p 5432:5432 postgres:13.10
+<!-- В продакшне мы свяжем чере Docker network контейнер БД и приложения -->
+sudo docker run --name ts_core_db --env-file .env -v pg_data:/var/lib/postgresql/data postgres:13.10 
+
+# Подготовка Docker network:
+1. Чтобы Django мог из контейнера обратиться к серверу базы данных в другом контейнере, нужно объединить контейнеры в общую сеть.
+sudo docker network create ts_core_network 
+2. Присоединить к сети ts_core_network контейнер базы данных ts_core_db
+sudo docker network connect ts_core_network ts_core_db
 
 # Запуск web приложения через Docker:
-1. Соберем ts_core_backend образ   
+1. Соберем образ приложения ts_core_backend:  
 sudo docker build -t ts_core_backend . 
-2. Создадим сеть контейнеров, чтобы Django мог из контейнера обратиться к серверу базы данных в другом контейнере
-sudo docker network create ts_core_network 
-3. Подключим к сети контейнеры бэкенда и базы данных
-sudo docker network connect ts_core_network ts_core_db
-4. Запуск контейнера с Django-приложением с пробросом mongodb запущенной локально:
-Т.к. MongoDB у тебя запущена локально на хосте и слушает только на 127.0.0.1 (localhost), Docker-контейнер не видит её на localhost контейнера.
-Решение — запускать Django контейнер с сетью хоста, чтобы localhost в контейнере совпадал с localhost на хосте.
-sudo docker run --net=host --env-file .env --name ts_core_backend_container ts_core_backend
+2. Контейнер будет обращаться к host.docker.internal:27018, а это будет проброшено на 127.0.0.1:27017 через socat
+sudo apt install socat
+sudo socat TCP-LISTEN:27018,fork TCP:127.0.0.1:27017
+* Если хочешь, можно настроить это через docker-compose и проброс socat через отдельный контейнер — скажи, покажу как.
+2. Запуск контейнера с Django-приложением (учитывая, что MongoDB слушает только на 127.0.0.1):
+sudo docker run --env-file .env --net ts_core_network --name ts_core_backend_container --add-host=host.docker.internal:host-gateway -p 8000:8000 ts_core_backend
 
-sudo docker run -d --name ts_core_backend_container --env-file .env --add-host=host.docker.internal:host-gateway -p 8000:8000 ts_core_backend
+
+<!-- Т.к. MongoDB у тебя запущена локально на хосте и слушает только на 127.0.0.1 (localhost), Docker-контейнер не видит её на localhost контейнера. -->
+<!-- Решение — запускать Django контейнер с сетью хоста, чтобы localhost в контейнере совпадал с localhost на хосте. -->
+<!-- sudo docker run --net=host --env-file .env --name ts_core_backend_container ts_core_backend -->
+<!-- sudo docker run -d --name ts_core_backend_container --env-file .env --add-host=host.docker.internal:host-gateway -p 8000:8000 ts_core_backend -->
+<!-- apt update && apt install -y nano -->
+
+sudo docker container stop ts_core_backend_container && sudo docker container rm ts_core_backend_container && sudo docker image rm ts_core_backend

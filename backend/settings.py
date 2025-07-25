@@ -83,10 +83,10 @@ DATABASES = {
     'open5gs_db': {
         'ENGINE': 'djongo',
         'NAME': 'open5gs',
-        'HOST': os.getenv('MONGO_DB_HOST', 'localhost'),
-        'PORT': 27017,
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
+            'host': os.getenv('MONGO_HOST', 'localhost'),
+            'port': os.getenv('MONGO_PORT', 27017),
             'serverSelectionTimeoutMS': 5000,  # Таймаут отв. первого подкл.
             'connectTimeoutMS': 3000,          # Таймаут подключения
             'socketTimeoutMS': 3000            # Таймаут на чтение/запись
