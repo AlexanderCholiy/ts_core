@@ -73,7 +73,7 @@ sudo docker network connect ts_core_network ts_core_db
 1. Соберем образ приложения ts_core_backend:  
 sudo docker build -t ts_core_backend . 
 2. Контейнер будет обращаться к host.docker.internal:27018, а это будет проброшено на 127.0.0.1:27017 через socat
-sudo apt install socat
+sudo apt update && sudo apt install socat -y
 sudo socat TCP-LISTEN:27018,fork TCP:127.0.0.1:27017
 2. Запуск контейнера с Django-приложением (учитывая, что MongoDB слушает только на 127.0.0.1):
 sudo docker run --env-file .env --net ts_core_network --name ts_core_backend --add-host=host.docker.internal:host-gateway -p 8000:8000 ts_core_backend
@@ -87,3 +87,49 @@ sudo docker compose exec ts_core_backend python manage.py migrate
 sudo docker compose exec ts_core_backend python manage.py collectstatic
 4. Копируем статику в /collected_static/static/, которая попадёт на volume static в папку /static/
 sudo docker compose exec ts_core_backend cp -r /app/collected_static/. /backend_static/ 
+
+
+
+# Продакшн:
+sudo docker build -t alexandercholiy/ts_core_backend .
+sudo docker build -t alexandercholiy/ts_core_gateway ./gateway
+<!-- создаем образ на DockerHub -->
+sudo docker login -u alexandercholiy
+sudo docker push alexandercholiy/ts_core_backend
+sudo docker push alexandercholiy/ts_core_gateway
+
+sudo docker compose -f docker-compose.production.yml up
+sudo docker compose -f docker-compose.production.yml exec -it backend bash
+
+<!-- Остановка -->
+sudo docker compose stop
+<!-- Удалить неактивные контейнеры -->
+sudo docker container prune -f
+<!-- Удалить неиспользуемые образы -->
+sudo docker image prune -f
+
+# Создаём systemd-сервис socat
+1. Установка socat
+sudo apt update && sudo apt install socat -y
+2. Создай systemd unit-файл:
+sudo nano /etc/systemd/system/socat-mongo-proxy.service
+3. Вставь следующее содержимое:
+[Unit]
+Description=Socat proxy from Docker to local MongoDB
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/socat TCP-LISTEN:27018,fork TCP:127.0.0.1:27017
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+4. Обнови systemd и запусти сервис:
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl enable --now socat-mongo-proxy.service
+5. Убедись, что всё работает:
+sudo systemctl status socat-mongo-proxy.service

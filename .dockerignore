@@ -5,3 +5,5 @@ db.sqlite3.bak
 .idea
 .vscode
 .env
+.media
+.log
