@@ -24,7 +24,9 @@
               <p class="form-text"><small class="text-muted help-text">{{ field.help_text }}</small></p>
             {% endif %}
             
-            <div class="error">{{ field.errors }}</div>
+            {% if field.error %}
+              <div class="error">{{ field.errors }}</div>
+            {% endif %}
           </div>
         {% endfor %}
         <button type="submit" class="btn btn-primary submit-button">Зарегистрироваться</button>
