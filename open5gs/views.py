@@ -40,9 +40,7 @@ def index(request: HttpRequest) -> HttpResponse:
         print(f"Ошибка: {e}")
         print(traceback.format_exc())
         mongo_logger.exception(e)
-        paginator = None
-        page_number = None
-        page_obj = None
+        raise
 
     query_params = request.GET.copy()
     query_params.pop('page', None)

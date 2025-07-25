@@ -78,7 +78,7 @@ DATABASES = {
         'USER': os.getenv('POSTGRES_USER', 'django'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
         'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', 5432),
+        'PORT': int(os.getenv('DB_PORT', 5432)),
     },
     'open5gs_db': {
         'ENGINE': 'djongo',
@@ -86,7 +86,7 @@ DATABASES = {
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
             'host': os.getenv('MONGO_HOST', 'localhost'),
-            'port': os.getenv('MONGO_PORT', 27017),
+            'port': int(os.getenv('MONGO_PORT', 27017)),
             'serverSelectionTimeoutMS': 5000,  # Таймаут отв. первого подкл.
             'connectTimeoutMS': 3000,          # Таймаут подключения
             'socketTimeoutMS': 3000            # Таймаут на чтение/запись
