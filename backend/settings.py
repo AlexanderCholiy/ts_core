@@ -160,7 +160,7 @@ REGISTRATION_ACCESS_TOKEN_LIFETIME = timedelta(seconds=86400)
 
 AXES_FAILURE_LIMIT = 3  # Количество попыток
 
-AXES_COOLOFF_TIME = timedelta(seconds=120)
+AXES_COOLOFF_TIME = timedelta(seconds=10)
 
 AXES_LOCKOUT_TEMPLATE = 'core/429_account_locked.html'
 
