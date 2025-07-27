@@ -5,6 +5,9 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls.exceptions import Resolver404
+from axes.helpers import get_cool_off
+from axes.attempts import get_user_attempts
+from django.utils.timezone import now
 
 
 def bad_request(

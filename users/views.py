@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
@@ -6,6 +8,12 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
+from django.utils.timezone import now
+from axes.models import AccessAttempt
+from django.contrib.auth.views import LoginView
+from axes.helpers import get_client_ip_address
+from django.conf import settings
+from django.db.models import Q
 
 from core.logger import email_logger
 
@@ -150,3 +158,48 @@ def profile(request: HttpRequest) -> HttpResponse:
 
     context = {'form': form}
     return render(request, 'users/profile_form.html', context)
+
+
+class CustomLoginView(LoginView):
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+
+        username = self.request.POST.get('username', '')
+        user = User.objects.filter(
+            Q(username=username) | Q(email=username)
+        ).first()
+        username_real = user.email if user else username
+
+        ip_address = get_client_ip_address(self.request)
+        failure_limit = getattr(settings, 'AXES_FAILURE_LIMIT', 3)
+        cool_off = getattr(settings, 'AXES_COOLOFF_TIME', timedelta(minutes=5))
+
+        recent_attempt = AccessAttempt.objects.filter(
+            username=username_real,
+            ip_address=ip_address,
+            failures_since_start__gt=0,
+        ).order_by('-attempt_time').first()
+
+        if recent_attempt:
+            failures = recent_attempt.failures_since_start
+            remaining = max(failure_limit - failures, 0)
+
+            if remaining > 0:
+                messages.warning(
+                    self.request,
+                    f'Осталось попыток входа: {remaining}'
+                )
+            else:
+                lock_start_time = recent_attempt.attempt_time
+                cooldown_end = lock_start_time + cool_off
+                time_remaining = cooldown_end - now()
+
+                seconds_left = int(time_remaining.total_seconds())
+                if seconds_left > 0:
+                    messages.error(
+                        self.request,
+                        f'Повторите попытку через {seconds_left} секунд. '
+                        'Каждая новая попытка продлевает таймер!'
+                    )
+
+        return response

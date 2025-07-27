@@ -22,3 +22,5 @@ PASSWORD_HELP_TEXT = (
     'не должен быть похож на имя пользователя и '
     'не должен быть слишком простым.'
 )
+
+ALLOWED_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png']

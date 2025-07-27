@@ -9,7 +9,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
 from users.forms import AuthForm
-from users.views import CustomPasswordResetView
+from users.views import CustomPasswordResetView, CustomLoginView
 
 handler400 = 'core.views.bad_request'
 handler403 = 'core.views.permission_denied'
@@ -49,7 +49,7 @@ swagger_urls = [
 auth_urlpatterns = [
     path(
         'login/',
-        auth_views.LoginView.as_view(form_class=AuthForm),
+        CustomLoginView.as_view(form_class=AuthForm),
         name='login',
     ),
     path(

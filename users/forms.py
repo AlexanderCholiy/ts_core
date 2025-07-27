@@ -109,6 +109,7 @@ class AuthForm(AuthenticationForm):
     }
 
     def clean_username(self):
+        """Войти можно по иимени пользователя и email"""
         username_or_email = self.cleaned_data['username']
 
         user = None
@@ -123,10 +124,10 @@ class AuthForm(AuthenticationForm):
             except User.DoesNotExist:
                 pass
 
-        if not user:
-            return username_or_email
+        if user:
+            return user.email
 
-        return user.email
+        return username_or_email
 
     def confirm_login_allowed(self, user):
         if not user.is_active:

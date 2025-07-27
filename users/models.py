@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.files.storage import default_storage
 from django.db import models
 from django.utils import timezone
+from django.core.validators import FileExtensionValidator
 
 from .constants import (
     MAX_USER_EMAIL_LEN,
@@ -13,6 +14,7 @@ from .constants import (
     MAX_USER_USERNAME_LEN,
     PASSWORD_HELP_TEXT,
     USERNAME_HELP_TEXT,
+    ALLOWED_IMAGE_EXTENSIONS,
 )
 from .validators import (
     password_validators,
@@ -44,17 +46,15 @@ class User(AbstractUser):
         validators=username_format_validators + [validate_user_username],
         help_text=USERNAME_HELP_TEXT,
     )
-    password = models.CharField(
-        max_length=MAX_USER_PASSWORD_LEN,
-        validators=[v.validate for v in password_validators],
-        help_text=PASSWORD_HELP_TEXT,
-    )
     avatar = models.ImageField(
         'Аватар',
         upload_to='users/',
         blank=True,
         null=True,
         help_text='Загрузите аватар пользователя в формате JPG или PNG',
+        validators=[
+            FileExtensionValidator(allowed_extensions=ALLOWED_IMAGE_EXTENSIONS)
+        ],
     )
     role = models.CharField(
         'Роль',
@@ -70,7 +70,7 @@ class User(AbstractUser):
         help_text='Формат: ГГГГ-ММ-ДД'
     )
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'password']
+    REQUIRED_FIELDS = ['username']
 
     class Meta:
         verbose_name = 'Пользователь'

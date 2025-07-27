@@ -58,8 +58,9 @@ docker info | grep "Docker Root Dir"
 1. Создайте volume для хранения данных PostgreSQL:
 sudo docker volume create ts_core_db_data 
 2. Создание и запуск БД в Docker контейнере с параметрами указанными в .env файле и хранением данных в Docker volume:
-<!-- Для разработки мы откроем нужный нам порт, например 5432 хоста и перенаправим его на контейнер с портом 5432 (как в БД) -->
-sudo docker run --name ts_core_db --env-file .env -v ts_core_db_data:/var/lib/postgresql/data -p 5432:5432 postgres:13.10
+<!-- Для разработки мы откроем нужный нам порт, например 5438 хоста (на случай если стандартный занят) и перенаправим его на контейнер с портом 5432 -->
+sudo docker run --name ts_core_db --env-file .env -v ts_core_db_data:/var/lib/postgresql/data -p 5438:5432 postgres:13.10
+<!-- Тогда при подключении необходимо указать порт 5438 -->
 <!-- В продакшне мы свяжем чере Docker network контейнер БД и приложения -->
 sudo docker run --name ts_core_db --env-file .env -v pg_data:/var/lib/postgresql/data postgres:13.10 
 
