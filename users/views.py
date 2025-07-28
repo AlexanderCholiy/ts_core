@@ -14,6 +14,7 @@ from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.utils.timezone import now
 from django_ratelimit.decorators import ratelimit
+from django.utils.decorators import method_decorator
 
 from core.logger import email_logger
 
@@ -22,9 +23,12 @@ from .models import PendingUser, User
 from .utils import role_required, send_activation_email, send_confirm_email
 
 
+@method_decorator(
+    ratelimit(key='user_or_ip', rate='5/m', block=True, method='POST'),
+    name='dispatch',
+)
 class CustomPasswordResetView(PasswordResetView):
 
-    @ratelimit(key='user_or_ip', rate='5/m', block=True, method='POST')
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -164,11 +168,11 @@ def profile(request: HttpRequest) -> HttpResponse:
     return render(request, 'users/profile_form.html', context)
 
 
+@method_decorator(
+    ratelimit(key='user_or_ip', rate='5/m', block=True, method='POST'),
+    name='dispatch'
+)
 class CustomLoginView(LoginView):
-
-    @ratelimit(key='user_or_ip', rate='5/m', block=True, method='POST')
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
 
     def form_invalid(self, form):
         response = super().form_invalid(form)

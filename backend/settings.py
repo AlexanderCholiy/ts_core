@@ -167,7 +167,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REGISTRATION_ACCESS_TOKEN_LIFETIME = timedelta(seconds=86400)
 
-AXES_FAILURE_LIMIT = 3
+AXES_FAILURE_LIMIT = 300
 
 AXES_COOLOFF_TIME = timedelta(seconds=60)
 
