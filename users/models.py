@@ -3,18 +3,18 @@ import time
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.files.storage import default_storage
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils import timezone
-from django.core.validators import FileExtensionValidator
 
 from .constants import (
+    ALLOWED_IMAGE_EXTENSIONS,
     MAX_USER_EMAIL_LEN,
     MAX_USER_PASSWORD_LEN,
     MAX_USER_ROLE_LEN,
     MAX_USER_USERNAME_LEN,
     PASSWORD_HELP_TEXT,
     USERNAME_HELP_TEXT,
-    ALLOWED_IMAGE_EXTENSIONS,
 )
 from .validators import (
     password_validators,
