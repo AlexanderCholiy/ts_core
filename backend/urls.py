@@ -11,10 +11,12 @@ from rest_framework import permissions
 from users.forms import AuthForm
 from users.views import CustomPasswordResetView, CustomLoginView
 
+
 handler400 = 'core.views.bad_request'
 handler403 = 'core.views.permission_denied'
 handler404 = 'core.views.page_not_found'
 handler500 = 'core.views.server_error'
+handler429 = 'core.views.too_many_requests'
 
 schema_view = get_schema_view(
     openapi.Info(

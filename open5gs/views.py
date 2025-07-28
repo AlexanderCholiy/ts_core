@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db import DatabaseError
+from django_ratelimit.decorators import ratelimit
 
 from core.logger import mongo_logger
 from users.utils import role_required
@@ -17,6 +18,7 @@ from .models import Subscriber
 
 @login_required
 @role_required()
+@ratelimit(key='user_or_ip', rate='20/m', block=True)
 def index(request: HttpRequest) -> HttpResponse:
     template_name = 'open5gs/index.html'
 
@@ -53,6 +55,7 @@ def index(request: HttpRequest) -> HttpResponse:
 
 @login_required
 @role_required()
+@ratelimit(key='user_or_ip', rate='20/m', block=True)
 def subscriber(
     request: HttpRequest, imsi: Optional[int] = None
 ) -> Union[HttpResponse, HttpResponseRedirect]:
@@ -78,6 +81,7 @@ def subscriber(
 
 @login_required
 @role_required()
+@ratelimit(key='user_or_ip', rate='20/m', block=True)
 def delete_subscriber(
     request: HttpRequest, imsi: int
 ) -> Union[HttpResponse, HttpResponseRedirect]:

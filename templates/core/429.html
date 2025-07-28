@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Ошибка 429{% endblock %}
+
+{% block content %}
+<div class="container-sm">
+  <div class="card">
+    <div class="card-body">
+      <p class="card-title">Ошибка 429 — Слишком много запросов</p>
+      <p class="card-text error-message">
+        Вы сделали слишком много запросов за короткий промежуток времени.
+        Пожалуйста, попробуйте позже.
+      </p>
+      <p class="card-text">
+        <a href="{% url 'open5gs:index' %}" class="link-text">Вернуться на главную</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

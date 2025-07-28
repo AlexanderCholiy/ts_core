@@ -14,6 +14,7 @@ from django.contrib.auth.views import LoginView
 from axes.helpers import get_client_ip_address
 from django.conf import settings
 from django.db.models import Q
+from django_ratelimit.decorators import ratelimit
 
 from core.logger import email_logger
 
@@ -23,6 +24,11 @@ from .utils import role_required, send_activation_email, send_confirm_email
 
 
 class CustomPasswordResetView(PasswordResetView):
+
+    @ratelimit(key='user_or_ip', rate='5/m', block=True, method='POST')
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def get_initial(self):
         initial = super().get_initial()
         email = self.request.GET.get('email')
@@ -31,6 +37,7 @@ class CustomPasswordResetView(PasswordResetView):
         return initial
 
 
+@ratelimit(key='user_or_ip', rate='10/m', block=True, method='POST')
 def register(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -76,6 +83,7 @@ def activate(request: HttpRequest, uidb64: str, token: str) -> HttpResponse:
 
 @login_required
 @role_required()
+@ratelimit(key='user_or_ip', rate='10/m', block=True, method='POST')
 def change_email(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         form = ChangeEmailForm(request.POST, instance=request.user)
@@ -103,6 +111,7 @@ def change_email(request: HttpRequest) -> HttpResponse:
 
 @login_required
 @role_required()
+@ratelimit(key='user_or_ip', rate='10/m', block=True)
 def confirm_email_change(
     request: HttpRequest, uidb64: str, token: str
 ) -> HttpResponse:
@@ -141,6 +150,7 @@ def confirm_email_change(
 
 @login_required
 @role_required()
+@ratelimit(key='user_or_ip', rate='20/m', block=True, method='POST')
 def profile(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES, instance=request.user)
@@ -156,6 +166,11 @@ def profile(request: HttpRequest) -> HttpResponse:
 
 
 class CustomLoginView(LoginView):
+
+    @ratelimit(key='user_or_ip', rate='5/m', block=True, method='POST')
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def form_invalid(self, form):
         response = super().form_invalid(form)
 

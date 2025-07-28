@@ -1,6 +1,11 @@
 from django.views.generic import TemplateView
+from django_ratelimit.decorators import ratelimit
+from django.utils.decorators import method_decorator
 
 
+@method_decorator(
+    ratelimit(key='user_or_ip', rate='20/m', block=True), name='dispatch'
+)
 class AboutTemplateView(TemplateView):
     template_name = 'pages/about.html'
 

@@ -5,9 +5,6 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls.exceptions import Resolver404
-from axes.helpers import get_cool_off
-from axes.attempts import get_user_attempts
-from django.utils.timezone import now
 
 
 def bad_request(
@@ -43,4 +40,12 @@ def csrf_failure(request: HttpRequest, reason: str = '') -> HttpResponse:
 def server_error(request: HttpRequest) -> HttpResponse:
     return render(
         request, 'core/500.html', status=HTTPStatus.INTERNAL_SERVER_ERROR
+    )
+
+
+def too_many_requests(
+    request: HttpRequest, exception: Optional[Exception] = None
+) -> HttpResponse:
+    return render(
+        request, 'core/429.html', status=HTTPStatus.TOO_MANY_REQUESTS
     )
