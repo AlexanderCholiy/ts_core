@@ -137,3 +137,20 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now socat-mongo-proxy.service
 5. Убедись, что всё работает:
 sudo systemctl status socat-mongo-proxy.service
+
+
+
+
+
+
+
+
+
+<!-- Команды для развертывания приложения -->
+cd ts_core
+# Выполняет pull образов с Docker Hub
+sudo docker compose -f docker-compose.production.yml pull
+# Перезапускает все контейнеры в Docker Compose
+sudo docker compose -f docker-compose.production.yml down
+sudo docker compose -f docker-compose.production.yml up -d
+# Миграции и сбор статики уже есть в docker-compose.production.yml
