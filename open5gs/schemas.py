@@ -14,7 +14,7 @@ from .constants import (
     QOS_INDEX_CHOICES,
     SD_LEN,
     SESSION_TYPE_CHOICES,
-    UNIT_CHOICES,
+    UNIT_CHOICES
 )
 from .utils import generate_hex_key
 

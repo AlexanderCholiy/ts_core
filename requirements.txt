@@ -12,10 +12,10 @@ djangorestframework==3.12.4
 djongo==1.3.7
 drf-yasg==1.21.10
 flake8==7.3.0
-flake8-isort==6.1.2
+flake8-isort==6.0.0
 gunicorn==23.0.0
 inflection==0.5.1
-isort==6.0.1
+isort==5.13.2
 mccabe==0.7.0
 packaging==21.3
 pillow==11.3.0

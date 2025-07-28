@@ -14,7 +14,7 @@ from .constants import (
     MAX_USER_ROLE_LEN,
     MAX_USER_USERNAME_LEN,
     PASSWORD_HELP_TEXT,
-    USERNAME_HELP_TEXT,
+    USERNAME_HELP_TEXT
 )
 from .validators import (
     password_validators,
@@ -22,7 +22,7 @@ from .validators import (
     validate_pending_email,
     validate_pending_username,
     validate_user_email,
-    validate_user_username,
+    validate_user_username
 )
 
 

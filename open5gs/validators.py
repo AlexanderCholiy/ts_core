@@ -12,7 +12,7 @@ from .constants import (
     MAX_SESSION_NAME_LEN,
     MIN_PRIORITY_LEVEL_VALUE,
     SESSION_TYPE_CHOICES,
-    UNIT_CHOICES,
+    UNIT_CHOICES
 )
 
 hexadecimal_validator = RegexValidator(

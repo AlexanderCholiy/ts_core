@@ -8,7 +8,7 @@ from .constants import (
     MAX_SUBSCRIBER_HEX_LEN,
     MAX_SUBSCRIBER_MSISDN_LEN,
     MIN_SST_VALUE,
-    SD_LEN,
+    SD_LEN
 )
 from .models import Subscriber
 from .schemas import AMBR_SCHEMA, MSISDN_SCHEMA, SECURITY_SCHEMA, SLICE_SCHEMA
@@ -17,7 +17,7 @@ from .validators import (
     is_valid_objectid,
     validate_br,
     validate_hex_value,
-    validate_session,
+    validate_session
 )
 
 

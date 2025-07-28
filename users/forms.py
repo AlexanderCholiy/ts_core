@@ -10,7 +10,7 @@ from .constants import (
     MAX_USER_AGE,
     MAX_USER_USERNAME_DISPLAY_LEN,
     MIN_USER_AGE,
-    MIN_USER_PASSWORD_LEN,
+    MIN_USER_PASSWORD_LEN
 )
 from .models import PendingUser, User
 from .validators import validate_user_email

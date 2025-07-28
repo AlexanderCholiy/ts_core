@@ -7,10 +7,7 @@ from django.contrib.auth.password_validation import (
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, RegexValidator
 
-from .constants import (
-    MIN_USER_PASSWORD_LEN,
-    MIN_USER_USERNAME_LEN,
-)
+from .constants import MIN_USER_PASSWORD_LEN, MIN_USER_USERNAME_LEN
 
 username_format_validators = [
     RegexValidator(
