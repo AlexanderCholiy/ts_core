@@ -154,3 +154,8 @@ sudo docker compose -f docker-compose.production.yml pull
 sudo docker compose -f docker-compose.production.yml down
 sudo docker compose -f docker-compose.production.yml up -d
 # Миграции и сбор статики уже есть в docker-compose.production.yml
+
+
+
+<!-- Файл для настройки socat -->
+chmod +x setup_socat_proxy.sh
