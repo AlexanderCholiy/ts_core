@@ -10,11 +10,11 @@ from django.contrib.auth.views import LoginView, PasswordResetView
 from django.db.models import Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
+from django.utils.decorators import method_decorator
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.utils.timezone import now
 from django_ratelimit.decorators import ratelimit
-from django.utils.decorators import method_decorator
 
 from core.logger import email_logger
 
