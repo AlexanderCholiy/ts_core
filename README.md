@@ -159,3 +159,5 @@ sudo docker compose -f docker-compose.production.yml up -d
 
 <!-- Файл для настройки socat -->
 chmod +x setup_socat_proxy.sh
+chmod +x shutdown_counter.sh
+chmod +x update_crontab.sh
