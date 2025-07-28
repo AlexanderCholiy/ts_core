@@ -189,6 +189,12 @@ body.dark .form-group input[type="date"]::-webkit-calendar-picker-indicator {
   outline: none;
 }
 
+.errorlist {
+  list-style-type: none;
+  margin: 0;
+  padding: 0.65rem 1rem;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-5px); }
   to   { opacity: 1; transform: translateY(0); }

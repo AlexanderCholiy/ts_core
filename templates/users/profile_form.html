@@ -44,16 +44,25 @@
         <div class="form-group">
           {{ form.first_name.label_tag }}
           {{ form.first_name }}
+          {% if  form.first_name.errors %}
+            <div class="error">{{ form.first_name.errors }}</div>
+          {% endif %}
         </div>
 
         <div class="form-group">
           {{ form.last_name.label_tag }}
           {{ form.last_name }}
+          {% if  form.last_name.errors %}
+            <div class="error">{{ form.last_name.errors }}</div>
+          {% endif %}
         </div>
 
         <div class="form-group">
           {{ form.date_of_birth.label_tag }}
           {{ form.date_of_birth }}
+          {% if  form.date_of_birth.errors %}
+            <div class="error">{{ form.date_of_birth.errors }}</div>
+          {% endif %}
         </div>
         
         <button type="submit" class="btn btn-primary submit-button">Сохранить</button>

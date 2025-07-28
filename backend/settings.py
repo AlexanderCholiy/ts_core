@@ -27,6 +27,14 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB
 
+CSRF_COOKIE_AGE = 31449600  # 1 год
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+SESSION_COOKIE_AGE = 3600  # Таймаут сессии — 1 час
+
+SESSION_SAVE_EVERY_REQUEST = True
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -158,9 +166,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REGISTRATION_ACCESS_TOKEN_LIFETIME = timedelta(seconds=86400)
 
-AXES_FAILURE_LIMIT = 3  # Количество попыток
+AXES_FAILURE_LIMIT = 3
 
-AXES_COOLOFF_TIME = timedelta(seconds=10)
+AXES_COOLOFF_TIME = timedelta(seconds=60)
 
 AXES_LOCKOUT_TEMPLATE = 'core/429_account_locked.html'
 

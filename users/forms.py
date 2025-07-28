@@ -201,6 +201,7 @@ class UserForm(forms.ModelForm):
 
     def clean_date_of_birth(self):
         value: date = self.cleaned_data.get('date_of_birth')
+        print(value)
         if not value:
             return value
 
@@ -209,8 +210,10 @@ class UserForm(forms.ModelForm):
             today.year - value.year
             - ((today.month, today.day) < (value.month, value.day))
         )
+        print(age)
 
         if age < MIN_USER_AGE:
+            print(132131231321)
             raise ValidationError(
                 f'Пользователь должен быть старше {MIN_USER_AGE}'
             )

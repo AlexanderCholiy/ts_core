@@ -148,11 +148,6 @@ def profile(request: HttpRequest) -> HttpResponse:
             form.save()
             messages.success(request, 'Профиль успешно обновлён')
             return redirect('users:profile')
-        else:
-            for name, errors in form.errors.items():
-                if name == '__all__':
-                    for error in set(errors):
-                        messages.error(request, error)
     else:
         form = UserForm(instance=request.user)
 
