@@ -1,19 +1,18 @@
 from datetime import timedelta
 
+from axes.helpers import get_client_ip_address
+from axes.models import AccessAttempt
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.views import LoginView, PasswordResetView
+from django.db.models import Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.utils.timezone import now
-from axes.models import AccessAttempt
-from django.contrib.auth.views import LoginView
-from axes.helpers import get_client_ip_address
-from django.conf import settings
-from django.db.models import Q
 from django_ratelimit.decorators import ratelimit
 
 from core.logger import email_logger

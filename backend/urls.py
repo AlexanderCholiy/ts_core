@@ -9,8 +9,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
 from users.forms import AuthForm
-from users.views import CustomPasswordResetView, CustomLoginView
-
+from users.views import CustomLoginView, CustomPasswordResetView
 
 handler400 = 'core.views.bad_request'
 handler403 = 'core.views.permission_denied'

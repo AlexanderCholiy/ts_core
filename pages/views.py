@@ -1,6 +1,6 @@
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django_ratelimit.decorators import ratelimit
-from django.utils.decorators import method_decorator
 
 
 @method_decorator(
