@@ -18,8 +18,10 @@
 
 - Все поля конфигурируются через JSON-формы на фронтенде с помощью django-jsonform, что позволяет удобно и гибко работать с вложенными схемами без ручного HTML.
 
-![Добавление нового абонента](.github/images/image_3.png)
-![Список абонентов](.github/images/image_4.png)
+<p align="center">
+  <img src=".github/images/image_3.png" alt="Добавление нового абонента" title="Добавление нового абонента" width="300">
+  <img src=".github/images/image_4.png" alt="Список абонентов" title="Список абонентов" width="300">
+</p>
 
 ---
 
