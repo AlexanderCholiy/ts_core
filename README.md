@@ -222,3 +222,8 @@ sudo docker compose -f docker-compose.production.yml up -d
 chmod +x setup_socat_proxy.sh
 chmod +x shutdown_counter.sh
 chmod +x update_crontab.sh
+
+
+<!-- Настройки внешнего nginx -->
+cd /etc/nginx/sites-enabled
+nano default 
