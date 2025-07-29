@@ -227,3 +227,19 @@ chmod +x update_crontab.sh
 <!-- Настройки внешнего nginx -->
 cd /etc/nginx/sites-enabled
 nano default 
+
+```                                                                                                  
+server {
+        listen 80;
+
+        server_name _;
+
+        location / {
+            proxy_set_header Host $http_host;
+            proxy_pass http://127.0.0.1:8000;
+        }
+}
+```
+
+sudo nginx -t
+sudo service nginx reload
