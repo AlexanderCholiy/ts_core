@@ -57,41 +57,6 @@ TS CORE — это интерфейс управления параметрам�
 | **Инфраструктура** | Docker, Docker Compose, Nginx       |
 | **CI/CD**          | GitHub Actions                      |
 
-<div align="center">
-
-<table>
-  <thead>
-    <tr>
-      <th>Категория</th>
-      <th>Технологии</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Backend</strong></td>
-      <td>Python 3.9, Django</td>
-    </tr>
-    <tr>
-      <td><strong>Frontend</strong></td>
-      <td>Jinja2, django-jsonform</td>
-    </tr>
-    <tr>
-      <td><strong>База данных</strong></td>
-      <td>PostgreSQL, MongoDB</td>
-    </tr>
-    <tr>
-      <td><strong>Инфраструктура</strong></td>
-      <td>Docker, Docker Compose, Nginx</td>
-    </tr>
-    <tr>
-      <td><strong>CI/CD</strong></td>
-      <td>GitHub Actions</td>
-    </tr>
-  </tbody>
-</table>
-
-</div>
-
 ---
 
 ## 🚀 Установка и запуск проекта в Docker
