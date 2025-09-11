@@ -107,3 +107,7 @@ body.dark .rjf-input-group select {
   padding: 0;
   border: none;
 }
+
+#id_imsi {
+  background-color: var(--yellow-color);
+}
