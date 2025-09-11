@@ -60,14 +60,14 @@ SECURITY_SCHEMA = {
         'op': {
             'type': 'string',
             'pattern': '^[0-9a-fA-F]+$',
-            'title': 'USIM Type: OP',
+            'title': 'Operator Key (OP)',
             'default': None,
             'maxLength': MAX_SUBSCRIBER_HEX_LEN,
         },
         'opc': {
             'type': 'string',
             'pattern': '^[0-9a-fA-F]+$',
-            'title': 'USIM Type: OPc',
+            'title': 'Operator Key (OPc)',
             'default': None,
             'maxLength': MAX_SUBSCRIBER_HEX_LEN,
         },

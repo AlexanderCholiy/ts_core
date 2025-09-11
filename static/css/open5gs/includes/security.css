@@ -12,6 +12,11 @@
   flex-direction: column;
 }
 
+#id_security_jsonform input[name="rjf§k"],
+#id_security_jsonform input[name="rjf§opc"] {
+  background-color: var(--yellow-color);
+}
+
 @media (max-width: 768px) {
   #id_security_jsonform .rjf-form-group-children {
     grid-template-columns: 1fr;
