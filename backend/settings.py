@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'django_json_widget',
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
-    'open5gs.apps.Open5gsConfig',
     'pages.apps.PagesConfig',
     'axes',
 ]
