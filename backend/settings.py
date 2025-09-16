@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
     'pages.apps.PagesConfig',
+    'open5gs.apps.Open5gsConfig',
     'axes',
 ]
 
