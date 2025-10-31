@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from django.db import DatabaseError
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 from django_ratelimit.decorators import ratelimit
 
 from core.logger import mongo_logger
@@ -14,6 +15,7 @@ from users.utils import role_required
 from .constants import MAX_SUBSCRIBER_PER_PAGE
 from .forms import SubscriberForm
 from .models import Subscriber
+from .subscribers import SubscriberManager
 
 
 @login_required
@@ -91,3 +93,35 @@ def delete_subscriber(
         return redirect('open5gs:index')
     context = {'subscriber': instance}
     return render(request, 'open5gs/subscriber_delete.html', context)
+
+
+@require_POST
+@login_required
+@role_required()
+@ratelimit(key='user_or_ip', rate='20/m', block=True)
+def subscribers_upload(request: HttpRequest):
+    sub = SubscriberManager()
+    return sub.handle_subscribers_excel(
+        request=request,
+        action_func=sub.upload_subscribers_from_excel,
+    )
+
+
+@require_POST
+@login_required
+@role_required()
+@ratelimit(key='user_or_ip', rate='20/m', block=True)
+def subscribers_delete(request: HttpRequest):
+    sub = SubscriberManager()
+    return sub.handle_subscribers_excel(
+        request=request,
+        action_func=sub.delete_subscribers_from_excel,
+    )
+
+
+@login_required
+@role_required()
+@ratelimit(key='user_or_ip', rate='20/m', block=True)
+def subscribers_download(request: HttpRequest):
+    sub = SubscriberManager()
+    return sub.handle_subscribers_download(request)

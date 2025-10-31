@@ -1,5 +1,7 @@
 # flake8: noqa: E501
 from .constants import (
+    DEFAULT_AMF,
+    DEFAULT_SESSION_SCHEMA_NAME,
     EMPTION_CHOICES,
     MAX_MSISDN_COUNT,
     MAX_PCC_RULE_COUNT,
@@ -54,7 +56,7 @@ SECURITY_SCHEMA = {
             'type': 'string',
             'title': 'Authentication Management Field (AMF)',
             'pattern': '^\\d+$',
-            'default': '8000',
+            'default': DEFAULT_AMF,
             'maxLength': MAX_SUBSCRIBER_HEX_LEN,
         },
         'op': {
@@ -146,7 +148,7 @@ SESSION_SCHEMA = {
             'type': 'string',
             'title': 'DNN/APN',
             'maxLength': MAX_SESSION_NAME_LEN,
-            'default': 'internet',
+            'default': DEFAULT_SESSION_SCHEMA_NAME,
         },
         'type': {
             'type': 'integer',

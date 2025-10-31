@@ -11,4 +11,19 @@ urlpatterns = [
     path(
         'subscriber/<int:imsi>/delete/', views.delete_subscriber, name='delete'
     ),
+    path(
+        'subscriber/upload/',
+        views.subscribers_upload,
+        name='subscribers_upload'
+    ),
+    path(
+        'subscriber/delete/',
+        views.subscribers_delete,
+        name='subscribers_delete'
+    ),
+    path(
+        'subscriber/download/',
+        views.subscribers_download,
+        name='subscribers_download'
+    ),
 ]

@@ -3,9 +3,12 @@
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/open5gs/index.css' %}">
+  <link rel="stylesheet" href="{% static 'css/open5gs/includes/modal_window.css' %}">
 {% endblock %}
 
 {% block content %}
+  {% include "open5gs/includes/modal_window.html" %}
+
  <div class="container">
   <div class="card-grid">
     {% for subscriber in page_obj %}
@@ -33,13 +36,67 @@
     </div>
   {% endif %}
 
-  <!-- Кнопка "Добавить абонента" внизу -->
-  <div class="add-button-wrapper">
-    <a href="{% url 'open5gs:create' %}" class="btn btn-primary">Добавить абонента</a>
+  <div class="buttons-list">
+    <div class="buttons-left">
+      <div class="add-button-wrapper">
+        <a href="{% url 'open5gs:create' %}" class="btn btn-primary">Добавить абонента</a>
+      </div>
+    </div>
+    <div class="buttons-right">
+      <div class="add-button-wrapper">
+        <a href="{% url 'open5gs:subscribers_download' %}" class="btn btn-secondary">Скачать список абонентов</a>
+      </div>
+      <div class="add-button-wrapper">
+        <form action="{% url 'open5gs:subscribers_upload' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input 
+            type="file" 
+            name="excel_file" 
+            accept=".xlsx,.xls" 
+            style="display:none" 
+            id="upload-excel-upload" 
+            onchange="confirmUpload(this.form)"
+          >
+          <label 
+            for="upload-excel-upload" 
+            class="btn btn-primary tooltip" 
+            data-title="Загрузите Excel файл со списком абонентов" 
+            style="cursor:pointer;"
+          >
+            Загрузить список абонентов
+          </label>
+        </form>
+      </div>
+      <div class="add-button-wrapper">
+        <form action="{% url 'open5gs:subscribers_delete' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input 
+            type="file" 
+            name="excel_file" 
+            accept=".xlsx,.xls" 
+            style="display:none" 
+            id="upload-excel-delete" 
+            onchange="confirmDelete(this.form)"
+          >
+          <label 
+            for="upload-excel-delete" 
+            class="btn btn-danger tooltip" 
+            data-title="Загрузите Excel файл со списком абонентов" 
+            style="cursor:pointer;"
+          >
+            Удалить список абонентов
+          </label>
+        </form>
+      </div>
+    </div>
   </div>
 
   {% if page_obj.has_other_pages %}
     {% include "includes/paginator.html" %}
   {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/open5gs/modal_subscribers.js' %}"></script>
 {% endblock %}

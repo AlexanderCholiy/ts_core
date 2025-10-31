@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/open5gs/error_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-sm">
+  <div class="card">
+    <div class="card-body">
+      <p class="card-text">Ошибки при обработке данных из <strong>{{ filename }}</strong>:</p>
+      <p class="card-text">
+        <div class="list-errors">
+          <ul>
+            {% for row, error in errors.items %}
+              {% if row == 0 %}
+                <li>{{ error }}</li>
+              {% else %}
+                <li><strong>Строка {{ row }}:</strong>{{ error }}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </p>
+      <p class="card-text">
+        <a href="{% url 'open5gs:index' %}" class="link-text">Вернуться к списку пользователей</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -48,9 +48,15 @@ class FileRotatingLogger:
 
 
 email_logger = FileRotatingLogger(
-    os.path.join(settings.BASE_DIR, 'log'), 'email.log', debug=settings.DEBUG
+    os.path.join(settings.BASE_DIR, 'logs'), 'email.log', debug=settings.DEBUG
 ).get_logger()
 
 mongo_logger = FileRotatingLogger(
-    os.path.join(settings.BASE_DIR, 'log'), 'mongo.log', debug=settings.DEBUG
+    os.path.join(settings.BASE_DIR, 'logs'), 'mongo.log', debug=settings.DEBUG
+).get_logger()
+
+subscriber_logger = FileRotatingLogger(
+    os.path.join(settings.BASE_DIR, 'logs'),
+    'subscriber.log',
+    debug=settings.DEBUG
 ).get_logger()
