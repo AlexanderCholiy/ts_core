@@ -90,7 +90,8 @@ class SubscriberForm(forms.ModelForm):
 
         if default_indicator is None:
             raise ValidationError(
-                'Требуется как минимум 1 Default S-NSSAI')
+                'Требуется как минимум 1 Default S-NSSAI'
+            )
 
         return cleaned_data
 

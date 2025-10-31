@@ -1,3 +1,4 @@
+from django.core.validators import MinLengthValidator
 from djongo import models
 
 from .constants import (
@@ -15,7 +16,10 @@ class Subscriber(models.Model):
         max_length=MAX_SUBSCRIBER_IMSI_LEN,
         unique=True,
         help_text='Разрешены только цифры',
-        validators=[digits_validator]
+        validators=[
+            MinLengthValidator(MAX_SUBSCRIBER_IMSI_LEN),
+            digits_validator
+        ]
     )
     msisdn = models.JSONField(
         'MSISDN',

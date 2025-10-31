@@ -58,6 +58,11 @@ body.dark .btn:hover {
   background-color: var(--blue-color);
 }
 
+.btn-success {
+  border: 1.8px solid var(--green-color);
+  background-color: var(--green-color);
+}
+
 .btn-danger {
   border: 1.8px solid var(--red-color);
   background-color: var(--red-color);

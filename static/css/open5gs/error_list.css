@@ -1,0 +1,23 @@
+.list-errors {
+  margin-bottom: 1.25rem;
+}
+
+.list-errors ul {
+  padding-left: 1.25rem;
+  margin: 0;
+}
+
+.list-errors li {
+  position: relative;
+  margin-bottom: 0.5rem;
+  word-break: break-word;
+}
+
+.list-errors li strong {
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.list-errors li::marker {
+    color: var(--red-color);
+}

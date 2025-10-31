@@ -20,13 +20,43 @@ main .card-title {
   margin: 0;
 }
 
-main .add-button-wrapper {
-  display: flex;
-  justify-content: right;
-  margin-top: 2rem;
-}
-
 main .btn-group {
   display: flex;
   gap: 0.5rem;
+}
+
+main .buttons-list {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  gap: 10px;
+}
+
+main .buttons-left, main .buttons-right {
+  display: flex;
+  gap: 10px;
+}
+
+/* main .add-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+} */
+
+@media (max-width: 768px) {
+  main .buttons-list {
+    justify-content: center; /* центрируем весь блок кнопок */
+  }
+
+  main .add-button-wrapper {
+    flex: 1 1 100%;
+    justify-content: center;  /* выравниваем кнопку по центру */
+    margin-top: 0.5rem;
+  }
+
+  main .buttons-left, main .buttons-right {
+    justify-content: center;
+    flex: 1 1 100%;
+    margin-top: 0.5rem;
+  }
 }

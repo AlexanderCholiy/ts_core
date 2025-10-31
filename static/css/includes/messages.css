@@ -19,7 +19,7 @@
   color: var(--color);
   box-shadow: 0 2px 10px var(--extra-color);
   /* Задержка в JS */
-  animation: slideUpFade 0.6s ease, fadeOut 0.6s ease 4.4s forwards; 
+  animation: slideUpFade 0.6s ease, fadeOut 0.6s ease 6.4s forwards; 
   opacity: 0;
   transform: translateY(30px);
   animation-fill-mode: forwards;
