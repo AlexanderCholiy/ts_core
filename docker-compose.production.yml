@@ -28,7 +28,7 @@ services:
     volumes:
       - ts_core_static:/backend_static
       - ts_core_media:/app/media/
-      - ./logs:/app/logs        # bind mount для логов
+      - /var/log/ts_core:/app/logs        # bind mount для логов
     depends_on:
       - ts_core_db
     networks:
