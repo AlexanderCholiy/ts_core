@@ -178,7 +178,8 @@ class SubscriberManager:
 
         if success_imsi:
             subscriber_logger.info(
-                f'Добавлено {len(success_imsi)} абонентов: {set(success_imsi)}'
+                f'{len(success_imsi)} | '
+                f'"{", ".join(map(str, set(success_imsi)))}"'
             )
 
         return errors, success_imsi
@@ -211,11 +212,12 @@ class SubscriberManager:
                     errors[row_index] = 'Абонент с таким IMSI не найден'
 
         try:
-            deleted_count, _ = to_delete_qs.delete()
+            to_delete_qs.delete()
             success_imsi.update(found_imsi_set)
             if success_imsi:
                 subscriber_logger.info(
-                    f'Удалено {deleted_count} абонентов: {set(found_imsi_set)}'
+                    f'{len(found_imsi_set)} | '
+                    f'"{", ".join(map(str, set(found_imsi_set)))}"'
                 )
         except Exception as e:
             subscriber_logger.exception(e)
