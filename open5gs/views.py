@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from django_ratelimit.decorators import ratelimit
 
-from core.logger import mongo_logger
+from core.logger import mongo_logger, subscriber_logger
 from users.utils import role_required
 
 from .constants import MAX_SUBSCRIBER_PER_PAGE
@@ -72,6 +72,9 @@ def subscriber(
                 request,
                 f'Абонент ({form.cleaned_data["imsi"]}) сохранен'
             )
+            subscriber_logger.info(
+                f'Абонент ({form.cleaned_data}) сохранен'
+            )
         else:
             messages.error(request, 'Проверьте данные')
     else:
@@ -90,6 +93,7 @@ def delete_subscriber(
     instance = get_object_or_404(Subscriber, imsi=str(imsi))
     if request.method == 'POST':
         instance.delete()
+        subscriber_logger.info(f'Абонент ({imsi}) удален')
         return redirect('open5gs:index')
     context = {'subscriber': instance}
     return render(request, 'open5gs/subscriber_delete.html', context)
