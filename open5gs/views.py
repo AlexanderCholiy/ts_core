@@ -72,9 +72,7 @@ def subscriber(
                 request,
                 f'Абонент ({form.cleaned_data["imsi"]}) сохранен'
             )
-            subscriber_logger.info(
-                f'Абонент ({form.cleaned_data}) сохранен'
-            )
+            subscriber_logger.info(f'1 | "{form.cleaned_data}"')
         else:
             messages.error(request, 'Проверьте данные')
     else:
@@ -93,7 +91,7 @@ def delete_subscriber(
     instance = get_object_or_404(Subscriber, imsi=str(imsi))
     if request.method == 'POST':
         instance.delete()
-        subscriber_logger.info(f'Абонент ({imsi}) удален')
+        subscriber_logger.info(f'1 | "{imsi}"')
         return redirect('open5gs:index')
     context = {'subscriber': instance}
     return render(request, 'open5gs/subscriber_delete.html', context)
