@@ -218,7 +218,7 @@ LOGGING = {
             'level': 'WARNING',
             'formatter': 'verbose',
             'filename': os.path.join(
-                BASE_DIR, 'logs', 'django.log'
+                BASE_DIR, 'logs', 'django', 'django.log'
             ),
             'maxBytes': 10 * 1024 * 1024,
             'backupCount': 3,
@@ -229,7 +229,7 @@ LOGGING = {
             'level': 'ERROR',
             'formatter': 'verbose',
             'filename': os.path.join(
-                BASE_DIR, 'logs', '500.log'
+                BASE_DIR, 'logs', 'django', '500.log'
             ),
             'maxBytes': 10 * 1024 * 1024,
             'backupCount': 3,

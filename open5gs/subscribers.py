@@ -194,14 +194,15 @@ class SubscriberManager:
         if errors:
             return errors, success_imsi
 
+        df['IMSI'] = (df['IMSI'].astype(str).str.strip())
         imsi_list = df['IMSI'].tolist()
 
         from .models import Subscriber
 
         to_delete_qs = Subscriber.objects.filter(imsi__in=imsi_list)
         found_imsi_set = set(to_delete_qs.values_list('imsi', flat=True))
-
         missing_imsi = set(imsi_list) - found_imsi_set
+
         if missing_imsi:
             for idx, row in df.iterrows():
                 row_index = idx + 2
