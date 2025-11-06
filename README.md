@@ -229,6 +229,7 @@ sudo systemctl enable --now socat-mongo-proxy
 sudo netstat -tulnp | grep 27018
 ```
 > Ожидаемый результат: `tcp   0   0 0.0.0.0:27018   0.0.0.0:*   LISTEN   /usr/bin/socat`
+
 Теперь контейнеры Docker могут обращаться к MongoDB по адресу: `host.docker.internal:27018`.
 
 ### ✅ Готово!
