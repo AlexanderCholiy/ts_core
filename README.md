@@ -296,3 +296,54 @@ cd ~ && rm -rf ~/.vscode-server
 
 ## Автор
 **Чолий Александр** ([Telegram](https://t.me/alexander_choliy))
+
+
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t alexandercholiy/ts_core_backend:latest \
+  --push .
+
+В папке gateway:
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t alexandercholiy/ts_core_gateway:latest \
+  --push .
+
+
+Чтобы приложение могло подключаться к MongoDB запущенной локально и была доступна из контейнера необходимо
+
+1. Установите Socat
+sudo apt install socat -y
+
+Пусть контейнеры слушают порт 27018 (в Docker) и socat перенаправляет его на localhost:27017, где живёт MongoDB.
+Чтобы это работало постоянно сформируем systemd-сервис:
+sudo nano /etc/systemd/system/socat-mongo-proxy.service
+
+Вставим содержимое:
+[Unit]
+Description=Socat proxy from Docker to local MongoDB
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/socat TCP-LISTEN:27018,fork TCP:127.0.0.1:27017
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+
+Активируем:
+sudo systemctl daemon-reload
+sudo systemctl enable --now mongo-proxy
+
+Проверим работу:
+sudo netstat -tulnp | grep 27018
+
+Ожидаемый вывод
+tcp   0   0 0.0.0.0:27018   0.0.0.0:*   LISTEN   /usr/bin/socat
+или 
+tcp6       0      0 :::27018                :::*                    LISTEN      876/socat 
+Теперь контейнер подключается к host.docker.internal:27018, а socat прокидывает всё на 127.0.0.1:27017.
+Mongo при этом осталась защищённой и не требует изменения mongod.conf.

@@ -72,7 +72,7 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: alexandercholiy/ts_core_backend
+          tags: alexandercholiy/ts_core_backend:latest
 
   build_and_push_gateway_to_docker_hub:
     name: Push gateway Docker image to DockerHub
