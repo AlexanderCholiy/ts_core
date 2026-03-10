@@ -147,7 +147,18 @@ sudo systemctl start docker && docker info | grep "Docker Root Dir"
 1. Скопируйте в папку `ts_core`:
    - файл docker-compose.production.yml
    - папку system_config
-2. Загрузите/обновите образы из Docker Hub:
+1. Подготовка директорий для логирования:
+```
+sudo mkdir -p /var/log/ts_core/django
+sudo mkdir -p /var/log/ts_core/subscriber
+sudo mkdir -p /var/log/ts_core/mongo
+sudo mkdir -p /var/log/ts_core/emails
+```
+```
+sudo chmod -R 777 /var/log/ts_core
+```
+> Эти директории монтируются в контейнеры через docker-compose
+3. Загрузите/обновите образы из Docker Hub:
 ```
 sudo docker compose -f docker-compose.production.yml pull
 ```
