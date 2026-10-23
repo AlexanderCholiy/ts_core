@@ -2,6 +2,8 @@
   <div class="sidebar-content">
     <ul>
       {% with request.resolver_match.view_name as view_name %}
+        
+        {# --- Абоненты --- #}
         {% if user.is_authenticated %}
           <li>
             <a href="{% url 'open5gs:index' %}" 
@@ -11,6 +13,21 @@
             </a>
           </li>
         {% endif %}
+
+        {# --- Iframe на внешние ресурсы (динамические из БД) --- #}
+        {% for resource in SIDEBAR_EXTERNAL_RESOURCES %}
+          <li>
+            <a href="{% url 'links:iframe_detail' pk=resource.pk %}" 
+               class="nav-link {% if view_name == 'links:iframe_detail' and request.resolver_match.kwargs.pk == resource.pk %}active{% endif %}">
+              <i class="bx bx-server"></i>
+              <span class="link-text">
+                {{ resource.title }}
+              </span>
+            </a>
+          </li>
+        {% endfor %}
+
+        {# --- О нас --- #}
         <li>
           <a href="{% url 'pages:about' %}" 
             class="nav-link {% if view_name == 'pages:about' %}active{% endif %}">
@@ -18,6 +35,7 @@
             <span class="link-text">О нас</span>
           </a>
         </li>
+
       {% endwith %}
     </ul>
   </div>

@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'pages.apps.PagesConfig',
     'open5gs.apps.Open5gsConfig',
+    'links.apps.LinksConfig',
     'axes',
 ]
 
@@ -107,6 +108,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Глобальные константы в контекст шаблонов:
+                'links.utils.external_resources_processor',
             ],
         },
     },

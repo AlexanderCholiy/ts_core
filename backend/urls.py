@@ -95,6 +95,7 @@ app_urls = [
     path('users/', include('users.urls')),
     path('admin/', admin.site.urls),
     path('pages/', include('pages.urls')),
+    path('links/', include('links.urls')),
 ]
 
 urlpatterns = swagger_urls + auth_urlpatterns + app_urls

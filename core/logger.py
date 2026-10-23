@@ -6,11 +6,7 @@ from typing import Union
 
 from django.conf import settings
 
-from core.constants import (
-    EMAIL_LOG_FILE,
-    MONGO_LOG_FILE,
-    SUBSCRIBER_LOG_FILE,
-)
+from core.constants import EMAIL_LOG_FILE, MONGO_LOG_FILE, SUBSCRIBER_LOG_FILE
 from core.exceptions import LoggerError
 
 

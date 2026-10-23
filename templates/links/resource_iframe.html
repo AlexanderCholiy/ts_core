@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="min-height: calc(100vh - 120px); display: flex; flex-direction: column; flex-grow: 1; width: 100%; padding-block: 1rem; box-sizing: border-box;">
+    <iframe 
+        src="{{ resource.url }}" 
+        title="{{ resource.title }}" 
+        style="display: block; width: 100%; flex-grow: 1; border: none; min-height: 100%;"
+        allowfullscreen>
+    </iframe>
+</div>
+{% endblock %}
