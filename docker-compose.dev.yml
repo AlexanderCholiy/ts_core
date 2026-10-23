@@ -1,0 +1,48 @@
+# Запуск:
+# sudo docker compose --env-file .env.dev -f docker-compose.dev.yml up --build -d
+#
+# Остановка:
+# sudo docker compose --env-file .env.dev -f docker-compose.dev.yml down
+# 
+# Перезапустить
+# sudo docker compose --env-file .env.dev -f docker-compose.dev.yml up --build -d --force-recreate
+
+name: ts_core
+
+volumes:
+  ts_core_dev_db_data:
+
+networks:
+  ts_core_network:
+    driver: bridge
+
+# Общая конфигурация логирования
+x-log-opts: &default-logging
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  # БД PostgreSQL:
+  ts_core_dev_db:
+    <<: *default-logging
+    image: postgres:18
+    env_file:
+      - .env.dev
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - ts_core_dev_db_data:/var/lib/postgresql
+    networks:
+      - ts_core_network
+    restart: unless-stopped
+    environment:
+      TZ: "Europe/Moscow"
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 256M

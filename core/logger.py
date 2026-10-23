@@ -1,105 +1,163 @@
 import logging
+from enum import IntEnum
 from logging.handlers import RotatingFileHandler
+from pathlib import Path
 from typing import Union
 
-from .constants import (
-    DEFAULT_LOG_FILE,
-    DEFAULT_LOG_LEVEL,
-    DEFAULT_LOG_MODE,
-    DEFAULT_ROTATING_LOG_FILE,
+from django.conf import settings
+
+from core.constants import (
     EMAIL_LOG_ROTATING_FILE,
     MONGO_LOG_ROTATING_FILE,
     SUBSCRIBER_LOG_ROTATING_FILE
 )
-from .exceptions import LoggerError
+from core.exceptions import LoggerError
+
+
+class LoggerMode(IntEnum):
+    CONSOLE = 0
+    ROTATING_FILE = 1
+    FILE = 2
+    FILE_AND_CONSOLE = 3
+    ROTATING_FILE_AND_CONSOLE = 4
 
 
 class LoggerFactory:
     """
-    Универсальный фабричный класс для логгера.
+    Фабрика для создания и настройки логгера.
 
     Режимы:
-        0 - Только консоль
-        1 - Только ротация
-        2 - Только файл
-        3 - Файл + консоль
-        4 - Консоль + ротация
+        CONSOLE - только консоль
+        ROTATING_FILE - только ротация
+        FILE - только файл
+        FILE_AND_CONSOLE - файл + консоль
+        ROTATING_FILE_AND_CONSOLE - ротация + консоль
     """
 
     DEFAULT_FORMAT = (
-        '%(asctime)s | %(levelname).1s | %(name)s | %(funcName)s | %(message)s'
+        '%(asctime)s | %(levelname).1s | '
+        '%(name)s | %(funcName)s | %(message)s'
     )
     DEFAULT_DATEFMT = '%H:%M:%S'
+    DEFAULT_LOG_MODE = (
+        LoggerMode.ROTATING_FILE_AND_CONSOLE
+        if settings.DEBUG else LoggerMode.ROTATING_FILE
+    )
+    DEFAULT_LOG_LEVEL = logging.DEBUG if settings.DEBUG else logging.INFO
 
     def __init__(
         self,
+        log_file: Union[str, Path],
         name: str = __name__,
-        rotating_file: str = DEFAULT_ROTATING_LOG_FILE,
-        log_file: str = DEFAULT_LOG_FILE,
-        level: Union[int, None] = None,
-        mode: Union[int, None] = None,
-        max_bytes: int = 10 * 1024 * 1024,  # 10 MB
+        level: int = DEFAULT_LOG_LEVEL,
+        mode: LoggerMode = DEFAULT_LOG_MODE,
+        max_bytes: int = 10 * 1024 * 1024,
         backup_count: int = 2,
-        fmt: str = None,
-        datefmt: str = None,
+        fmt: str = DEFAULT_FORMAT,
+        datefmt: str = DEFAULT_DATEFMT,
     ):
-        level = level if level is not None else DEFAULT_LOG_LEVEL
-        mode = mode if mode is not None else DEFAULT_LOG_MODE
+        self.log_file = Path(log_file)
+        self.level = level
+
+        try:
+            self.mode = LoggerMode(mode)
+        except ValueError as exc:
+            raise LoggerError(
+                'Неверный режим логгера. '
+                'Допустимые значения: 0–4.'
+            ) from exc
+
+        if max_bytes <= 0:
+            raise LoggerError('max_bytes должен быть больше 0.')
+
+        if backup_count < 0:
+            raise LoggerError('backup_count не может быть отрицательным.')
+
+        if level not in (
+            logging.DEBUG,
+            logging.INFO,
+            logging.WARNING,
+            logging.ERROR,
+            logging.CRITICAL,
+        ):
+            raise LoggerError(
+                'Неверный уровень логирования. '
+                'Допустимые значения: DEBUG, INFO, WARNING, ERROR, CRITICAL.'
+            )
+
+        self.max_bytes = max_bytes
+        self.backup_count = backup_count
+
+        self.formatter = logging.Formatter(fmt)
+
+        self.console_formatter = logging.Formatter(fmt, datefmt)
 
         self.logger = logging.getLogger(name)
-        self.logger.setLevel(level)
+        self.logger.setLevel(self.level)
+        self.logger.propagate = False
 
-        if self.logger.handlers:
-            self.logger.handlers.clear()
+        self._clear_handlers()
+        self._configure()
 
-        formatter = logging.Formatter(fmt or self.DEFAULT_FORMAT)
-        console_formatter = logging.Formatter(
-            fmt or self.DEFAULT_FORMAT, datefmt or self.DEFAULT_DATEFMT
+    def _clear_handlers(self) -> None:
+        """Закрывает и удаляет существующие handlers."""
+        for handler in self.logger.handlers[:]:
+            handler.close()
+            self.logger.removeHandler(handler)
+
+    @staticmethod
+    def _prepare_path(path: Path) -> None:
+        """Создаёт директорию для лог-файла."""
+        path.parent.mkdir(parents=True, exist_ok=True)
+
+    def _create_console_handler(self) -> logging.Handler:
+        handler = logging.StreamHandler()
+        handler.setFormatter(self.console_formatter)
+
+        return handler
+
+    def _create_file_handler(self) -> logging.Handler:
+        self._prepare_path(self.log_file)
+
+        handler = logging.FileHandler(
+            self.log_file,
+            mode='a',
+            encoding='utf-8',
         )
+        handler.setFormatter(self.formatter)
 
-        if mode == 0:  # только консоль
-            console_handler = logging.StreamHandler()
-            console_handler.setFormatter(console_formatter)
-            self.logger.addHandler(console_handler)
+        return handler
 
-        elif mode == 1:  # только ротация
-            handler = RotatingFileHandler(
-                rotating_file,
-                maxBytes=max_bytes,
-                backupCount=backup_count,
-                encoding='utf-8'
-            )
-            handler.setFormatter(formatter)
-            self.logger.addHandler(handler)
+    def _create_rotating_handler(self) -> logging.Handler:
+        self._prepare_path(self.log_file)
 
-        elif mode == 2:  # только файл
-            handler = logging.FileHandler(log_file, 'a', 'utf-8')
-            handler.setFormatter(formatter)
-            self.logger.addHandler(handler)
+        handler = RotatingFileHandler(
+            self.log_file,
+            maxBytes=self.max_bytes,
+            backupCount=self.backup_count,
+            encoding='utf-8',
+        )
+        handler.setFormatter(self.formatter)
 
-        elif mode == 3:  # файл + консоль
-            file_handler = logging.FileHandler(log_file, 'a', 'utf-8')
-            file_handler.setFormatter(formatter)
-            console_handler = logging.StreamHandler()
-            console_handler.setFormatter(console_formatter)
-            self.logger.addHandler(file_handler)
-            self.logger.addHandler(console_handler)
+        return handler
 
-        elif mode == 4:  # ротация + консоль
-            rotating_handler = RotatingFileHandler(
-                rotating_file,
-                maxBytes=max_bytes,
-                backupCount=backup_count,
-                encoding='utf-8'
-            )
-            rotating_handler.setFormatter(formatter)
-            console_handler = logging.StreamHandler()
-            console_handler.setFormatter(console_formatter)
-            self.logger.addHandler(rotating_handler)
-            self.logger.addHandler(console_handler)
+    def _configure(self) -> None:
+        if self.mode == LoggerMode.CONSOLE:
+            self.logger.addHandler(self._create_console_handler())
 
-        else:
-            raise LoggerError('Неверный режим логгера (mode). Допустимо 0–4.')
+        elif self.mode == LoggerMode.ROTATING_FILE:
+            self.logger.addHandler(self._create_rotating_handler())
+
+        elif self.mode == LoggerMode.FILE:
+            self.logger.addHandler(self._create_file_handler())
+
+        elif self.mode == LoggerMode.FILE_AND_CONSOLE:
+            self.logger.addHandler(self._create_file_handler())
+            self.logger.addHandler(self._create_console_handler())
+
+        elif self.mode == LoggerMode.ROTATING_FILE_AND_CONSOLE:
+            self.logger.addHandler(self._create_rotating_handler())
+            self.logger.addHandler(self._create_console_handler())
 
     def get_logger(self) -> logging.Logger:
         return self.logger

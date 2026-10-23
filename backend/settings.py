@@ -5,9 +5,25 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-load_dotenv(override=True)
-
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Файл окружения:
+#
+# Локальный runserver / pytest:
+#   автоматически используется .env.dev
+#
+# Production Docker:
+#   docker-compose передаёт ENV_FILE=.env
+#
+# Важно:
+# override=False (по умолчанию), поэтому уже существующие
+# переменные окружения не перезаписываются значениями из файла.
+ENV_FILE_NAME = os.getenv('ENV_FILE', '.env.dev')
+ENV_FILE = BASE_DIR / ENV_FILE_NAME
+IS_PRODUCTION = ENV_FILE_NAME == '.env'
+
+load_dotenv(ENV_FILE)
+
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-e68v&dizcxaw&)21bcs&+5')
 
@@ -20,7 +36,10 @@ ALLOWED_HOSTS = [
 
 INTERNAL_IPS = ['127.0.0.1', 'localhost']
 
-CSRF_TRUSTED_ORIGINS = ['https://fridge.newtowers.ru']
+CSRF_TRUSTED_ORIGINS = [
+    v.strip() for v in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
+    if v.strip()
+]
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 
@@ -98,19 +117,19 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'django'),
-        'USER': os.getenv('POSTGRES_USER', 'django'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': int(os.getenv('DB_PORT', 5438)),
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': int(os.getenv('DB_PORT', '5432')),
     },
     'open5gs_db': {
         'ENGINE': 'djongo',
         'NAME': 'open5gs',
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'host': os.getenv('MONGO_HOST', 'localhost'),
-            'port': int(os.getenv('MONGO_PORT', 27017)),
+            'host': os.getenv('MONGO_HOST'),
+            'port': int(os.getenv('MONGO_PORT', '27017')),
             'serverSelectionTimeoutMS': 5000,  # Таймаут отв. первого подкл.
             'connectTimeoutMS': 3000,          # Таймаут подключения
             'socketTimeoutMS': 3000            # Таймаут на чтение/запись
