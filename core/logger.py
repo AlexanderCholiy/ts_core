@@ -7,9 +7,9 @@ from typing import Union
 from django.conf import settings
 
 from core.constants import (
-    EMAIL_LOG_ROTATING_FILE,
-    MONGO_LOG_ROTATING_FILE,
-    SUBSCRIBER_LOG_ROTATING_FILE
+    EMAIL_LOG_FILE,
+    MONGO_LOG_FILE,
+    SUBSCRIBER_LOG_FILE,
 )
 from core.exceptions import LoggerError
 
@@ -163,14 +163,10 @@ class LoggerFactory:
         return self.logger
 
 
-email_logger = LoggerFactory(
-    'email_logger', EMAIL_LOG_ROTATING_FILE
-).get_logger()
+email_logger = LoggerFactory(EMAIL_LOG_FILE, 'email_logger').get_logger()
 
-mongo_logger = LoggerFactory(
-    'mongo_logger', MONGO_LOG_ROTATING_FILE
-).get_logger()
+mongo_logger = LoggerFactory(MONGO_LOG_FILE, 'mongo_logger').get_logger()
 
-subscriber_logger = LoggerFactory(
-    'subscriber_logger', SUBSCRIBER_LOG_ROTATING_FILE
-).get_logger()
+subscriber_logger = (
+    LoggerFactory(SUBSCRIBER_LOG_FILE, 'subscriber_logger').get_logger()
+)

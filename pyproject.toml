@@ -1,7 +1,14 @@
 [tool.isort]
 profile = "black"
 line_length = 88
-known_first_party = ["backend", "core", "pages", "users", "api", "open5gs"]
+known_first_party = [
+    "backend",
+    "core",
+    "pages",
+    "users",
+    "api",
+    "open5gs"
+]
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 multi_line_output = 3
 include_trailing_comma = false
