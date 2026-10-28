@@ -6,7 +6,12 @@ from typing import Union
 
 from django.conf import settings
 
-from core.constants import EMAIL_LOG_FILE, MONGO_LOG_FILE, SUBSCRIBER_LOG_FILE
+from core.constants import (
+    BASE_STATION_LOG_FILE,
+    EMAIL_LOG_FILE,
+    MONGO_LOG_FILE,
+    SUBSCRIBER_LOG_FILE
+)
 from core.exceptions import LoggerError
 
 
@@ -165,4 +170,8 @@ mongo_logger = LoggerFactory(MONGO_LOG_FILE, 'mongo_logger').get_logger()
 
 subscriber_logger = (
     LoggerFactory(SUBSCRIBER_LOG_FILE, 'subscriber_logger').get_logger()
+)
+
+base_station_logger = (
+    LoggerFactory(BASE_STATION_LOG_FILE, 'base_station_logger').get_logger()
 )

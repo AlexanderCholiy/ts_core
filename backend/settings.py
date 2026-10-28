@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'open5gs.apps.Open5gsConfig',
     'links.apps.LinksConfig',
+    'base_station.apps.BaseStationConfig',
     'axes',
 ]
 

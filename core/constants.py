@@ -15,3 +15,4 @@ DEFAULT_LOG_LEVEL = DEBUG if DEBUG_MODE else INFO
 EMAIL_LOG_FILE = LOG_DIR / 'emails' / 'emails.log'
 MONGO_LOG_FILE = LOG_DIR / 'mongo' / 'mongo.log'
 SUBSCRIBER_LOG_FILE = LOG_DIR / 'subscriber' / 'subscriber.log'
+BASE_STATION_LOG_FILE = LOG_DIR / 'base_station' / 'base_station.log'
