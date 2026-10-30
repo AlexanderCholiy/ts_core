@@ -42,6 +42,8 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+RATELIMIT_VIEW = 'core.views.too_many_requests'
+AXES_LOCKOUT_TEMPLATE = 'core/429_account_locked.html'
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB
 
@@ -195,13 +197,22 @@ AXES_FAILURE_LIMIT = 3
 
 AXES_COOLOFF_TIME = timedelta(seconds=60)
 
-AXES_LOCKOUT_TEMPLATE = 'core/429_account_locked.html'
-
 AXES_USERNAME_FORM_FIELD = 'username'
 
-AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
+AXES_LOCKOUT_PARAMETERS = ['ip_address', 'username']
 
 AXES_RESET_ON_SUCCESS = True
+
+AXES_RESET_COOL_OFF_ON_FAILURE_DURING_LOCKOUT = False
+
+# Определяем IP клиента за обратным прокси Nginx.
+# X-Real-IP имеет наивысший приоритет, поскольку Nginx напрямую
+# передаёт в него IP клиента.
+# REMOTE_ADDR — последний вариант, если proxy-заголовки недоступны.
+AXES_IPWARE_META_PRECEDENCE_ORDER = (
+    'HTTP_X_REAL_IP',
+    'REMOTE_ADDR',
+)
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.yandex.ru')
