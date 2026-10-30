@@ -10,7 +10,8 @@ from core.constants import (
     BASE_STATION_LOG_FILE,
     EMAIL_LOG_FILE,
     MONGO_LOG_FILE,
-    SUBSCRIBER_LOG_FILE
+    SUBSCRIBER_LOG_FILE,
+    DEFAULT_LOG_FILE,
 )
 from core.exceptions import LoggerError
 
@@ -174,4 +175,8 @@ subscriber_logger = (
 
 base_station_logger = (
     LoggerFactory(BASE_STATION_LOG_FILE, 'base_station_logger').get_logger()
+)
+
+django_logger = (
+    LoggerFactory(DEFAULT_LOG_FILE, 'django_logger').get_logger()
 )

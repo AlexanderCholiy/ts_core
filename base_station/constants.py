@@ -5,11 +5,17 @@ from typing import Annotated, Literal
 from pydantic import HttpUrl, StringConstraints, TypeAdapter
 
 SOAP_NAMESPACE = 'http://schemas.xmlsoap.org/soap/envelope/'
+CWMP_NAMESPACE = 'urn:dslforum-org:cwmp-1-0'
 
 NS_MAP = {
     '': '',
     'soap-env': SOAP_NAMESPACE,
-    'cwmp': 'urn:dslforum-org:cwmp-1-0',
+    'cwmp': CWMP_NAMESPACE,
+}
+
+RESPONSE_NS_MAP = {
+    'soap-env': SOAP_NAMESPACE,
+    'cwmp': CWMP_NAMESPACE,
 }
 
 
@@ -73,3 +79,9 @@ PARAMETER_TYPES = {
     BaseStationParameter.HALOB_ENABLE_STATE: BaseStationParameterType.BOOLEAN,
     BaseStationParameter.HALOB_MODE: BaseStationParameterType.INTEGER,
 }
+
+PARAMETERS_TO_REQUEST = [
+    'InternetGatewayDevice.DeviceInfo.HardwareVersion',
+    'InternetGatewayDevice.DeviceInfo.RollBackEnable',
+    'InternetGatewayDevice.DeviceInfo.SoftwareVersion',
+]
